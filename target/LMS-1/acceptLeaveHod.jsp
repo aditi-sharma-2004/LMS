@@ -10,16 +10,24 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
+
         String updateQuery = "UPDATE LeaveRequests SET hod_status = 'Accepted' WHERE leave_id = ?";
         ps = con.prepareStatement(updateQuery);
         ps.setInt(1, leaveId);
         int rowsUpdated = ps.executeUpdate();
 
         if (rowsUpdated > 0) {
-            response.sendRedirect("pendingLeavesHod.jsp"); // Redirect back to the HOD's pending leaves page
+%>
+            <script>
+                alert("Leave Accepted Successfully!");
+                window.location.href = "pendingLeavesHod.jsp";
+            </script>
+<%
+        } else {
+            out.println("<script>alert('No rows updated. Check if leave_id exists.'); window.location.href='pendingLeavesHod.jsp';</script>");
         }
     } catch (Exception e) {
-        out.println("Error: " + e.getMessage());
+        out.println("<script>alert('Error: " + e.getMessage() + "'); window.location.href='pendingLeavesHod.jsp';</script>");
     } finally {
         if (ps != null) ps.close();
         if (con != null) con.close();

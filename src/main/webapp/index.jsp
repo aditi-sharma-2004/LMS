@@ -11,9 +11,11 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            width: 100vw;  /* Ensures full viewport width */
+            height: 100vh; /* Ensures full viewport height */
             margin: 0;
             padding: 0;
+            overflow: hidden; /* Removes scrollbars */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -69,12 +71,13 @@
             align-items: center;
             background-color: #333;
             color: white;
-            padding: 2px 20px;
-            position: fixed;
+            padding: 3px 8px;
+            position: absolute;
+            left: 0;
             top: 0;
-            width: 98%;
+            width: 99%;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
         }
 
         .navbar .logo {
@@ -86,6 +89,7 @@
             width: 150px;
             height: auto;
             margin-right: 10px;
+            margin-left: 0px;
         }
 
         .navbar .logo h1 {
@@ -135,17 +139,19 @@
         .navbar ul li:hover::after{
             width: 100%;
         }
-        .logout:hover {
-            background-color: #d32f2f;
-        }
         .hidden {
             display: none;
         }
-
-        .logo img {
-            display: block;
-            margin: 0 auto 5px;
-            width: 120px;
+        .footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #333;
+            color: white;
+            font-size: 14px;
+            position: fixed; /* Fixed at the bottom */
+            bottom: 0;       /* Aligns to the bottom of the screen */
+            width: 100%;     /* Spans the full width of the screen */
+            z-index: 1000;   /* Ensures it stays on top of other elements */
         }
     </style>
     <script>
@@ -172,14 +178,11 @@
                 <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">HOME</a></li>
                 <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">PROGRAMS</a></li>
                 <li><a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">CAMPUS</a></li>
-                <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">ABOUT US</a></li>
+                <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">ABOUT</a></li>
             </ul>
         </div>
     </div>
     <div class="container">
-        <div class="logo">
-            <img src="logoo.png" alt="Banasthali Vidyapeeth Logo">
-        </div>
         <h1>Select Your Role</h1>
         <form action="processRole.jsp" method="POST">
             <label for="role"><select id="role" name="role" onchange="handleRoleChange()" required>
@@ -199,6 +202,9 @@
 
             <button type="submit">Continue</button>
         </form>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
 </html>

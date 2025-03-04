@@ -16,8 +16,16 @@
         int rowsUpdated = ps.executeUpdate();
 
         if (rowsUpdated > 0) {
-            response.sendRedirect("pendingLeavesVo.jsp"); // Redirect back to VO's pending leaves page
+            %>
+            <script>
+                alert("Leave Accepted Successfully!");
+                window.location.href = "pendingLeavesVo.jsp";
+            </script>
+        <%
         }
+    else {
+        out.println("No rows updated. Check if leave_id exists.");
+    }
     } catch (Exception e) {
         out.println("Error: " + e.getMessage());
     } finally {

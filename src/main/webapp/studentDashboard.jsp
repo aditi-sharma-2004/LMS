@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Dashboard - Leave Management System</title>
+    <title>Student Dashboard</title>
     <style>
         /* General Styling */
         body {
@@ -13,78 +13,154 @@
             padding: 0;
             background-color: #f9f9f9;
             box-sizing: border-box;
+            overflow-x: hidden;
+            overflow-y: auto;
         }
     
         /* Top Navigation Bar */
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            position: fixed;
-            top: 0;
-            width: 100%; /* Changed width to 100% for consistency */
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            height: 80px; /* Ensure the height is fixed */
-            flex-wrap: wrap; /* Ensures content wraps instead of overflowing */
-            box-sizing: border-box;
-        }
-    
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-        }
-    
-        .navbar .logo img {
-            width: 180px;
-            height: auto;
-            margin-right: 20px;
-        }
-    
-        .navbar .logo h1 {
-            font-size: 20px;
-            margin: 0;
-            font-weight: 500;
-        }
-    
-        .navbar .nav-links {
-            display: flex;
-            gap: 15px; /* Adjusted spacing for better layout */
-            align-items: center;
-            flex-shrink: 0; /* Prevents shrinking of links */
-        }
-    
-        .navbar .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-    
-        .navbar .nav-links a:hover {
-            color: #4CAF50;
-        }
-    
-        .logout {
-            color: white;
-            background-color: #f44336;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-    
-        .logout:hover {
-            background-color: #d32f2f;
-        }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 3px 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 99%;
+    z-index: 1000;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+.navbar .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #4CAF50;
+}
+.contact{
+    margin-top: 10px;
+}
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+}
+.navbar ul li::after{
+    content: '';
+   height: 3px;
+   width: 0;
+   background: #6386a6;
+   position: absolute;
+   left: 0;
+   bottom: -10px; 
+   transition: 0.5s;
+}
+.navbar ul li:hover::after{
+    width: 100%;
+}
+.navbar .nav-button {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.navbar .nav-button:hover {
+    background-color: #45a049;
+}
+.quick-links {
+    position: relative;
+}
+
+.quick-links .dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quick-links .dropdown a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.quick-links:hover .dropdown {
+   display: block;
+}
+
+.logout {
+    color: white;
+    background-color: #f44336;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: #d32f2f;
+}
+.footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    position: fixed; /* Fixed at the bottom */
+    bottom: 0;       /* Aligns to the bottom of the screen */
+    width: 100%;     /* Spans the full width of the screen */
+    z-index: 1000;   /* Ensures it stays on top of other elements */
+}
     
         /* Main Content */
         .content {
             margin-top: 60px; /* This ensures content starts below the navbar */
+            margin-bottom: 60px;
             padding: 20px;
             max-width: 1200px;
             margin-left: auto;
@@ -98,6 +174,7 @@
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-top: 30px;
             margin-bottom: 30px;
         }
     
@@ -186,28 +263,30 @@
       border-radius: 10px;
     }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 15px 0;
-            background-color: #333;
-            color: white;
-            font-size: 14px;
-            margin-top: 30px;
-        }
     </style>
 </head>
 <body>
   <!-- Top Navigation Bar -->
   <div class="navbar">
     <div class="logo">
-      <img src="Logoos.jpg" alt="Logo">
+        <img src="Logoos.jpg" alt="Logo">
     </div>
     <div class="nav-links">
-      <a href="contact.jsp">Contact Us</a>
-      <a href="logout.jsp" class="logout">Logout</a>
+        
+        <a href="change_password.jsp" >Change Password</a>
+        <div class="quick-links">
+            <button class="dropdown-button">Quick Links</button>
+            <div class="dropdown">
+                <a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">Home</a>
+                <a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">Programs</a>
+                <a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">Campus</a>
+                <a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">About Us</a>
+                <a href="http://www.banasthali.org/banasthali/wcms/en/home/lower-menu/contact_us/index.html" target="_blank">Contact Us</a>
+            </div>
+        </div>
+        <a href="logout.jsp" class="logout">Logout</a>
     </div>
-  </div>
+</div>
 
   <!-- Main Content -->
   <div class="content">
@@ -353,7 +432,7 @@
 
     <!-- Footer -->
     <div class="footer">
-        <p>&copy; 2025 Leave Management System - Banasthali Vidyapeeth</p>
+        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
 </html>

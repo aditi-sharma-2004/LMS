@@ -46,12 +46,13 @@
             align-items: center;
             background-color: #333;
             color: white;
-            padding: 5px 20px;
-            position: fixed;
+            padding: 3px 8px;
+            position: absolute;
+            left: 0;
             top: 0;
-            width: 98%;
+            width: 99%;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
         }
 
         .navbar .logo {
@@ -63,10 +64,11 @@
             width: 150px;
             height: auto;
             margin-right: 10px;
+            margin-left: 0px;
         }
 
         .navbar .logo h1 {
-            font-size: 20px;
+            font-size: 30px;
             margin: 0;
             font-weight: 500;
         }
@@ -112,17 +114,18 @@
         .navbar ul li:hover::after{
             width: 100%;
         }
-        .logout:hover {
-            background-color: #d32f2f;
-        }
-        .hidden {
-            display: none;
-        }
-
-        .logo img {
-            display: block;
-            margin: 0 auto 20px;
-            width: 120px;
+        .footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #333;
+            color: white;
+            font-size: 14px;
+            position: fixed; 
+            bottom: 0;  
+            left: 0; 
+            right: 0;    /* Aligns to the bottom of the screen */
+            width: 100%;     /* Spans the full width of the screen */
+            z-index: 1000;   /* Ensures it stays on top of other elements */
         }
     </style>
 </head>
@@ -142,9 +145,6 @@
         </div>
     </div>
     <div class="container">
-        <div class="logo">
-            <img src="logoo.png" alt="Banasthali Vidyapeeth Logo">
-        </div>
     <div class="login-container">
         <h1>Admin Login</h1>
         <form action="alogin.jsp" method="POST">
@@ -152,6 +152,10 @@
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
         </form>
+        <p>Forgot your password? <a href="resetPassword.jsp">Reset Password</a></p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
 </html>

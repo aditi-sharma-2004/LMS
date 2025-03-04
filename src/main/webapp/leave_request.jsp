@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.sql.*" %>
+<!-- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.sql.*" %> -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,21 +9,30 @@
         font-family: 'Poppins', sans-serif;
         background: white;
         margin: 0;
+        background-image: url('back.jpg'); /* Ensure correct path */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         padding: 2px;
         display: flex;
         justify-content: center;
         align-items: center;
         height: 100vh;
+        overflow: hidden;
     }
     
     .container {
-        background: #ffffff;
-        padding: 18px;
-        border-radius: 9px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        max-width: 900px;
-        width: 90%;
-    }
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 9px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 750px; /* Reduce width from right */
+    width: 80%; /* Adjust percentage to make it smaller */
+    margin: auto; /* Keep it centered */
+    align-items: center;
+}
+
+
 
     h2 {
         text-align: center;
@@ -38,16 +47,18 @@
         margin-top: 10px;
         color: #444;
         font-size: 12px;
+        margin-left: 25px;
     }
 
     input, select, textarea {
-        width: 100%;
+        width: 90%;
         padding: 10px;
         margin-top: 3px;
         border: 1px solid #ccc;
         border-radius: 8px;
         font-size: 10px;
         background: #f9f9f9;
+        margin-left: 25px;
     }
 
     input:focus, select:focus, textarea:focus {
@@ -58,11 +69,12 @@
     }
 
     button {
-        width: 100%;
+        width: 50%;
         background: #6a5acd;
         color: white;
         border: none;
         padding: 14px;
+        margin-left: 200px;
         margin-top: 15px;
         cursor: pointer;
         border-radius: 8px;
@@ -70,6 +82,7 @@
         font-weight: 600;
         transition: 0.3s;
         box-shadow: 0 4px 10px rgba(106, 90, 205, 0.2);
+        align-self: center;
     }
 
     button:hover {

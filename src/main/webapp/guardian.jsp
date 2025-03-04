@@ -3,7 +3,7 @@
 <head>
     <title>Guardian Login</title>
     <style>
-        body {
+       body {
             font-family: Arial, sans-serif;
             background-image: url('back.jpg'); /* Ensure the correct path */
             background-size: cover;
@@ -17,13 +17,24 @@
             align-items: center;
             overflow: hidden;
         }
+        .footer {
+            text-align: center;
+            padding: 15px 0;
+            background-color: #333;
+            color: white;
+            font-size: 14px;
+            position: fixed; /* Fixed at the bottom */
+            bottom: 0;       /* Aligns to the bottom of the screen */
+            width: 100%;     /* Spans the full width of the screen */
+            z-index: 1000;   /* Ensures it stays on top of other elements */
+        }
         .login-container {
             margin: 100px auto;
             background: #fff;
             padding: 20px;
             width: 300px;
             border-radius: 8px;
-            box-shadow: 0px 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
         }
         input, button {
             width: 90%;
@@ -46,12 +57,13 @@
             align-items: center;
             background-color: #333;
             color: white;
-            padding: 10px 20px;
-            position: fixed;
+            padding: 3px 8px;
+            position: absolute;
+            left: 0;
             top: 0;
-            width: 98%;
+            width: 99%;
             z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
         }
 
         .navbar .logo {
@@ -63,10 +75,11 @@
             width: 150px;
             height: auto;
             margin-right: 10px;
+            margin-left: 0px;
         }
 
         .navbar .logo h1 {
-            font-size: 20px;
+            font-size: 30px;
             margin: 0;
             font-weight: 500;
         }
@@ -112,18 +125,6 @@
         .navbar ul li:hover::after{
             width: 100%;
         }
-        .logout:hover {
-            background-color: #d32f2f;
-        }
-        .hidden {
-            display: none;
-        }
-
-        .logo img {
-            display: block;
-            margin: 0 auto 20px;
-            width: 120px;
-        }
     </style>
 </head>
 <body>
@@ -142,9 +143,6 @@
         </div>
     </div>
     <div class="container">
-        <div class="logo">
-            <img src="logoo.png" alt="Banasthali Vidyapeeth Logo">
-        </div>
     <div class="login-container">
         <h1>Guardian Login</h1>
         <form action="GuardianLoginServlet" method="POST">
@@ -154,6 +152,9 @@
         </form>
         <p>Forgot your password? <a href="resetPassword.jsp">Reset Password</a></p>
     </div>
+    </div>
+    <div class="footer">
+        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
 </html>
