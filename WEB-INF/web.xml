@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_5_0.xsd"
+         version="5.0">
+
+    <!-- Application Name -->
+    <display-name>LMS</display-name>
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <!-- Database Connection Parameters -->
+    <context-param>
+        <param-name>db.url</param-name>
+        <param-value>jdbc:mysql://localhost:3306/lms?serverTimezone=UTC&amp;useSSL=false</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>db.user</param-name>
+        <param-value>lms</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>db.password</param-name>
+        <param-value>lms</param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>db.driver</param-name>
+        <param-value>com.mysql.cj.jdbc.Driver</param-value>
+    </context-param>
+
+    <!-- Load Database Connection on Startup -->
+    <listener>
+        <listener-class>com.example.util.DBConnectionListener</listener-class>
+    </listener>
+
+    <servlet>
+        <servlet-name>StudentRegistration</servlet-name>
+        <servlet-class>StudentRegistration</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>StudentRegistration</servlet-name>
+        <url-pattern>/StudentRegistration</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>DisplayPhoto</servlet-name>
+        <servlet-class>DisplayPhoto</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>DisplayPhoto</servlet-name>
+        <url-pattern>/DisplayPhoto</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>UploadStudentServlet</servlet-name>
+        <servlet-class>UploadStudentServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>UploadStudentServlet</servlet-name>
+        <url-pattern>/UploadStudentServlet</url-pattern>
+    </servlet-mapping>
+</web-app>
