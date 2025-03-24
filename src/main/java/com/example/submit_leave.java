@@ -1,9 +1,11 @@
 package com.example;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import jakarta.servlet.ServletException;
@@ -20,7 +22,6 @@ public class submit_leave extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String studentId = request.getParameter("student_id");
-        String guardianId = request.getParameter("guardian_id");
         String reason = request.getParameter("reason");
         String startDate = request.getParameter("start_date");
         String endDate = request.getParameter("end_date");
@@ -37,11 +38,28 @@ public class submit_leave extends HttpServlet {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms")) {
+
+                // Fetch guardian_id from the database based on student_id
+                String guardianId;
+                String fetchGuardianQuery = "SELECT guardian_id FROM guardians WHERE student_id = ?";
+                try (PreparedStatement fetchGuardianStmt = conn.prepareStatement(fetchGuardianQuery)) {
+                    fetchGuardianStmt.setString(1, studentId);
+                    ResultSet rs = fetchGuardianStmt.executeQuery();
+                    if (rs.next()) {
+                        guardianId = rs.getString("guardian_id");
+                    } else {
+                        response.getWriter().println("Error: Student ID not found.");
+                        return;
+                    }
+                }
+
+                // Insert leave request
                 String sql = "INSERT INTO leaverequests (student_id, guardian_id, reason, start_date, end_date, leave_type, " +
-                        "leaving_alone, companion_name, companion_relation, companion_address, companion_phone, leaving_address, signature) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-                
+                        "leaving_alone, companion_name, companion_relation, companion_address, companion_phone, leaving_address, signature, current_stage) " +
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    String currentStage = "Warden";
                     stmt.setString(1, studentId);
                     stmt.setString(2, guardianId);
                     stmt.setString(3, reason);
@@ -55,19 +73,6 @@ public class submit_leave extends HttpServlet {
                     stmt.setString(11, companionPhone);
                     stmt.setString(12, leavingAddress);
                     
-                    System.out.println("Student ID: " + studentId);
-                    System.out.println("Guardian ID: " + guardianId);
-                    System.out.println("Reason: " + reason);
-                    System.out.println("Start Date: " + startDate);
-                    System.out.println("End Date: " + endDate);
-                    System.out.println("Leave Type: " + leaveType);
-                    System.out.println("Leaving Alone: " + leavingAlone);
-                    System.out.println("Companion Name: " + companionName);
-                    System.out.println("Companion Relation: " + companionRelation);
-                    System.out.println("Companion Address: " + companionAddress);
-                    System.out.println("Companion Phone: " + companionPhone);
-                    System.out.println("Leaving Address: " + leavingAddress);
-                    
                     // Handling file upload
                     if (signaturePart != null && signaturePart.getSize() > 0) {
                         InputStream inputStream = signaturePart.getInputStream();
@@ -76,6 +81,9 @@ public class submit_leave extends HttpServlet {
                         stmt.setNull(13, java.sql.Types.BLOB);
                     }
                     
+                    // Set current_stage parameter
+                    stmt.setString(14, currentStage);
+
                     int rowsInserted = stmt.executeUpdate();
                     if (rowsInserted > 0) {
                         response.sendRedirect("guardianDashboard.jsp");  // Redirect to success page
@@ -85,7 +93,6 @@ public class submit_leave extends HttpServlet {
                 }
             }
         } catch (IOException | ClassNotFoundException | SQLException e) {
-            e.getMessage();
             response.getWriter().println("Error: " + e.getMessage());
         }
     }

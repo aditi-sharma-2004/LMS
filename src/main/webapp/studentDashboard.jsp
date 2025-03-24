@@ -130,14 +130,16 @@
             background-color: #f9f9f9;
         }
         .details-container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 10px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-      display: flex;
-      align-items: flex-start;
-      gap: 30px;
-    }
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: white;
+            padding: 30px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the left */
+        }
 
         .details-container h2 {
             margin-bottom: 20px;
@@ -176,15 +178,6 @@
             outline: none;
             background-color: #fff;
         }
-        /* Photo Styling */
-    .photo-container {
-      flex-shrink: 0;
-    }
-    
-    .photo-container img {
-      max-width: 200px;
-      border-radius: 10px;
-    }
 
         /* Footer */
         .footer {
@@ -198,97 +191,143 @@
     </style>
 </head>
 <body>
-  <!-- Top Navigation Bar -->
-  <div class="navbar">
-    <div class="logo">
-      <img src="Logoos.jpg" alt="Logo">
+    <!-- Top Navigation Bar -->
+    <div class="navbar">
+        <div class="logo">
+            <img src="Logoos.jpg" alt="Logo">
+        </div>
+        <div class="nav-links">
+            <a href="contact.jsp" class="contact">Contact Us</a>
+            <a href="logout.jsp" class="logout">Logout</a>
+        </div>
     </div>
-    <div class="nav-links">
-      <a href="contact.jsp">Contact Us</a>
-      <a href="logout.jsp" class="logout">Logout</a>
-    </div>
-  </div>
 
-  <!-- Main Content -->
-  <div class="content">
-    <!-- Student Details Section -->
-    <div class="details-container">
-      <%
-          // Use the implicit session object. Ensure that your login servlet sets "studentId"
-          String studentId = (String) session.getAttribute("studentId");
-          if(studentId == null) {
-              response.sendRedirect("slogin.jsp");
-              return;
-          }
-      %>
-      <!-- Photo Section -->
-      <div class="photo-container">
-          <img src="StudentPhotoServlet?studentId=<%= studentId %>" alt="Student Photo">
-      </div>
-      <!-- Details Section -->
-      <div class="details-grid">
-          <%
-              Connection con = null;
-              PreparedStatement pstmt = null;
-              ResultSet rs = null;
-              try {
-                  Class.forName("com.mysql.cj.jdbc.Driver");
-                  con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
-                  String query = "SELECT s.student_id, s.name AS student_name, s.email, s.dob, s.phone, s.address, " +
-                                 "d.name AS department_name, c.name AS course_name, h.name AS hostel_name, s.year " +
-                                 "FROM Students s " +
-                                 "LEFT JOIN Departments d ON s.department_id = d.department_id " +
-                                 "LEFT JOIN Courses c ON s.course_id = c.course_id " +
-                                 "LEFT JOIN Hostels h ON s.hostel_id = h.hostel_id " +
-                                 "WHERE s.student_id = ?";
-                  pstmt = con.prepareStatement(query);
-                  pstmt.setString(1, studentId);
-                  rs = pstmt.executeQuery();
-                  if(rs.next()){
-          %>
-          <label>Student ID:</label>
-          <input type="text" value="<%= rs.getString("student_id") %>" readonly>
-          
-          <label>Name:</label>
-          <input type="text" value="<%= rs.getString("student_name") %>" readonly>
-          
-          <label>Email:</label>
-          <input type="text" value="<%= rs.getString("email") %>" readonly>
-          
-          <label>Date of Birth:</label>
-          <input type="text" value="<%= rs.getDate("dob") %>" readonly>
-          
-          <label>Phone:</label>
-          <input type="text" value="<%= (rs.getString("phone") != null ? rs.getString("phone") : "N/A") %>" readonly>
-          
-          <label>Address:</label>
-          <input type="text" value="<%= rs.getString("address") %>" readonly>
-          
-          <label>Department:</label>
-          <input type="text" value="<%= rs.getString("department_name") %>" readonly>
-          
-          <label>Course:</label>
-          <input type="text" value="<%= rs.getString("course_name") %>" readonly>
-          
-          <label>Hostel:</label>
-          <input type="text" value="<%= (rs.getString("hostel_name") != null ? rs.getString("hostel_name") : "N/A") %>" readonly>
-          
-          <label>Year:</label>
-          <input type="text" value="<%= rs.getString("year") %>" readonly>
-          <%
-                  } else {
-                      out.println("<p style='color: red;'>No student found with the provided ID.</p>");
-                  }
-              } catch(Exception e) {
-                  out.println("<p style='color: red;'>Error fetching data: " + e.getMessage() + "</p>");
-              } finally {
-                  if(rs != null) try { rs.close(); } catch(Exception e) {}
-                  if(pstmt != null) try { pstmt.close(); } catch(Exception e) {}
-                  if(con != null) try { con.close(); } catch(Exception e) {}
-              }
-          %>
-      </div>
+    <!-- Main Content -->
+    <div class="content">
+        <!-- Add your content here -->
     </div>
+
+    <table class="table table-bordered">
+      
+        <tr>
+            <div class="details-container">
+                <h2>Student Details</h2>
+                <% 
+                    String smartCardId = (String) session.getAttribute("smart_card_id");
+                    try {
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/myproject", "sqluser", "password");
+                        Statement stmt = con.createStatement();
+                        String query = "SELECT s.*, d.department_name, c.course_name, h.hostel_name " +
+                                       "FROM Student s " +
+                                       "LEFT JOIN Departments d ON s.department_id = d.department_id " +
+                                       "LEFT JOIN Courses c ON s.course_id = c.course_id " +
+                                       "LEFT JOIN Hostels h ON s.hostel_id = h.hostel_id " +
+                                       "WHERE s.smart_card_id = '" + smartCardId + "'";
+                        ResultSet rs = stmt.executeQuery(query);
+                        if (rs.next()) {
+                %>
+                <div class="details-grid">
+                    <label>Student ID:</label>
+                    <input type="text" value="<%= rs.getString("smart_card_id") %>" readonly>
+        
+                    <label>Name:</label>
+                    <input type="text" value="<%= rs.getString("name") %>" readonly>
+        
+                    <label>Email:</label>
+                    <input type="text" value="<%= rs.getString("email") %>" readonly>
+        
+                    <label>Date of Birth:</label>
+                    <input type="text" value="<%= rs.getDate("dob") %>" readonly>
+        
+                    <label>Phone:</label>
+                    <input type="text" value="<%= rs.getString("phone") %>" readonly>
+        
+                    <label>Address:</label>
+                    <input type="text" value="<%= rs.getString("address") %>" readonly>
+        
+                    <label>Department:</label>
+                    <input type="text" value="<%= rs.getString("department_name") %>" readonly>
+        
+                    <label>Course:</label>
+                    <input type="text" value="<%= rs.getString("course_name") %>" readonly>
+        
+                    <label>Hostel:</label>
+                    <input type="text" value="<%= rs.getString("hostel_name") != null ? rs.getString("hostel_name") : "N/A" %>" readonly>
+        
+                    <label>Year:</label>
+                    <input type="text" value="<%= rs.getString("year") %>" readonly>
+                </div>
+                <% 
+                        } else {
+                            out.println("<p style='color: red;'>No student found with the provided Smart Card ID.</p>");
+                        }
+                        con.close();
+                    } catch (Exception e) {
+                        out.println("<p style='color: red;'>Error fetching data: " + e.getMessage() + "</p>");
+                    }
+                %>
+            </div>
+        </tr>
+    </table>
+   <!-- <table>
+            <thead>
+                <tr>
+                    <th>Student ID</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Date of Birth</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                    <th>Smart Card ID</th>
+                    <th>Department</th>
+                    <th>Course</th>
+                    <th>Hostel</th>
+                    <th>Year</th>
+                </tr>
+            </thead>
+            <tbody>
+                <%
+                    try {
+                        // Database connection
+                        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/myproject", "sqluser", "password");
+                        Statement stmt = con.createStatement();
+                        String query = "SELECT s.*, d.department_name, c.course_name, h.hostel_name " +
+                                       "FROM Student s " +
+                                       "LEFT JOIN Departments d ON s.department_id = d.department_id " +
+                                       "LEFT JOIN Courses c ON s.course_id = c.course_id " +
+                                       "LEFT JOIN Hostels h ON s.hostel_id = h.hostel_id";
+
+                        ResultSet rs = stmt.executeQuery(query);
+
+                        // Loop through results
+                        while (rs.next()) {
+                %>
+                <tr>
+                    <td><%= rs.getInt("student_id") %></td>
+                    <td><%= rs.getString("name") %></td>
+                    <td><%= rs.getString("email") %></td>
+                    <td><%= rs.getDate("dob") %></td>
+                    <td><%= rs.getString("phone") %></td>
+                    <td><%= rs.getString("address") %></td>
+                    <td><%= rs.getString("smart_card_id") %></td>
+                    <td><%= rs.getString("department_name") %></td>
+                    <td><%= rs.getString("course_name") %></td>
+                    <td><%= rs.getString("hostel_name") != null ? rs.getString("hostel_name") : "N/A" %></td>
+                    <td><%= rs.getString("year") %></td>
+                    <td><%= rs.getTimestamp("created_at") %></td>
+                    <td><%= rs.getTimestamp("updated_at") %></td>
+                </tr>
+                <%
+                        }
+                        con.close();
+                    } catch (Exception e) {
+                        out.println("<tr><td colspan='13'>Error fetching data: " + e.getMessage() + "</td></tr>");
+                    }
+                %>
+            </tbody>
+        </table> -->
+
+
         <!-- Current Applications Section -->
         <div class="section">
             <h2>Track Current Application</h2>
@@ -355,5 +394,6 @@
     <div class="footer">
         <p>&copy; 2025 Leave Management System - Banasthali Vidyapeeth</p>
     </div>
+
 </body>
 </html>

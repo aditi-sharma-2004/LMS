@@ -6,6 +6,7 @@
     int leaveId = Integer.parseInt(request.getParameter("leave_id"));
     Connection con = null;
     PreparedStatement ps = null;
+    PreparedStatement ps2 = null; // New PreparedStatement for updating current_stage
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -16,6 +17,11 @@
         int rowsUpdated = ps.executeUpdate();
 
         if (rowsUpdated > 0) {
+            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'VO' WHERE leave_id = ?";
+            ps2 = con.prepareStatement(updateStageQuery);
+            ps2.setInt(1, leaveId);
+            ps2.executeUpdate();
+            
             %>
                 <script>
                     alert("Leave Accepted Successfully!");
@@ -30,6 +36,7 @@
         out.println("Error: " + e.getMessage());
     } finally {
         if (ps != null) ps.close();
+        if (ps2 != null) ps2.close(); // Close second PreparedStatement
         if (con != null) con.close();
     }
 %>

@@ -12,72 +12,141 @@
             padding: 0;
             background-color: #f9f9f9;
             box-sizing: border-box;
+            overflow: hidden;
         }
         
         .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-            height: 80px;
-        }
-        
-        .navbar .logo img {
-            width: 180px;
-            height: auto;
-            margin-right: 20px;
-        }
-    
-        .navbar .logo h1 {
-            font-size: 20px;
-            margin: 0;
-            font-weight: 500;
-        }
-    
-        .navbar .nav-links {
-            display: flex;
-            gap: 15px; /* Adjusted spacing for better layout */
-            align-items: center;
-            flex-shrink: 0; /* Prevents shrinking of links */
-        }
-    
-        .navbar .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-    
-        .navbar .nav-links a:hover {
-            color: #4CAF50;
-        }
-    
-        .logout {
-            color: white;
-            background-color: #f44336;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-    
-        .logout:hover {
-            background-color: #d32f2f;
-        }
-    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 3px 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 99%;
+    z-index: 1000;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+.navbar .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #4CAF50;
+}
+.contact{
+    margin-top: 10px;
+}
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+}
+.navbar ul li::after{
+    content: '';
+   height: 3px;
+   width: 0;
+   background: #6386a6;
+   position: absolute;
+   left: 0;
+   bottom: -10px; 
+   transition: 0.5s;
+}
+.navbar ul li:hover::after{
+    width: 100%;
+}
+.navbar .nav-button {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.navbar .nav-button:hover {
+    background-color: #45a049;
+}
+.quick-links {
+    position: relative;
+}
+
+.quick-links .dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quick-links .dropdown a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.quick-links:hover .dropdown {
+   display: block;
+}
+
+.logout {
+    color: white;
+    background-color: #f44336;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: #d32f2f;
+}
         /* Main Content */
         .content {
             margin-top: 60px; /* This ensures content starts below the navbar */
             padding: 20px;
-            max-width: 1200px;
+            max-width: 800px;
             margin-left: auto;
             margin-right: auto;
             box-sizing: border-box;
@@ -183,7 +252,18 @@
             <img src="Logoos.jpg" alt="Logo">
         </div>
         <div class="nav-links">
-            <a href="contact.jsp">Contact Us</a>
+            
+            <a href="change_password.jsp" >Change Password</a>
+            <div class="quick-links">
+                <button class="dropdown-button">Quick Links</button>
+                <div class="dropdown">
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">Home</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">Programs</a>
+                    <a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">Campus</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">About Us</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/lower-menu/contact_us/index.html" target="_blank">Contact Us</a>
+                </div>
+            </div>
             <a href="logout.jsp" class="logout">Logout</a>
         </div>
     </div>
@@ -208,7 +288,7 @@
                     ResultSet rs = null;
                     try {
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "sqluser", "password");
+                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
 
                         // Query to fetch VO details along with department name
                         String query = "SELECT v.vo_id, v.name, v.email, v.phone, v.department_id, d.name AS department_name " +
@@ -250,8 +330,8 @@
         </div>
     </div>
     <div class="options">
-        <a href="pendingLeavesVo.jsp" class="button">Approve Leave Requests</a>
-        <a href="viewLeavesVo.jsp" class="button">View Approved Applications</a>
+        <a href="viewApprovedLeaves.jsp" class="button">View Approved Applications</a>
+        <a href="pendingLeavesVo.jsp" class="button">View Pending Applications</a>
     </div>
 
     <div class="footer">

@@ -1,6 +1,7 @@
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\StudentLoginServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\VOLoginServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UpdateWardenServlet.java
+C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\VOChangePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\VOPhotoServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\WardenLoginServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\StudentPhotoServlet.java
@@ -13,9 +14,11 @@ C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\HODRegistr
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UploadHODServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UploadAdminServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UploadStudentServlet.java
+C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\TrackLeaveServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\GuardianRegistrationServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UpdatePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\HODLoginServlet.java
+C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\WardenChangePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\DisplayImageServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UpdateStudentServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\GuardianPhotoServlet.java
@@ -23,8 +26,11 @@ C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\HODPhotoSe
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\DisplayPhoto.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\ResetPasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UploadWardenServlet.java
+C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\GuardianChangePasswordServlet.java
+C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\HODChangePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\DBConnection.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UploadVoServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\AdminLoginServlet.java
+C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\StudentChangePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\GuardianLoginServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\VORegistrationServlet.java
