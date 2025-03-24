@@ -541,11 +541,11 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             <i class="fas fa-user-plus"></i> Add <i id="addArrow" class="fas fa-chevron-right arrow"></i>
         </a>
         <div id="addDropdown" class="dropdown">
-            <a href="#" onclick>Student</a>
-            <a href="#" onclick>Warden</a>
-            <a href="#" onclick>HOD</a>
-            <a href="#" onclick>Verification Officer</a>
-            <a href="#" onclick>Admin</a>
+            <a href="addstudent.jsp" onclick>Student</a>
+            <a href="addwarden.jsp" onclick>Warden</a>
+            <a href="addhod.jsp" onclick>HOD</a>
+            <a href="addvo.jsp" onclick>Verification Officer</a>
+            <a href="addadmin.jsp" onclick>Admin</a>
         </div>
 
         <!-- Remove Section -->

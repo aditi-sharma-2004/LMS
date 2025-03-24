@@ -7,7 +7,8 @@
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
 
-            String sql = "UPDATE LeaveRequests SET status = 'Accepted' WHERE leave_id = ?";
+            // Update to use specific status field and current_stage like other files
+            String sql = "UPDATE leaverequests SET warden_status = 'Accepted', current_stage = 'Warden' WHERE leave_id = ?";
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setInt(1, Integer.parseInt(leaveId));
 

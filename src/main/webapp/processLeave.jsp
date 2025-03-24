@@ -84,7 +84,7 @@
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     String jdbcURL = "jdbc:mysql://localhost:3306/lms";
                     String dbUser = "lms";
-                    String dbPassword = ""lms";
+                    String dbPassword = "lms"; // Fixed extra quotation mark
                     Connection connection = DriverManager.getConnection(jdbcURL, dbUser, dbPassword);
 
                     // Query to fetch student and guardian details

@@ -303,7 +303,7 @@
                 // Use the implicit session object. Ensure that your login servlet sets "studentId"
                 String guardianId = (String) session.getAttribute("guardianId");
                 if(guardianId == null) {
-                    response.sendRedirect("glogin.jsp");
+                    response.sendRedirect("guardian.jsp");
                     return;
                 }
             %>
@@ -355,11 +355,12 @@
             </div>
           </div>
         </div>
-    <!-- Options Section -->
-    <div class="options">
-        <a href="leave_request.jsp" class="button">Create Application</a>
-        <a href="track.jsp" class="button">Track Applications</a>
-    </div>
+
+        <div class="options">
+            <a href="leave_request.jsp" class="button">Create Application</a>
+            <a href="gLeaveTracking.jsp?guardianId=<%= session.getAttribute("guardianId") %>">Track Application</a>
+
+        </div>
 </div>
 
 <!-- Footer -->
