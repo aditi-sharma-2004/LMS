@@ -18,7 +18,10 @@ C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\TrackLeave
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\GuardianRegistrationServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UpdatePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\HODLoginServlet.java
+<<<<<<< HEAD
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\AdminPhotoServlet.java
+=======
+>>>>>>> 4e6767abb017a58d23f9125b8f3ce077a8dba87a
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\WardenChangePasswordServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\DisplayImageServlet.java
 C:\Users\Dell\OneDrive\Desktop\LMS_project_\src\main\java\com\example\UpdateStudentServlet.java

@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 <!-- <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %> -->
+=======
+<%@ page import="java.sql.*" %>
+
+>>>>>>> 4e6767abb017a58d23f9125b8f3ce077a8dba87a
 <!DOCTYPE html>
 <html>
 <head>
@@ -176,7 +181,7 @@
             <label>Signature Upload:</label>
             <input type="file" name="signature" accept="image/*" required>
             
-            <button type="submit">Submit Leave Request</button>
+            <button type="submit" class="btn">Submit Application</button>
         </form>
     </div>
 </body>

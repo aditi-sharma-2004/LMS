@@ -1,3 +1,4 @@
+
 <%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -333,6 +334,10 @@
     </div>
 
     <div class="options">
+<<<<<<< HEAD
+=======
+        <a href="viewApprovedLeaves.jsp" class="button">View Approved Applications</a>
+>>>>>>> 4e6767abb017a58d23f9125b8f3ce077a8dba87a
         <a href="pendingLeavesWarden.jsp" class="button">View Pending Applications</a>
         <a href="viewLeavesWarden.jsp" class="button">View Approved Applications</a>
         

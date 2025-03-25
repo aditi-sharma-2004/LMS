@@ -330,8 +330,13 @@
         </div>
     </div>
     <div class="options">
+<<<<<<< HEAD
         <a href="pendingLeavesVo.jsp" class="button">View Pending Applications</a>
         <a href="viewLeavesVo.jsp" class="button">View Approved Applications</a>
+=======
+        <a href="viewApprovedLeaves.jsp" class="button">View Approved Applications</a>
+        <a href="pendingLeavesVo.jsp" class="button">View Pending Applications</a>
+>>>>>>> 4e6767abb017a58d23f9125b8f3ce077a8dba87a
     </div>
 
     <div class="footer">

@@ -13,6 +13,7 @@
             background-color: #f9f9f9;
             box-sizing: border-box;
             overflow: hidden;
+            overflow: hidden;
         }
         
         .navbar {

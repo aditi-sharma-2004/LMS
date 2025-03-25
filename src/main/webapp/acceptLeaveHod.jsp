@@ -6,6 +6,7 @@
     int leaveId = Integer.parseInt(request.getParameter("leave_id"));
     Connection con = null;
     PreparedStatement ps = null;
+    PreparedStatement ps2 = null;
 
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
@@ -17,6 +18,10 @@
         int rowsUpdated = ps.executeUpdate();
 
         if (rowsUpdated > 0) {
+            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'GPO' WHERE leave_id = ?";
+            ps2 = con.prepareStatement(updateStageQuery);
+            ps2.setInt(1, leaveId);
+            ps2.executeUpdate();
 %>
             <script>
                 alert("Leave Accepted Successfully!");
@@ -29,6 +34,7 @@
     } catch (Exception e) {
         out.println("<script>alert('Error: " + e.getMessage() + "'); window.location.href='pendingLeavesHod.jsp';</script>");
     } finally {
+        if (ps2 != null) ps2.close();
         if (ps != null) ps.close();
         if (con != null) con.close();
     }
