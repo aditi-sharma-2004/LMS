@@ -567,20 +567,20 @@ if (guardianId == null) {
                 String gpoStatus = rs.getString("gpo_status");
                 
                 String statusClass = "status-pending";
-                if ("Approved".equals(verificationStatus)) {
+                if ("Accepted".equals(finalStatus)) {
                     statusClass = "status-approved";
-                } else if ("Rejected".equals(verificationStatus)) {
+                } else if ("Rejected".equals(finalStatus)) {
                     statusClass = "status-rejected";
                 }
                 
                 // Determine which stage we're at
-                boolean isRejected = "Rejected".equals(verificationStatus);
-                boolean isApproved = "Approved".equals(verificationStatus);
+                boolean isRejected = "Rejected".equals(finalStatus);
+                boolean isApproved = "Accepted".equals(finalStatus);
                 
-                boolean wardenCompleted = "Approved".equals(wardenStatus);
+                boolean wardenCompleted = "Accepted".equals(wardenStatus);
                 boolean voCompleted = currentStage.equals("HOD") || currentStage.equals("GPO") || currentStage.equals("Complete");
-                boolean hodCompleted = "Approved".equals(hodStatus);
-                boolean finalCompleted = "Approved".equals(finalStatus) || "Approved".equals(gpoStatus);
+                boolean hodCompleted = "Accepted".equals(hodStatus);
+                boolean finalCompleted = "Accepted".equals(finalStatus) || "Accepted".equals(gpoStatus);
                 
                 int progressWidth = 0;
                 
@@ -591,7 +591,7 @@ if (guardianId == null) {
                         break;
                     case "VO":
                         wardenCompleted = true;
-                        progressWidth = 33;
+                        progressWidth = 40;
                         break;
                     case "HOD":
                         wardenCompleted = true;
@@ -599,6 +599,11 @@ if (guardianId == null) {
                         progressWidth = 66;
                         break;
                     case "GPO":
+                    wardenCompleted = true;
+                    voCompleted = true;
+                    hodCompleted = true;
+                    progressWidth = 88;
+                        break;
                     case "Complete":
                         wardenCompleted = true;
                         voCompleted = true;
@@ -623,7 +628,7 @@ if (guardianId == null) {
                 }
                 
                 // Check if HOD has approved but final approval is pending
-                boolean hodApprovedPendingFinal = "Approved".equals(hodStatus) && !finalCompleted && !isRejected;
+                boolean hodApprovedPendingFinal = "Accepted".equals(hodStatus) && !finalCompleted && !isRejected;
             %>
             
             <div class="leave-card">
@@ -684,7 +689,7 @@ if (guardianId == null) {
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">Warden</div>
                                 <div class="timeline-status">
-                                    <%= "Rejected".equals(wardenStatus) ? "Rejected" : (wardenCompleted ? "Approved" : (!wardenCompleted && currentStage.equals("Warden") ? "In Progress" : "Pending")) %>
+                                    <%= "Rejected".equals(wardenStatus) ? "Rejected" : (wardenCompleted ? "Accepted" : (!wardenCompleted && currentStage.equals("Warden") ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
                             
@@ -692,7 +697,7 @@ if (guardianId == null) {
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">Verification</div>
                                 <div class="timeline-status">
-                                    <%= isRejected && currentStage.equals("VO") ? "Rejected" : (voCompleted ? "Approved" : (!voCompleted && currentStage.equals("VO") ? "In Progress" : "Pending")) %>
+                                    <%= isRejected && currentStage.equals("VO") ? "Rejected" : (voCompleted ? "Accepted" : (!voCompleted && currentStage.equals("VO") ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
                             
@@ -700,7 +705,7 @@ if (guardianId == null) {
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">HOD</div>
                                 <div class="timeline-status">
-                                    <%= "Rejected".equals(hodStatus) ? "Rejected" : (hodCompleted ? "Approved" : (!hodCompleted && currentStage.equals("HOD") ? "In Progress" : "Pending")) %>
+                                    <%= "Rejected".equals(hodStatus) ? "Rejected" : (hodCompleted ? "Accepted" : (!hodCompleted && currentStage.equals("HOD") ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
                             
@@ -708,7 +713,7 @@ if (guardianId == null) {
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">Final</div>
                                 <div class="timeline-status">
-                                    <%= ("Rejected".equals(gpoStatus) || "Rejected".equals(finalStatus)) ? "Rejected" : (finalCompleted ? "Approved" : (!finalCompleted && (currentStage.equals("GPO") || currentStage.equals("Complete")) ? "In Progress" : "Pending")) %>
+                                    <%= ("Rejected".equals(gpoStatus) || "Rejected".equals(finalStatus)) ? "Rejected" : (finalCompleted ? "Accepted" : (!finalCompleted && (currentStage.equals("GPO") || currentStage.equals("Complete")) ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
                         </div>

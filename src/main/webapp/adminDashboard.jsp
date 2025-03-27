@@ -1,4 +1,3 @@
-<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -374,81 +373,7 @@ iframe {
         height: 100%;
         border: none;
     }
-    .content {
-    margin-top: 100px; /* This ensures content starts below the navbar */
-    padding: 20px;
-    max-width: 1000px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-}
 
-.content h2 {
-    margin-bottom: 20px;
-}
-
-.details-container {
-    background-color: rgba(255, 255, 255, 0.7); /* Transparent effect */
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-    display: flex;
-    align-items: flex-start;
-    gap: 30px;
-    position: relative;
-    left: 10%; /* Shift towards right */
-    right: 50%; /* Shift towards left */
-    transform: translate(10%, 150px); /* Fine-tune centering */
-    width: 120%; /* Increase width */
-}
-
-.details-container h2 {
-    margin-bottom: 20px;
-    color: #333;
-    font-size: 24px;
-    width: 80%; /* Match container width */
-    text-align: left;
-}
-
-.details-grid {
-    display: grid;
-    grid-template-columns: 1fr 2fr; /* Two columns: labels and textboxes */
-    gap: 5px 5px;
-    width: 50%; /* Match container width */
-}
-
-.details-grid label {
-    font-size: 14px;
-    color: #555;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-}
-
-.details-grid input {
-    padding: 5px 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-    width: 100%; /* Stretch to column width */
-}
-
-.details-grid input:focus {
-    border-color: #4CAF50;
-    outline: none;
-    background-color: #fff;
-}
-
-.photo-container {
-    flex-shrink: 0;
-}
-
-.photo-container img {
-    max-width: 200px;
-    border-radius: 10px;
-}
- 
 </style>
 
 <script>
@@ -506,17 +431,26 @@ iframe {
             window.location.href = "update_student.jsp?student_id=" + studentId;
         }
 
-        function openWardenPopup() {
-        document.getElementById("wardenPopup").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
+        // ✅ Open Warden Popup
+function openWardenPopup() {
+    console.log("Opening Warden popup...");
+    let popup = document.getElementById("wardenPopup");
+    if (!popup) {
+        console.error("Warden popup not found!");
+        return;
     }
+    popup.style.display = "block";
+    document.getElementById("overlay").style.display = "block";
+}
 
-    function closeWardenPopup() {
-        document.getElementById("wardenPopup").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
-    }
+// ✅ Close Warden Popup
+function closeWardenPopup() {
+    document.getElementById("wardenPopup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
+}
 
-    function validateEmail() {
+// ✅ Validate Warden Email
+function validateWardenEmail() {
     var emailInput = document.getElementById("wardenEmail");
 
     if (!emailInput) {
@@ -525,7 +459,7 @@ iframe {
     }
 
     var email = emailInput.value.trim();
-    console.log("Entered email:", email); // Debugging
+    console.log("Entered email:", email);
 
     if (email === "") {
         alert("Email field cannot be empty!");
@@ -542,24 +476,25 @@ iframe {
         alert("Please enter a valid email address.");
     }
 }
-
-    // Open HOD Popup
-    function openHodPopup() {
+//hod
+// Open HOD Popup
+function openHodPopup() {
             console.log("Opening HOD popup...");
             let popup = document.getElementById("hodPopup");
-
+            document.getElementById("hodPopup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
             if (!popup) {
                 console.error("HOD popup not found!");
                 return;
             }
 
             popup.style.display = "block";
-        }
+}
 
         // Close HOD Popup
         function closeHodPopup() {
-            console.log("Closing HOD popup...");
             document.getElementById("hodPopup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
         }
 
         // Validate Email
@@ -589,7 +524,7 @@ iframe {
                 alert("Please enter a valid email address.");
             }
         }
-
+//vo
         function openvoPopup() {
         document.getElementById("voPopup").style.display = "block";
         document.getElementById("overlay").style.display = "block";
@@ -623,8 +558,10 @@ iframe {
             alert("Please enter a valid email address.");
         }
     }
+    
+//Admin
 
-    function openAdminPopup() {
+function openAdminPopup() {
         document.getElementById("adminPopup").style.display = "block";
         document.getElementById("overlay").style.display = "block";
     }
@@ -641,7 +578,7 @@ iframe {
             return;
         }
         var email = emailInput.value.trim();
-        console.log("Entered email:", email); // Debugging
+        console.log("Entered email:", email);
 
         if (email === "") {
             alert("Email field cannot be empty!");
@@ -658,21 +595,24 @@ iframe {
         }
     }
 
-    // ✅ Open the Student Modal
-    function openstudentRemovePopup() {
+//REMOVE
+   // ✅ Open Student Modal
+function openStudentRemovePopup() {
     document.getElementById("studentremovePopup").style.display = "block";
-    document.getElementById("message").innerHTML = ""; // Clear old messages
+    document.getElementById("student-message").innerHTML = ""; // Clear old messages
 }
 
-function closePopup() {
+// ✅ Close Student Modal
+function closeStudentPopup() {
     document.getElementById("studentremovePopup").style.display = "none";
 }
 
+// ✅ Remove Student
 function removeStudent() {
-    var studentId = document.getElementById("studentId").value; // Get entered Student ID
+    var studentId = document.getElementById("studentId").value.trim();
 
-    if (!studentId.trim()) {
-        document.getElementById("message").innerHTML = "<span style='color: red;'>Please enter Student ID!</span>";
+    if (!studentId) {
+        document.getElementById("student-message").innerHTML = "<span style='color: red;'>Please enter Student ID!</span>";
         return;
     }
 
@@ -683,44 +623,37 @@ function removeStudent() {
     xhr.onload = function () {
         var response = this.responseText.trim();
         if (response.startsWith("success:")) {
-            document.getElementById("message").innerHTML = "<span style='color: green;'>" + response.substring(8) + "</span>";
-            setTimeout(closePopup, 3000); // ✅ Close popup after success
+            document.getElementById("student-message").innerHTML = "<span style='color: green;'>" + response.substring(8) + "</span>";
+            setTimeout(closeStudentPopup, 3000); // ✅ Close popup after success
         } else {
-            document.getElementById("message").innerHTML = "<span style='color: red;'>" + response.substring(6) + "</span>";
+            document.getElementById("student-message").innerHTML = "<span style='color: red;'>" + response.substring(6) + "</span>";
         }
     };
 
-    xhr.send("student_id=" + encodeURIComponent(studentId)); // ✅ Send the entered Student ID
+    xhr.onerror = function () {
+        document.getElementById("student-message").innerHTML = "<span style='color: red;'>Error: Failed to send request!</span>";
+    };
+
+    xhr.send("student_id=" + encodeURIComponent(studentId));
 }
-;
 
-document.addEventListener("DOMContentLoaded", function () {
-    // ✅ Attach click event to the Remove button
-    document.querySelector(".remove-btn").addEventListener("click", removewarden);
-
-    // ✅ Attach click event to the close button
-    document.querySelector(".close").addEventListener("click", closePopup);
-});
-
-// ✅ Function to Open the Popup
-function openwardenRemovePopup() {
+// ✅ Open Warden Modal
+function openWardenRemovePopup() {
     document.getElementById("wardenremovePopup").style.display = "block";
-    document.getElementById("message").innerHTML = ""; // Clear messages
+    document.getElementById("warden-message").innerHTML = ""; // Clear old messages
 }
 
-// ✅ Function to Close the Popup
-function closePopup() {
+// ✅ Close Warden Modal
+function closeWardenPopup() {
     document.getElementById("wardenremovePopup").style.display = "none";
 }
 
-// ✅ Function to Remove Warden
-function removewarden() {
-    console.log("Remove button clicked"); // Debugging log
-
+// ✅ Remove Warden
+function removeWarden() {
     var wardenMail = document.getElementById("wardenMail").value.trim();
-    
+
     if (!wardenMail) {
-        document.getElementById("message").innerHTML = "<span style='color: red;'>❌ Please enter mail!</span>";
+        document.getElementById("warden-message").innerHTML = "<span style='color: red;'>❌ Please enter Warden Email!</span>";
         return;
     }
 
@@ -729,27 +662,28 @@ function removewarden() {
     xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
     xhr.onload = function () {
-        console.log("Response received:", this.responseText); // Debugging log
         var response = this.responseText.trim();
-        
         if (response.startsWith("success:")) {
-            document.getElementById("message").innerHTML = "<span style='color: green;'>✔ " + response.substring(8) + "</span>";
-            console.log("Success message displayed."); // Debugging log
-            setTimeout(closePopup, 3000); // ✅ Close popup after success
+            document.getElementById("warden-message").innerHTML = "<span style='color: green;'>✔ " + response.substring(8) + "</span>";
+            setTimeout(closeWardenPopup, 3000); // ✅ Close popup after success
         } else {
-            document.getElementById("message").innerHTML = "<span style='color: red;'>❌ " + response.substring(6) + "</span>";
-            console.log("Error message displayed."); // Debugging log
+            document.getElementById("warden-message").innerHTML = "<span style='color: red;'>❌ " + response.substring(6) + "</span>";
         }
     };
 
     xhr.onerror = function () {
-        document.getElementById("message").innerHTML = "<span style='color: red;'>⚠ Error: Failed to send request!</span>";
-        console.log("Request error occurred."); // Debugging log
+        document.getElementById("warden-message").innerHTML = "<span style='color: red;'>⚠ Error: Failed to send request!</span>";
     };
 
-    console.log("Sending request with wardenMail:", wardenMail); // ✅ Debugging log
     xhr.send("wardenMail=" + encodeURIComponent(wardenMail));
 }
+
+// ✅ Setup Event Listeners (Safely after DOM loads)
+document.addEventListener("DOMContentLoaded", function () {
+    // Attach event specifically to Warden Modal buttons
+    document.querySelector("#wardenremovePopup .remove-btn").addEventListener("click", removewarden);
+    document.querySelector("#wardenremovePopup .close-btn").addEventListener("click", closePopup);
+});
 
 //hod
 document.addEventListener("DOMContentLoaded", function () {
@@ -851,7 +785,7 @@ function removeVO() {
 //admin
 document.addEventListener("DOMContentLoaded", function () {
     document.querySelector(".remove-admin-btn").addEventListener("click", removeAdmin);
-    document.querySelector(".close-admin-btn").addEventListener("click", closeAdminPopup);
+    document.querySelector(".close-btn").addEventListener("click", closeAdminPopup);
 });
 
 function openAdminRemovePopup() {
@@ -935,6 +869,29 @@ function toggleDropdown(id, arrowId) {
     document.getElementById("popupModal").style.display = "flex";
 }
 
+window.onload = function() {
+    function openStudent_Popup() {
+        document.getElementById("student_Popup").style.display = "block";
+    }
+
+    function closePopup() {
+        document.getElementById("student_Popup").style.display = "none";
+    }
+
+    function submitSmartcardID() {
+        var smartcardID = document.getElementById("smartcardID").value;
+        if (smartcardID.trim() !== "") {
+            window.location.href = "updateleave.jsp?smartcardID=" + encodeURIComponent(smartcardID);
+        } else {
+            alert("Please enter a valid Smartcard ID.");
+        }
+    }
+
+    // Attach functions to global scope so they can be called from buttons
+    window.openStudent_Popup = openStudent_Popup;
+    window.closePopup = closePopup;
+    window.submitSmartcardID = submitSmartcardID;
+};
 </script>
 </head>
 <body>
@@ -1017,54 +974,47 @@ border-radius: 10px; text-align: center; width: 300px;">
     <button onclick="closevoPopup()" style="background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
 </div>
 
-<!-- Popup Modal warden -->
+<!-- Overlay -->
+<div id="overlay" onclick="closeAdminPopup()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
+
+<!-- Admin Popup -->
 <div id="adminPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
 border-radius: 10px; text-align: center; width: 300px;">
-
-<h2 style="margin-bottom: 10px;">Enter Admin Email</h2>
-<input type="email" id="adminEmail" placeholder="" required 
-    style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
-
-<div>
-    <button onclick="validateEmail()" style="background-color: green; color: white; border: none; 
-        padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
-        Submit
-    </button>
-    
-    <button onclick="closeAdminPopup()" style="background-color: red; color: white; border: none; 
-        padding: 10px 15px; border-radius: 5px; cursor: pointer;">
-        Cancel
-    </button>
+    <h2 style="margin-bottom: 10px;">Enter Admin Email</h2>
+    <input type="email" id="adminEmail" placeholder="" required 
+        style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
+    <button onclick="validateAdminEmail()" style="background: green; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+    <button onclick="closeAdminPopup()" style="background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
 </div>
-</div>
+
+
 
 <!-- ✅ Student Removal Modal -->
-<div id="studentremovePopup" class="popup">
+<div id="studentremovePopup" class="popup" style="display: none;">
     <div class="popup-content">
-        <span class="close-btn" onclick="closePopup()">&times;</span> 
+        <span class="close-btn" onclick="closeStudentPopup()">&times;</span> 
         <h2>Remove Student</h2>
         <form id="removeStudentForm">
             <label>Enter Student ID:</label>
             <input type="text" id="studentId" name="student_id" required>
             <button type="button" onclick="removeStudent()" class="remove-btn">Remove</button>
-
         </form>
-        <p id="message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="student-message"></p> <!-- ✅ Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ Warden Removal Modal (Initially Hidden) -->
+<!-- ✅ Warden Removal Modal -->
 <div id="wardenremovePopup" class="popup" style="display: none;">
     <div class="popup-content">
-        <span class="close-btn">&times;</span> <!-- Close Button -->
+        <span class="close-btn" onclick="closeWardenPopup()">&times;</span> <!-- Close Button -->
         <h2>Remove Warden</h2>
         <form id="removewardenForm">
-            <label>Enter Mail:</label>
+            <label>Enter Warden Email:</label>
             <input type="text" id="wardenMail" name="wardenMail" required>
-            <button type="button" id="removeWardenBtn" class="remove-btn">Remove</button> <!-- ID added -->
+            <button type="button" onclick="removeWarden()" class="remove-btn">Remove</button>
         </form>
-        <p id="message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="warden-message"></p> <!-- ✅ Success/Error message appears here -->
     </div>
 </div>
 
@@ -1123,6 +1073,26 @@ border-radius: 10px; text-align: center; width: 300px;">
     </div>
 </div>
 
+<div id="student_Popup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%);
+background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000;
+border-radius: 10px; text-align: center; width: 300px;">
+
+    <h2 style="margin-bottom: 10px;">Enter Smartcard ID</h2>
+    <input type="email" id="smartcardID" placeholder="" required 
+        style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
+
+    <div>
+        <button onclick="submitSmartcardID()" style="background-color: green; color: white; border: none; 
+            padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
+            Submit
+        </button>
+        
+        <button onclick="closePopup()" style="background-color: red; color: white; border: none; 
+            padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+            Cancel
+        </button>    
+    </div>
+</div>
 
 <!-- Overlay Background -->
 <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
@@ -1206,11 +1176,11 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
                 <i class="fas fa-user-plus"></i> Add <i id="addArrow" class="fas fa-chevron-right arrow"></i>
             </a>
             <div id="addDropdown" class="dropdown">
-                <a href="#" onclick="openPopup('addstudent.jsp')">Student</a>
-                <a href="#" onclick="openPopup('addwarden.jsp')">Warden</a>
-                <a href="#" onclick="openPopup('addhod.jsp')">HOD</a>
-                <a href="#" onclick="openPopup()">Verification Officer</a>
-                <a href="#" onclick="openPopup('addadmin.jsp')">Admin</a>
+                <a href="addstudent .jsp" onclick="openPopup('addstudent.jsp')">Student</a>
+                <a href="addwarden.jsp" onclick="openPopup('addwarden.jsp')">Warden</a>
+                <a href="addhod.jsp" onclick="openPopup('addhod.jsp')">HOD</a>
+                <a href="addvo.jsp" onclick="openPopup('addvo.jsp')">Verification Officer</a>
+                <a href="addadmin.jsp" onclick="openPopup('addadmin.jsp')">Admin</a>
             </div>
     
             <!-- Remove Section -->
@@ -1218,11 +1188,10 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
                 <i class="fas fa-user-minus"></i> Remove <i id="removeArrow" class="fas fa-chevron-right arrow"></i>
             </a>
             <div id="removeDropdown" class="dropdown">
-                <a href="#" onclick="openstudentRemovePopup()">Student</a>
-                <a href="#" onclick="openwardenRemovePopup()">Warden</a>
+                <a href="#" onclick="openStudentRemovePopup()">Student</a>
+                <a href="#" onclick="openWardenRemovePopup()">Warden</a>
                 <a href="#" onclick="openHODRemovePopup()">HOD</a>
                 <a href="#" onclick="openVORemovePopup()">Verification Officer</a>
-
                 <a href="#" onclick="openAdminRemovePopup()">Admin</a>
 
             </div>
@@ -1238,7 +1207,8 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             <a href="pendingLeaves.jsp"><i class="fas fa-list"></i> Pending Leaves</a>
             <a href="acceptLeave.jsp"><i class="fas fa-check-circle"></i> Accept Leave</a>
             <a href="rejectLeave.jsp"><i class="fas fa-times-circle"></i> Reject Leave</a>
-            <a href="updateLeaveRequest.jsp"><i class="fas fa-edit"></i> Update Leave</a>
+            <a href="#" onclick="openStudent_Popup()"><i class="fas fa-edit"></i> Update Leave</a>
+
         </div>
     
         <!-- Logout -->
@@ -1247,97 +1217,7 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
         </a>
     
     </div>
-    
 
-<script>
-    function openPopup(page) {
-    console.log("Popup opened:", page);
-    document.getElementById("popupFrame").src = page;
-    document.getElementById("popupModal").style.display = "flex";
-}
-
-
-function openPopup(page) {
-        document.getElementById("popupFrame").src = page;
-        document.getElementById("popupModal").style.display = "flex";
-    }
-
-    function closePopup() {
-        document.getElementById("popupModal").style.display = "none";
-        document.getElementById("popupFrame").src = "";
-    }
-
-    function toggleDropdown(dropdownId, arrowId) {
-    var dropdown = document.getElementById(dropdownId);
-    var arrow = document.getElementById(arrowId);
-
-    if (dropdown.style.display === "block") {
-        dropdown.style.display = "none";
-        arrow.classList.remove("rotate");
-    } else {
-        dropdown.style.display = "block";
-        arrow.classList.add("rotate");
-    }
-}
-</script>
-<!-- Admin Details Container -->
-<div class="content">
-    <div class="details-container">
-        <%
-            String adminId = (String) session.getAttribute("adminId");
-            if (adminId == null) {
-                response.sendRedirect("admin.jsp");
-                return;
-            }
-        %>
-    
-        <div class="photo-container">
-            <img src="AdminPhotoServlet?adminId=<%= adminId %>" alt="Admin Photo">
-        </div>
-        <div class="details-grid">
-            <%
-                Connection con = null;
-                PreparedStatement pstmt = null;
-                ResultSet rs = null;
-                try {
-                    Class.forName("com.mysql.cj.jdbc.Driver");
-                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
-    
-                    String query = "SELECT admin_id, name, phone, email FROM admin WHERE admin_id = ?";
-                    pstmt = con.prepareStatement(query);
-                    pstmt.setString(1, adminId);
-                    rs = pstmt.executeQuery();
-    
-                    if (rs.next()) {
-            %>
-            <label>Admin ID:</label>
-            <input type="text" value="<%= rs.getString("admin_id") %>" readonly>
-    
-            <label>Name:</label>
-            <input type="text" value="<%= rs.getString("name") %>" readonly>
-    
-            <label>Email:</label>
-            <input type="text" value="<%= rs.getString("email") %>" readonly>
-    
-            <label>Phone:</label>
-            <input type="text" value="<%= rs.getString("phone") %>" readonly>
-            <%
-                    } else {
-                        out.println("<p style='color: red;'>No admin found with the provided ID.</p>");
-                    }
-                } catch (Exception e) {
-                    out.println("<p style='color: red;'>Error fetching data: " + e.getMessage() + "</p>");
-                } finally {
-                    if (rs != null) try { rs.close(); } catch (Exception e) {}
-                    if (pstmt != null) try { pstmt.close(); } catch (Exception e) {}
-                    if (con != null) try { con.close(); } catch (Exception e) {}
-                }
-            %>
-        </div>
-    </div>
-    
-
-</div>
 </body>
 </html>
 

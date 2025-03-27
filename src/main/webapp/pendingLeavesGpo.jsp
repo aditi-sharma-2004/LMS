@@ -89,8 +89,9 @@
                 <td><%= rs.getString("student_id") %></td>
                 <td><%= rs.getString("reason") %></td>
                 <td>
-                    <a href="printGatepass.jsp?leave_id=<%= rs.getInt("leave_id") %>" class="btn-print">Print Gatepass</a>
+                    <a href="gatepasshtml.jsp?leave_id=<%= rs.getInt("leave_id") %>&student_id=<%= rs.getString("student_id") %>" class="btn-print">Print Gatepass</a>
                 </td>
+                
             </tr>
             <%
                     }

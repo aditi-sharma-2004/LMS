@@ -11,28 +11,26 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
-
         String updateQuery = "UPDATE LeaveRequests SET hod_status = 'Accepted' WHERE leave_id = ?";
         ps = con.prepareStatement(updateQuery);
         ps.setInt(1, leaveId);
         int rowsUpdated = ps.executeUpdate();
 
+        
         if (rowsUpdated > 0) {
             String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'GPO' WHERE leave_id = ?";
             ps2 = con.prepareStatement(updateStageQuery);
             ps2.setInt(1, leaveId);
             ps2.executeUpdate();
-%>
-            <script>
-                alert("Leave Accepted Successfully!");
-                window.location.href = "pendingLeavesHod.jsp";
-            </script>
+            %>
+            <form action="ConfirmLeaveServlet" method="post">
+                <input type="hidden" name="leave_id" value="<%= leaveId %>">
+                <input type="submit" value="Confirm Leave">
+            </form>
 <%
-        } else {
-            out.println("<script>alert('No rows updated. Check if leave_id exists.'); window.location.href='pendingLeavesHod.jsp';</script>");
         }
     } catch (Exception e) {
-        out.println("<script>alert('Error: " + e.getMessage() + "'); window.location.href='pendingLeavesHod.jsp';</script>");
+        out.println("Error: " + e.getMessage());
     } finally {
         if (ps2 != null) ps2.close();
         if (ps != null) ps.close();
