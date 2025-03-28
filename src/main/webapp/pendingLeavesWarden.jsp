@@ -335,14 +335,14 @@ transition: 0.5s;
         <% 
         HttpSession sessionObj = request.getSession(false);
         String warden_id = null;
-        Integer hostel_id = null;
+        String hostel_id = null;
         
         if (sessionObj != null) {
             warden_id = (String) (sessionObj.getAttribute("warden_id") != null 
                                    ? sessionObj.getAttribute("warden_id") 
                                    : sessionObj.getAttribute("wardenId"));
             
-            hostel_id = (Integer) (sessionObj.getAttribute("hostel_id") != null 
+            hostel_id = (String) (sessionObj.getAttribute("hostel_id") != null 
                                     ? sessionObj.getAttribute("hostel_id") 
                                     : sessionObj.getAttribute("hostel"));
         }

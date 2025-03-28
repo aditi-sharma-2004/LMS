@@ -51,7 +51,7 @@ public class WardenLoginServlet extends HttpServlet {
                                     session.setAttribute("wardenId", rs2.getString("warden_id"));
                                     session.setAttribute("name", rs2.getString("name"));
                                     session.setAttribute("email", rs2.getString("email"));
-                                    session.setAttribute("hostel", rs2.getInt("hostel_id")); // Store as integer
+                                    session.setAttribute("hostel", rs2.getString("hostel_id")); // Store as integer
 
                                     response.sendRedirect("wardenDashboard.jsp");
                                     return;

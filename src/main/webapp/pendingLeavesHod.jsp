@@ -341,7 +341,7 @@ transition: 0.5s;
                         return;
                     }
                     
-                    int hodDepartmentId = (Integer) sess.getAttribute("hodDepartmentId");
+                    String hodDepartmentId = (String) sess.getAttribute("hodDepartmentId");
 
                     try {
                         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
@@ -356,7 +356,7 @@ transition: 0.5s;
                         "AND lr.hod_status = 'Pending' " +
                         "AND s.department_id = ?"
                     );
-                        pstmt.setInt(1, hodDepartmentId);
+                        pstmt.setString(1, hodDepartmentId);
                         
                         ResultSet rs = pstmt.executeQuery();
                         

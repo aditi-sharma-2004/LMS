@@ -58,7 +58,7 @@ public class HODLoginServlet extends HttpServlet {
                                     session.setAttribute("hodId", rs2.getString("hod_id"));
                                     session.setAttribute("name", rs2.getString("name"));
                                     session.setAttribute("email", rs2.getString("email"));
-                                    session.setAttribute("hodDepartmentId", rs2.getInt("department_id"));
+                                    session.setAttribute("hodDepartmentId", rs2.getString("department_id"));
 
                                     // Redirect to dashboard
                                     response.sendRedirect("hodDashboard.jsp");
