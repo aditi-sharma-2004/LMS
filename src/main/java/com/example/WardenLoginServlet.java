@@ -21,78 +21,54 @@ public class WardenLoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Retrieve form parameters
         String wardenId = request.getParameter("wardenId");
         String inputPassword = request.getParameter("password");
 
-        // Set content type and obtain writer
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        // Validate input
-        if (wardenId == null || wardenId.trim().isEmpty() ||
-            inputPassword == null || inputPassword.trim().isEmpty()) {
+        if (wardenId == null || wardenId.trim().isEmpty() || inputPassword == null || inputPassword.trim().isEmpty()) {
             out.println("<script>alert('Warden ID and Password cannot be empty'); window.location.href='warden.jsp';</script>");
             return;
         }
 
-        Connection conn = null;
-        PreparedStatement pst = null;
-        ResultSet rs = null;
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement pst = conn.prepareStatement("SELECT password FROM wlogin WHERE warden_id = ?")) {
 
-        try {
-            // Load MySQL JDBC Driver and establish connection
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DBConnection.getConnection();
-
-            // Check credentials from the wlogin table
-            String sql = "SELECT password FROM wlogin WHERE warden_id = ?";
-            pst = conn.prepareStatement(sql);
             pst.setString(1, wardenId);
-            rs = pst.executeQuery();
+            try (ResultSet rs = pst.executeQuery()) {
+                if (rs.next()) {
+                    String storedPassword = rs.getString("password");
 
-            if (rs.next()) {
-                String storedPassword = rs.getString("password");
+                    if (storedPassword.equals(inputPassword)) { // Consider hashing for security
+                        // Retrieve warden details
+                        String wardenQuery = "SELECT warden_id, name, email, hostel_id FROM wardens WHERE warden_id = ?";
+                        try (PreparedStatement pst2 = conn.prepareStatement(wardenQuery)) {
+                            pst2.setString(1, wardenId);
+                            try (ResultSet rs2 = pst2.executeQuery()) {
+                                if (rs2.next()) {
+                                    HttpSession session = request.getSession();
+                                    session.setAttribute("wardenId", rs2.getString("warden_id"));
+                                    session.setAttribute("name", rs2.getString("name"));
+                                    session.setAttribute("email", rs2.getString("email"));
+                                    session.setAttribute("hostel", rs2.getInt("hostel_id")); // Store as integer
 
-                if (storedPassword.equals(inputPassword)) {
-                    // Credentials verified; retrieve warden details from the Wardens table
-                    String wardenQuery = "SELECT * FROM Wardens WHERE warden_id = ?";
-                    try (PreparedStatement pst2 = conn.prepareStatement(wardenQuery)) {
-                        pst2.setString(1, wardenId);
-                        try (ResultSet rs2 = pst2.executeQuery()) {
-                            if (rs2.next()) {
-                                // Create session and set attributes to be used in the dashboard
-                                HttpSession session = request.getSession();
-                                session.setAttribute("wardenId", rs2.getString("warden_id"));
-                                session.setAttribute("name", rs2.getString("name"));
-                                session.setAttribute("email", rs2.getString("email"));
-                                session.setAttribute("hostel", rs2.getString("hostel_id"));
-                                
-                                // Redirect to warden dashboard
-                                response.sendRedirect("wardenDashboard.jsp");
-                            } else {
-                                out.println("<script>alert('Warden details not found'); window.location.href='warden.jsp';</script>");
+                                    response.sendRedirect("wardenDashboard.jsp");
+                                    return;
+                                }
                             }
                         }
+                        out.println("<script>alert('Warden details not found'); window.location.href='warden.jsp';</script>");
+                    } else {
+                        out.println("<script>alert('Invalid Warden ID or Password'); window.location.href='warden.jsp';</script>");
                     }
                 } else {
-                    out.println("<script>alert('Invalid Warden ID or Password'); window.location.href='warden.jsp';</script>");
+                    out.println("<script>alert('Warden ID not found'); window.location.href='warden.jsp';</script>");
                 }
-            } else {
-                out.println("<script>alert('Warden ID not found'); window.location.href='warden.jsp';</script>");
             }
-        } catch (IOException | ClassNotFoundException | SQLException e) {
-            e.getMessage();
-            out.println("<script>alert('Something went wrong: " + e.getMessage() + "'); window.location.href='warden.jsp';</script>");
-        } finally {
-            // Close resources
-            try {
-                if (rs != null) rs.close();
-                if (pst != null) pst.close();
-                if (conn != null) conn.close();
-            } catch (SQLException ex) {
-                ex.getMessage();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            out.println("<script>alert('Something went wrong. Please try again later.'); window.location.href='warden.jsp';</script>");
         }
     }
 }

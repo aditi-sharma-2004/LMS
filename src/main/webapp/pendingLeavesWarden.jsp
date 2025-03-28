@@ -4,16 +4,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Pending Leave Requests(Warden)</title>
+    <title>Pending Leave Requests</title>
     <style>
         body {
            font-family: Arial, sans-serif;
            margin: 0;
            padding: 20px;
            background-color: #f8f9fa;
-           overflow: hidden;
+           overflow-x: hidden; /* Hide horizontal overflow */
+           overflow-y: auto;   /* Allow vertical scrolling */
            display: flex;
-    justify-content: center; /* Centers horizontally */
+           padding-top: 50px;
+           flex-direction: column;
+           align-items: center; /* Center content */
        }
        h2 {
            text-align: center;
@@ -21,13 +24,17 @@
        }
        .container {
            max-width: 1000px;
-           margin-top: 60px;
+           margin-top: 80px;
            margin-bottom: 60px;
            background: white;
            padding: 60px;
            border-radius: 10px;
            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-           overflow: hidden;
+            overflow-x: hidden; /* Hide horizontal overflow */
+    overflow-y: auto;   /* Allow vertical scrolling */
+           display: flex;
+           flex-direction: column; /* Stack items vertically */
+           align-items: center;
        }
 
        .table-wrapper {
@@ -60,92 +67,92 @@
            background-color: #f1f1f1;
        }
        .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #333;
-    color: white;
-    padding: 3px 8px;
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 99%;
-    z-index: 1000;
-    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+ display: flex;
+ justify-content: space-between;
+ align-items: center;
+ background-color: #333;
+ color: white;
+ padding: 3px 8px;
+ position: absolute;
+ left: 0;
+ top: 0;
+ width: 99%;
+ z-index: 1000;
+ box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
 .navbar .logo {
-    display: flex;
-    align-items: center;
+ display: flex;
+ align-items: center;
 }
 
 .navbar .logo img {
-    width: 150px;
-    height: auto;
-    margin-right: 10px;
-    margin-left: 0px;
+ width: 150px;
+ height: auto;
+ margin-right: 10px;
+ margin-left: 0px;
 }
 
 .navbar .logo h1 {
-    font-size: 30px;
-    margin: 0;
-    font-weight: 500;
+ font-size: 30px;
+ margin: 0;
+ font-weight: 500;
 }
 
 .navbar .nav-links {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+ display: flex;
+ align-items: center;
+ gap: 20px;
 }
 
 .navbar .nav-links a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-    transition: color 0.3s;
+ color: white;
+ text-decoration: none;
+ font-size: 14px;
+ transition: color 0.3s;
 }
 
 .navbar .nav-links a:hover {
-    color: #4CAF50;
+ color: #4CAF50;
 }
 .contact{
-    margin-top: 10px;
+ margin-top: 10px;
 }
 .navbar ul li {
-    list-style: none;
-    display: inline-block;
-    margin: 0 20px;
-    position: relative;
+ list-style: none;
+ display: inline-block;
+ margin: 0 20px;
+ position: relative;
 }
 .navbar ul li a{
-    text-decoration: none;
-    color: #fff;
+ text-decoration: none;
+ color: #fff;
 }
 .navbar ul li::after{
-    content: '';
-   height: 3px;
-   width: 0;
-   background: #6386a6;
-   position: absolute;
-   left: 0;
-   bottom: -10px; 
-   transition: 0.5s;
+ content: '';
+height: 3px;
+width: 0;
+background: #6386a6;
+position: absolute;
+left: 0;
+bottom: -10px; 
+transition: 0.5s;
 }
 .navbar ul li:hover::after{
-    width: 100%;
+ width: 100%;
 }
 .navbar .nav-button {
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    padding: 10px 15px;
-    border-radius: 5px;
-    font-size: 14px;
-    transition: background-color 0.3s;
+ background-color: #4CAF50;
+ color: white;
+ text-decoration: none;
+ padding: 10px 15px;
+ border-radius: 5px;
+ font-size: 14px;
+ transition: background-color 0.3s;
 }
 
 .navbar .nav-button:hover {
-    background-color: #45a049;
+ background-color: #45a049;
 }
 .quick-links {
     position: relative;
@@ -248,36 +255,45 @@
            color: #3ecd8d;
            cursor: pointer;
        }
-
-   </style>
-   <script>
-    function searchStudent() {
-    let input = document.getElementById("searchInput").value.toUpperCase();
-    let table = document.getElementById("leaveTable");
-    let tr = table.getElementsByTagName("tr");
-
-    for (let i = 1; i < tr.length; i++) {
-        let studentID = tr[i].getElementsByTagName("td")[1]; // Student ID column
-        let startDate = tr[i].getElementsByTagName("td")[3]; // Start Date column
-        let endDate = tr[i].getElementsByTagName("td")[4]; // End Date column
-        
-        if (studentID && startDate && endDate) {
-            let studentText = studentID.textContent || studentID.innerText;
-            let startText = startDate.textContent || startDate.innerText;
-            let endText = endDate.textContent || endDate.innerText;
-
-            // Show row if input matches any column
-            if (studentText.toUpperCase().indexOf(input) > -1 || 
-                startText.toUpperCase().indexOf(input) > -1 || 
-                endText.toUpperCase().indexOf(input) > -1) {
-                tr[i].style.display = "";
-            } else {
-                tr[i].style.display = "none";
-            }
-        }
-    }
+       .footer {
+    text-align: center;
+    padding: 15px 0;
+    background-color: #333;
+    color: white;
+    font-size: 14px;
+    position: fixed; /* Fixed at the bottom */
+    bottom: 0;       /* Aligns to the bottom of the screen */
+    width: 100%;     /* Spans the full width of the screen */
+    z-index: 1000;   /* Ensures it stays on top of other elements */
 }
 
+    </style>
+    <script>
+        function searchStudent() {
+            let input = document.getElementById("searchInput").value.toUpperCase();
+            let table = document.getElementById("leaveTable");
+            let tr = table.getElementsByTagName("tr");
+            
+            for (let i = 1; i < tr.length; i++) {
+                let studentID = tr[i].getElementsByTagName("td")[1];
+                let startDate = tr[i].getElementsByTagName("td")[3];
+                let endDate = tr[i].getElementsByTagName("td")[4];
+                
+                if (studentID && startDate && endDate) {
+                    let studentText = studentID.textContent || studentID.innerText;
+                    let startText = startDate.textContent || startDate.innerText;
+                    let endText = endDate.textContent || endDate.innerText;
+
+                    if (studentText.toUpperCase().indexOf(input) > -1 || 
+                        startText.toUpperCase().indexOf(input) > -1 || 
+                        endText.toUpperCase().indexOf(input) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+        }
     </script>
 </head>
 <body>
@@ -286,8 +302,7 @@
             <img src="Logoos.jpg" alt="Logo">
         </div>
         <div class="nav-links">
-            
-            <a href="change_password.jsp" >Change Password</a>
+            <a href="change_password.jsp">Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -301,67 +316,133 @@
             <a href="logout.jsp" class="logout">Logout</a>
         </div>
     </div>
-    <div class="container">
     <h2>Pending Leave Requests - Warden Panel</h2>
     <div class="search-bar">
-        <input type="text" id="searchInput" onkeyup="searchStudent()" placeholder="Search by Student ID, Start Date or End Date">
-        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" onkeyup="searchStudent()" placeholder="Search by Student ID, Start Date, End Date">
     </div>
-    <div class="table-wrapper">
+
     <table id="leaveTable">
         <tr>
-            <th>Leave ID</th>
+            <th>Request ID</th>
             <th>Student ID</th>
-            <th>Reason</th>
+            <th>Student Name</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Status</th>
+            <th>Reason</th>
             <th>Action</th>
         </tr>
 
-        <%
-            Connection con = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
-                stmt = con.createStatement();
-                String query = "SELECT * FROM LeaveRequests WHERE warden_status = 'Pending'";
-                rs = stmt.executeQuery(query);
-
-                while(rs.next()) {
+        <% 
+        HttpSession sessionObj = request.getSession(false);
+        String warden_id = null;
+        Integer hostel_id = null;
+        
+        if (sessionObj != null) {
+            warden_id = (String) (sessionObj.getAttribute("warden_id") != null 
+                                   ? sessionObj.getAttribute("warden_id") 
+                                   : sessionObj.getAttribute("wardenId"));
+            
+            hostel_id = (Integer) (sessionObj.getAttribute("hostel_id") != null 
+                                    ? sessionObj.getAttribute("hostel_id") 
+                                    : sessionObj.getAttribute("hostel"));
+        }
+        
+        if (warden_id == null || hostel_id == null) {
+            response.sendRedirect("warden.jsp");
+            return;
+        }
+        
+        Connection con = null;
+        PreparedStatement pst = null;
+        ResultSet rs = null;
+        
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
+            
+            String query = "SELECT L.leave_id, L.student_id, L.reason, L.start_date, L.end_date " +
+                           "FROM wardens W " +
+                           "JOIN students S ON W.hostel_id = S.hostel_id " +
+                           "JOIN LeaveRequests L ON S.student_id = L.student_id " +
+                           "WHERE W.warden_id = ? AND L.warden_status = 'Pending'";
+            
+            pst = con.prepareStatement(query);
+            pst.setString(1, warden_id);
+            rs = pst.executeQuery();
+            
+            boolean hasResults = false;
+            while(rs.next()) { 
+                hasResults = true;
         %>
         <tr>
             <td><%= rs.getInt("leave_id") %></td>
             <td><%= rs.getString("student_id") %></td>
-            <td><%= rs.getString("reason") %></td>
+            <td>
+                <% 
+                // Fetching Student Name
+                PreparedStatement pstName = con.prepareStatement("SELECT name FROM students WHERE student_id = ?");
+                pstName.setString(1, rs.getString("student_id"));
+                ResultSet rsName = pstName.executeQuery();
+                if (rsName.next()) {
+                    out.print(rsName.getString("name"));
+                } else {
+                    out.print("Unknown");
+                }
+                rsName.close();
+                pstName.close();
+                %>
+            </td>
             <td><%= rs.getDate("start_date") %></td>
             <td><%= rs.getDate("end_date") %></td>
-            <td><%= rs.getString("warden_status") %></td>
+            <td><%= rs.getString("reason") %></td>
             <td>
-                <a href="acceptLeaveWarden.jsp?leave_id=<%= rs.getInt("leave_id") %>" class="btn accept">Accept</a>
-                <a href="rejectLeaveWarden.jsp?leave_id=<%= rs.getInt("leave_id") %>" class="btn reject">Reject</a>
-                
+                <a href="leaveDetails.jsp?leave_id=<%= rs.getInt("leave_id") %>&role=warden" class="btn">View Info</a>
             </td>
         </tr>
-        <%
-                }
-            } catch (Exception e) {
-                out.println("Error: " + e.getMessage());
-            } finally {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
+        <% 
             }
+            
+            if (!hasResults) {
+                out.println("<tr><td colspan='7'>No pending leave requests found for your hostel.</td></tr>");
+            } 
+        } catch (Exception e) {
+            out.println("<p class='error'>Error: " + e.getMessage() + "</p>");
+            e.printStackTrace();
+        } finally {
+            try { if (rs != null) rs.close(); } catch (Exception ignored) {}
+            try { if (pst != null) pst.close(); } catch (Exception ignored) {}
+            try { if (con != null) con.close(); } catch (Exception ignored) {}
+        }
         %>
     </table>
-    </div>
-    </div>
+
+    <script>
+        function searchStudent() {
+            let input = document.getElementById("searchInput").value.toLowerCase();
+            let table = document.getElementById("leaveTable");
+            let tr = table.getElementsByTagName("tr");
+            
+            for (let i = 1; i < tr.length; i++) { // Skip header row
+                let tdStudent = tr[i].getElementsByTagName("td")[1];
+                let tdStartDate = tr[i].getElementsByTagName("td")[3];
+                let tdEndDate = tr[i].getElementsByTagName("td")[4];
+                
+                if (tdStudent || tdStartDate || tdEndDate) {
+                    let studentID = tdStudent.textContent.toLowerCase();
+                    let startDate = tdStartDate.textContent.toLowerCase();
+                    let endDate = tdEndDate.textContent.toLowerCase();
+                    
+                    if (studentID.includes(input) || startDate.includes(input) || endDate.includes(input)) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                } 
+            }
+        }
+    </script>
     <div class="footer">
         <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
 </html>
-

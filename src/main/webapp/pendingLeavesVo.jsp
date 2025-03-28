@@ -298,8 +298,7 @@ display: block;
             <img src="Logoos.jpg" alt="Logo">
         </div>
         <div class="nav-links">
-            
-            <a href="change_password.jsp" >Change Password</a>
+            <a href="change_password.jsp">Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -314,62 +313,80 @@ display: block;
         </div>
     </div>
     <div class="container">
-    <h2>Pending Leave Requests - VO Panel</h2>
-    <div class="search-bar">
-        <input type="text" id="searchInput" onkeyup="searchStudent()" placeholder="Search by Student ID, Start Date or End Date">
-        <i class="fas fa-search"></i>
+        <h2>Pending Leave Requests - VO Panel</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" onkeyup="searchStudent()" placeholder="Search by Student ID, Start Date or End Date">
+            <i class="fas fa-search"></i>
+        </div>
+        <div class="table-wrapper">
+            <table id="leaveTable">
+                <tr>
+                    <th>Request ID</th>
+                    <th>Student ID</th>
+                    <th>Student Name</th>
+                    <th>Start Date</th>
+                    <th>End Date</th>
+                    <th>Reason</th>
+                    <th>Action</th>
+                </tr>
+
+                <%
+                    Connection con = null;
+                    Statement stmt = null;
+                    ResultSet rs = null;
+
+                    try {
+                        Class.forName("com.mysql.cj.jdbc.Driver");
+                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
+                        stmt = con.createStatement();
+                        String query = "SELECT lr.leave_id, lr.student_id, s.name, lr.start_date, lr.end_date, lr.reason FROM LeaveRequests lr JOIN Students s ON lr.student_id = s.student_id WHERE warden_status = 'Accepted' AND verification_status = 'Pending'";
+                        rs = stmt.executeQuery(query);
+
+                        while(rs.next()) {
+                %>
+                <tr>
+                    <td><%= rs.getInt("leave_id") %></td>
+                    <td><%= rs.getString("student_id") %></td>
+                    <td>
+                        <% 
+                        // Get student name from students table
+                        PreparedStatement pstmtName = con.prepareStatement(
+                            "SELECT name FROM students WHERE student_id = ?"
+                        );
+                        pstmtName.setString(1, rs.getString("student_id"));
+                        ResultSet rsName = pstmtName.executeQuery();
+                        if (rsName.next()) {
+                            out.print(rsName.getString("name"));
+                        } else {
+                            out.print("Unknown");
+                        }
+                        rsName.close();
+                        pstmtName.close();
+                        %>
+                    </td>
+                    <td><%= rs.getDate("start_date") %></td>
+                    <td><%= rs.getDate("end_date") %></td>
+                    <td><%= rs.getString("reason") %></td>
+                    <td>
+                        <a href="leaveDetails.jsp?leave_id=<%= rs.getInt("leave_id") %>&role=vo" class="btn">View Info</a>
+                    </td>
+                </tr>
+                <%
+                        }
+                    } catch (Exception e) {
+                        out.println("Error: " + e.getMessage());
+                    } finally {
+                        if (rs != null) rs.close();
+                        if (stmt != null) stmt.close();
+                        if (con != null) con.close();
+                    }
+                %>
+            </table>
+        </div>
     </div>
-    <div class="table-wrapper">
-    <table id="leaveTable">
-        <tr>
-            <th>Leave ID</th>
-            <th>Student ID</th>
-            <th>Reason</th>
-            <th>Start Date</th>
-            <th>End Date</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-
-        <%
-            Connection con = null;
-            Statement stmt = null;
-            ResultSet rs = null;
-
-            try {
-                Class.forName("com.mysql.cj.jdbc.Driver");
-                con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
-                stmt = con.createStatement();
-                String query = "SELECT * FROM LeaveRequests WHERE warden_status = 'Accepted' AND verification_status = 'Pending'";
-                rs = stmt.executeQuery(query);
-
-                while(rs.next()) {
-        %>
-        <tr>
-            <td><%= rs.getInt("leave_id") %></td>
-            <td><%= rs.getString("student_id") %></td>
-            <td><%= rs.getString("reason") %></td>
-            <td><%= rs.getDate("start_date") %></td>
-            <td><%= rs.getDate("end_date") %></td>
-            <td><%= rs.getString("verification_status") %></td>
-            <td>
-                <a href="acceptLeaveVo.jsp?leave_id=<%= rs.getInt("leave_id") %>" class="btn accept">Approve</a>
-                <a href="rejectLeaveVo.jsp?leave_id=<%= rs.getInt("leave_id") %>" class="btn reject">Reject</a>
-            </td>
-        </tr>
-        <%
-                }
-            } catch (Exception e) {
-                out.println("Error: " + e.getMessage());
-            } finally {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (con != null) con.close();
-            }
-        %>
-    </table>
     <div class="footer">
         <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
+
 </html>
