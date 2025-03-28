@@ -29,7 +29,6 @@ import jakarta.servlet.http.Part;
 public class UploadGuardianServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -46,10 +45,18 @@ public class UploadGuardianServlet extends HttpServlet {
         }
         String studentId = (String) session.getAttribute("studentId");
 
-        InputStream inputStream = null;
-        Part filePart = request.getPart("image");
-        if (filePart != null && filePart.getSize() > 0) {
-            inputStream = filePart.getInputStream();
+        // Retrieving the Image (Guardian's Photo)
+        InputStream imageStream = null;
+        Part imagePart = request.getPart("image");
+        if (imagePart != null && imagePart.getSize() > 0) {
+            imageStream = imagePart.getInputStream();
+        }
+
+        // Retrieving the Signature Image
+        InputStream signatureStream = null;
+        Part signaturePart = request.getPart("signature");
+        if (signaturePart != null && signaturePart.getSize() > 0) {
+            signatureStream = signaturePart.getInputStream();
         }
 
         Connection conn = null;
@@ -58,40 +65,45 @@ public class UploadGuardianServlet extends HttpServlet {
         // Generate unique guardian_id
         String guardianId = generateGuardianId();
 
-        
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DBConnection.getConnection();
 
-            String sql = "INSERT INTO Guardians (guardian_id, name, email, phone, address, Image, student_id) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            // Updated query to insert both image and signature
+            String sql = "INSERT INTO Guardians (guardian_id, name, email, phone, address, Image, signature, student_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             stmt = conn.prepareStatement(sql);
             stmt.setString(1, guardianId);
             stmt.setString(2, name);
             stmt.setString(3, email);
             stmt.setString(4, phone);
             stmt.setString(5, address);
-            if (inputStream != null) {
-                stmt.setBlob(6, inputStream);
+
+            if (imageStream != null) {
+                stmt.setBlob(6, imageStream);
             } else {
                 stmt.setNull(6, Types.BLOB);
             }
-            stmt.setString(7, studentId);
+
+            if (signatureStream != null) {
+                stmt.setBlob(7, signatureStream);
+            } else {
+                stmt.setNull(7, Types.BLOB);
+            }
+
+            stmt.setString(8, studentId);
 
             int row = stmt.executeUpdate();
             if (row == 0) {
                 response.getWriter().println("Error: Could not insert guardian record.");
                 return;
             }
-            String guardianID2=guardianId;
-                // Generate random password
+
+            // Generate and insert guardian login credentials
             String randomPassword = generateRandomPassword(8);
-
-                // Store guardian login credentials
-
             String insertLoginSQL = "INSERT INTO glogin (guardian_id, password) VALUES (?, ?)";
             int row2;
             try (PreparedStatement pstmt2 = conn.prepareStatement(insertLoginSQL)) {
-                pstmt2.setString(1, guardianID2);
+                pstmt2.setString(1, guardianId);
                 pstmt2.setString(2, randomPassword);
                 row2 = pstmt2.executeUpdate();
             }
@@ -100,23 +112,29 @@ public class UploadGuardianServlet extends HttpServlet {
                 response.getWriter().println("Error: Could not insert login record.");
                 return;
             }
-            response.sendRedirect("guardianSuccess.jsp");
+
             // Send email with credentials
             String subject = "Your Guardian Account Details";
             String body = "Dear " + name + ",\n\n" +
-                        "Your guardian account has been created successfully.\n" +
-                        "Guardian ID: " + guardianId + "\n" +
-                        "Password: " + randomPassword + "\n\n" +
-                        "Regards,\nLeave Management System";
+                    "Your guardian account has been created successfully.\n" +
+                    "Guardian ID: " + guardianId + "\n" +
+                    "Password: " + randomPassword + "\n\n" +
+                    "Regards,\nLeave Management System";
             sendEmail(email, subject, body);
 
             response.sendRedirect("guardianSuccess.jsp");
+
         } catch (Exception e) {
             response.getWriter().println("Error: " + e.getMessage());
         } finally {
-            try { if (stmt != null) stmt.close(); } catch (SQLException e) {}
-            try { if (conn != null) conn.close(); } catch (SQLException e) {}
-            try { if (conn != null) conn.close(); } catch (SQLException e) {}
+            try {
+                if (stmt != null) stmt.close();
+            } catch (SQLException e) {
+            }
+            try {
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+            }
         }
     }
 
@@ -134,7 +152,7 @@ public class UploadGuardianServlet extends HttpServlet {
             sb.append(chars.charAt(rnd.nextInt(chars.length())));
         }
         return sb.toString();
-     }
+    }
 
     private void sendEmail(String to, String subject, String body) throws Exception {
         Properties props = new Properties();
@@ -154,12 +172,12 @@ public class UploadGuardianServlet extends HttpServlet {
                     }
                 });
 
-                Message message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(from));
-                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
-                message.setSubject(subject);
-                message.setText(body);
-                Transport.send(message);
-                System.out.println("Email sent successfully to: " + to);
-             }
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(from));
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
+        message.setSubject(subject);
+        message.setText(body);
+        Transport.send(message);
+        System.out.println("Email sent successfully to: " + to);
+    }
 }

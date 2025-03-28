@@ -599,10 +599,10 @@ if (guardianId == null) {
                         progressWidth = 66;
                         break;
                     case "GPO":
-                    wardenCompleted = true;
-                    voCompleted = true;
-                    hodCompleted = true;
-                    progressWidth = 88;
+                        wardenCompleted = true;
+                        voCompleted = true;
+                        hodCompleted = true;
+                        progressWidth = 88;
                         break;
                     case "Complete":
                         wardenCompleted = true;

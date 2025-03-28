@@ -75,6 +75,9 @@
             
             <label>Profile Image:</label>
             <input type="file" name="image" accept="image/*">
+
+            <label>Guardian Signature:</label>
+            <input type="file" name="signature" accept="image/*" required>
             
             <!-- Hidden field to store student_id -->
             <input type="hidden" name="student_id" value="<%= studentId %>">

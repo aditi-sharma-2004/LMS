@@ -1,41 +1,11 @@
 <%@ page import="java.sql.*" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
-<%@ page import="java.sql.*" %>
-<%
-    Connection con = null;
-    PreparedStatement ps = null;
-    PreparedStatement ps2 = null;
-    ResultSet rts = null;
-
-    try {
-        Class.forName("com.mysql.cj.jdbc.Driver"); // Load MySQL Driver
-        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
-
-        String updateQuery = "UPDATE LeaveRequests SET gpo_status = 'Accepted' WHERE leave_id = ?";
-        ps = con.prepareStatement(updateQuery);
-        
-        int leaveId = Integer.parseInt(request.getParameter("leaveId")); // Ensure leaveId is properly retrieved
-        ps.setInt(1, leaveId);
-        int rowsUpdated = ps.executeUpdate();
-
-        if (rowsUpdated > 0) {
-            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'Complete' WHERE leave_id = ?";
-            ps2 = con.prepareStatement(updateStageQuery);
-            ps2.setInt(1, leaveId);
-            ps2.executeUpdate();
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
-        if (ps != null) ps.close();
-        if (ps2 != null) ps2.close();
-        if (con != null) con.close();
-    }
-%>
 <%
 
 Connection conn = null;
 PreparedStatement stmt = null;
+PreparedStatement ps = null;
+PreparedStatement ps2 = null;
 ResultSet rs = null;
 
 String studentId = request.getParameter("student_id"); // Assume student_id is passed as a parameter
@@ -53,8 +23,6 @@ try {
                  "JOIN hostels h ON s.hostel_id = h.hostel_id " +
                  "JOIN guardians g ON s.student_id = g.student_id " +
                  "WHERE l.student_id = ?";
-    String updateQuery = "UPDATE LeaveRequests SET gpo_status = 'Accepted' WHERE leave_id = ?";
-    stmt = con.prepareStatement(updateQuery);
 
     stmt = conn.prepareStatement(sql);
     stmt.setString(1, studentId);
@@ -72,6 +40,19 @@ try {
         String companionName = rs.getString("companion_name") != null ? rs.getString("companion_name") : "अकेली";
         String companionRelation = rs.getString("companion_relation") != null ? rs.getString("companion_relation") : "";
 
+        // Update Leave Request Status
+        String updateQuery = "UPDATE LeaveRequests SET gpo_status = 'Accepted' WHERE leave_id = ?";
+        ps = conn.prepareStatement(updateQuery);
+        ps.setString(1, leaveId);
+        int rowsUpdated = ps.executeUpdate();
+
+        if (rowsUpdated > 0) {
+            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'Complete' WHERE leave_id = ?";
+            ps2 = conn.prepareStatement(updateStageQuery);
+            ps2.setString(1, leaveId);
+            ps2.executeUpdate();
+        }
+
         // Setting attributes to be used in HTML
         request.setAttribute("leaveId", leaveId);
         request.setAttribute("studentName", studentName);
@@ -86,8 +67,11 @@ try {
 } catch (Exception e) {
     e.printStackTrace();
 } finally {
+    // Close all database resources
     if (rs != null) rs.close();
     if (stmt != null) stmt.close();
+    if (ps != null) ps.close();
+    if (ps2 != null) ps2.close();
     if (conn != null) conn.close();
 }
 %>
