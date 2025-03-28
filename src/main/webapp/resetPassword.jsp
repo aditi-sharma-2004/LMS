@@ -49,7 +49,7 @@
             <input type="email" name="email" placeholder="Registered Email" required>
             <button type="submit">Send Reset Link</button>
         </form>
-        <p>Remembered your password? <a href="guardian.jsp">Go back to Login</a></p>
+        <p>Remembered your password? <a href="index.jsp">Go back</a></p>
     </div>
 </body>
 </html>

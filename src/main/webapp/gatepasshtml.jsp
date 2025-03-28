@@ -47,7 +47,7 @@ try {
         int rowsUpdated = ps.executeUpdate();
 
         if (rowsUpdated > 0) {
-            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'Complete' WHERE leave_id = ?";
+            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'Complete', final_status='Accepted' WHERE leave_id = ?";
             ps2 = conn.prepareStatement(updateStageQuery);
             ps2.setString(1, leaveId);
             ps2.executeUpdate();

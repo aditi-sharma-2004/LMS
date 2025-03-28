@@ -1,4 +1,102 @@
 <%@ page import="java.sql.*" %>
+<%
+// Ensure guardian is logged in
+String guardianId = (String) session.getAttribute("guardianId");
+if (guardianId == null) {
+    response.sendRedirect("guardian.jsp");
+    return;
+}
+
+Connection con = null;
+PreparedStatement pstmt = null;
+ResultSet rs = null;
+
+String studentId = "", rollNumber = "", studentName = "", course = "", hostel = "", guardianName = "";
+String courseId = "", hostelId = "";
+
+try {
+    Class.forName("com.mysql.cj.jdbc.Driver");
+    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
+
+    //  Fetch student ID from Guardians table
+    String query = "SELECT student_id FROM Guardians WHERE guardian_id = ?";
+    pstmt = con.prepareStatement(query);
+    pstmt.setString(1, guardianId);
+    rs = pstmt.executeQuery();
+
+    if (rs.next()) {
+        studentId = rs.getString("student_id");
+    }
+    rs.close();
+    pstmt.close();
+
+    // Fetch student details from Students table only if studentId is found
+    if (!studentId.isEmpty()) {
+        query = "SELECT rno, name, course_id, hostel_id FROM Students WHERE student_id = ?";
+        pstmt = con.prepareStatement(query);
+        pstmt.setString(1, studentId);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            rollNumber = rs.getString("rno");
+            studentName = rs.getString("name");
+            courseId = rs.getString("course_id");  
+            hostelId = rs.getString("hostel_id");  
+        }
+        rs.close();
+        pstmt.close();
+    }
+
+    // Fetch course name only if courseId is valid
+    if (courseId != null && !courseId.isEmpty()) {
+        query = "SELECT name FROM Courses WHERE course_id = ?";
+        pstmt = con.prepareStatement(query);
+        pstmt.setString(1, courseId);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            course = rs.getString("name");
+        }
+        rs.close();
+        pstmt.close();
+    }
+
+    //  Fetch hostel name only if hostelId is valid
+    if (hostelId != null && !hostelId.isEmpty()) {
+        query = "SELECT name FROM Hostels WHERE hostel_id = ?";
+        pstmt = con.prepareStatement(query);
+        pstmt.setString(1, hostelId);
+        rs = pstmt.executeQuery();
+
+        if (rs.next()) {
+            hostel = rs.getString("name");
+        }
+        rs.close();
+        pstmt.close();
+    }
+
+    //  Fetch Guardian Name from Guardians table
+    if (!studentId.isEmpty()) {
+        query = "SELECT name FROM Guardians WHERE student_id = ?";
+        pstmt = con.prepareStatement(query);
+        pstmt.setString(1, studentId);
+        rs = pstmt.executeQuery();
+        
+        if (rs.next()) {
+            guardianName = rs.getString("name");
+        }
+        rs.close();
+        pstmt.close();
+    }
+
+}catch (Exception e) {
+    out.println("<p style='color: red;'>Error fetching student data: " + e.getMessage() + "</p>");
+} finally {
+    try { if (rs != null) rs.close(); } catch (Exception e) {}
+    try { if (pstmt != null) pstmt.close(); } catch (Exception e) {}
+    try { if (con != null) con.close(); } catch (Exception e) {}
+}
+%>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,146 +105,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leave Request Form</title>
     <style>
-        body {
-            font-family: 'Poppins', sans-serif;
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f9f9f9;
             box-sizing: border-box;
-            overflow-y: auto; /* Enable vertical scrolling */
+            font-family: 'Poppins', sans-serif;
         }
 
-        /* Navigation Bar Styling */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 3px 8px;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 99%;
-            z-index: 1000;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-        }
+        body {
+    font-family: 'Poppins', sans-serif;
+    background: white;
+    margin: 0;
+    background-image: url('img.jpg'); /* Ensure correct path */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* This makes the background image static */
+    padding: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow-y: auto;
+}
 
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .navbar .logo img {
-            width: 150px;
-            height: auto;
-            margin-right: 10px;
-            margin-left: 0px;
-        }
-
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .navbar .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-
-        .navbar .nav-links a:hover {
-            color: #4CAF50;
-        }
-
-        .navbar .logout {
-            color: white;
-            background-color: #f44336;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-
-        .navbar .logout:hover {
-            background-color: #d32f2f;
-        }
-
-        /* Content Container */
-        .content {
-            margin-top: 60px; /* Adjust for fixed navbar */
-            padding: 20px;
-            max-width: 750px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .container {
-            background: #ffffff;
-            padding: 18px;
-            border-radius: 9px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            width: 100%;
-        }
+    .container {
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 9px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 750px; /* Reduce width from right */
+    width: 80%; /* Adjust percentage to make it smaller */
+    margin: auto; /* Keep it centered */
+    align-items: center;
+}
 
         h2 {
             text-align: center;
             color: #222;
-            font-size: 18px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         label {
-            font-weight: 600;
+            font-weight: bold;
             display: block;
             margin-top: 10px;
             color: #444;
-            font-size: 12px;
-            margin-left: 25px;
         }
 
         input, select, textarea {
-            width: 90%;
+            width: 100%;
             padding: 10px;
-            margin-top: 3px;
+            margin-top: 5px;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            font-size: 10px;
-            background: #f9f9f9;
-            margin-left: 25px;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            border-color: #6a5acd;
-            outline: none;
-            box-shadow: 0 0 8px rgba(106, 90, 205, 0.3);
-            background: #fff;
-        }
-
-        button {
-            width: 50%;
-            background: #6a5acd;
-            color: white;
-            border: none;
-            padding: 14px;
-            margin-left: 200px;
-            margin-top: 15px;
-            cursor: pointer;
-            border-radius: 8px;
+            border-radius: 5px;
             font-size: 14px;
-            font-weight: 600;
-            transition: 0.3s;
-            box-shadow: 0 4px 10px rgba(106, 90, 205, 0.2);
-            align-self: center;
-        }
-
-        button:hover {
-            background: #5a4ecf;
-            box-shadow: 0 6px 15px rgba(106, 90, 205, 0.3);
-            transform: translateY(-2px);
         }
 
         #companionFields {
@@ -157,116 +170,149 @@
             display: none;
         }
 
-        /* Footer */
-        .footer {
-            text-align: center;
-            padding: 15px 0;
-            background-color: #333;
-            color: white;
-            font-size: 14px;
-            position: fixed;
-            bottom: 0;
+        button {
             width: 100%;
-            z-index: 1000;
+            background: #6a5acd;
+            color: white;
+            border: none;
+            padding: 14px;
+            margin-top: 15px;
+            cursor: pointer;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
         }
     </style>
-    <script>
-        function toggleCompanionFields() {
-            var leavingAlone = document.getElementById("leaving_alone").value;
-            var companionFields = document.getElementById("companionFields");
-            
-            if (leavingAlone === "Yes") {
-                companionFields.style.display = "none";
-            } else {
-                companionFields.style.display = "block";
-            }
-        }
+   <script>
+    function setMinDate() {
+        let today = new Date();
+        today.setDate(today.getDate() + 1); 
+        let minDate = today.toISOString().split("T")[0]; 
+        document.getElementById("start_date").setAttribute("min", minDate);
+        document.getElementById("end_date").setAttribute("min", minDate);
+    }
 
-        function calculateDays() {
-            var startDate = new Date(document.getElementById("start_date").value);
-            var endDate = new Date(document.getElementById("end_date").value);
-            if (!isNaN(startDate) && !isNaN(endDate)) {
-                var timeDiff = endDate.getTime() - startDate.getTime();
-                var dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
-                document.getElementById("num_days").value = dayDiff;
+    function toggleCompanionFields() {
+        let leavingAlone = document.getElementById("leaving_alone").value;
+        document.getElementById("companionFields").style.display = (leavingAlone === "No") ? "block" : "none";
+    }
+
+    function calculateDays() {
+        let fromDate = document.getElementById('start_date').value;
+        let toDate = document.getElementById('end_date').value;
+        let daysField = document.getElementById('num_days');
+
+        if (fromDate && toDate) {
+            let from = new Date(fromDate);
+            let to = new Date(toDate);
+            let timeDifference = to - from;
+            let days = timeDifference / (1000 * 60 * 60 * 24) + 1; 
+
+            if (days > 0) {
+                daysField.value = days;
+            } else {
+                daysField.value = "";
+                alert("Invalid date range. Please check your input.");
             }
+        } else {
+            daysField.value = "";
         }
-    </script>
+    }
+
+    window.onload = function () {
+        setMinDate();
+    };
+</script>
 </head>
 <body>
-    <!-- Top Navigation Bar -->
-    <div class="navbar">
-        <div class="logo">
-            <img src="Logoos.jpg" alt="Logo">
-        </div>
-        <div class="nav-links">
-            <a href="change_password.jsp">Change Password</a>
-            <a href="guardian_dashboard.jsp">Dashboard</a>
-            <a href="logout.jsp" class="logout">Logout</a>
-        </div>
-    </div>
+    <div class="container">
+        <h2>Leave Request</h2>
+        <form action="submit_leave" method="post" enctype="multipart/form-data">
+            <label>Student ID:</label>
+            <input type="text" name="student_id" value="<%= studentId %>" readonly required>
 
-    <div class="content">
-        <div class="container">
-            <h2>Submit Leave Request</h2>
-            <form action="submit_leave" method="post" enctype="multipart/form-data">
-                <label>Student ID:</label>
-                <input type="text" name="student_id" required>
-                
-                <label>Reason:</label>
-                <textarea name="reason" required></textarea>
-                
-                <label>Start Date:</label>
-                <input type="date" id="start_date" name="start_date" required onchange="calculateDays()">
-                
-                <label>End Date:</label>
-                <input type="date" id="end_date" name="end_date" required onchange="calculateDays()">
-                
-                <label>Number of Days:</label>
-                <input type="text" id="num_days" name="num_days" readonly>
-                
-                <label>Leave Type:</label>
-                <select name="leave_type" required>
-                    <option value="Casual">Casual</option>
-                    <option value="Academic">Academic</option>
-                    <option value="Emergency">Emergency</option>
-                    <option value="Holiday">Holiday</option>
-                </select>
-                
-                <label>Leaving Alone?</label>
-                <select id="leaving_alone" name="leaving_alone" onchange="toggleCompanionFields()" required>
-                    <option value="Yes">Yes</option>
-                    <option value="No">No</option>
-                </select>
-                
-                <div id="companionFields" style="display:none;">
-                    <label>Companion Name:</label>
-                    <input type="text" name="companion_name">
-                    
-                    <label>Companion Relation:</label>
-                    <input type="text" name="companion_relation">
-                    
-                    <label>Companion Address:</label>
-                    <input type="text" name="companion_address">
-                    
-                    <label>Companion Phone:</label>
-                    <input type="text" name="companion_phone">
-                </div>
-                
-                <label>Leaving Address:</label>
-                <input type="text" name="leaving_address" required>
-                
-                <label>Signature Upload:</label>
-                <input type="file" name="signature" accept="image/*" required>
-                
-                <button type="submit" class="btn">Submit Application</button>
-            </form>
-        </div>
-    </div>
+            <label for="rno">Roll Number</label>
+            <input type="text" id="rno" name="rno" value="<%= rollNumber %>" readonly required>
 
-    <!-- Footer -->
-    <div class="footer">
-        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" value="<%= studentName %>" readonly required>
+
+            <label for="courses">Course</label>
+            <input type="text" id="courses" name="courses" value="<%= course %>" readonly required>
+
+            <label for="hostels">Hostel Name</label>
+            <input type="text" id="hostels" name="hostels" value="<%= hostel %>" readonly required>
+
+            <label for="guardianName">Guardian's Name</label>
+            <input type="text" id="guardianName" name="guardianName" value="<%= guardianName %>" readonly required>
+
+
+            <label>Reason:</label>
+            <textarea name="reason" required></textarea>
+
+            <label>Start Date:</label>
+            <input type="date" id="start_date" name="start_date" required onchange="calculateDays()">
+
+            <label>End Date:</label>
+            <input type="date" id="end_date" name="end_date" required onchange="calculateDays()">
+
+            <label>Number of Days:</label>
+            <input type="text" id="num_days" name="num_days" readonly>
+
+            <label>Leave Type:</label>
+            <select name="leave_type" required>
+                <option value="Casual">Casual</option>
+                <option value="Academic">Academic</option>
+                <option value="Emergency">Emergency</option>
+                <option value="Holiday">Holiday</option>
+            </select>
+
+            <label>Leaving Alone?</label>
+            <select id="leaving_alone" name="leaving_alone" onchange="toggleCompanionFields()" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <div id="companionFields">
+                <label>Companion Name:</label>
+                <input type="text" name="companion_name">
+
+                <label>Companion Relation:</label>
+                <input type="text" name="companion_relation">
+
+                <label>Companion Address:</label>
+                <input type="text" name="companion_address">
+
+                <label>Companion Phone:</label>
+                <input type="text" name="companion_phone">
+            </div>
+
+            <div class="form-group">
+                <label for="leaving_address">Leave Address</label>
+                <textarea id="leaving_address" name="leaving_address" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="senders_address">Sender's Address</label>
+                <textarea id="senders_address" name="senders_address" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="signature">Signature (Upload Image)</label>
+                <input type="file" id="signature" name="signature" accept="image/*" required>
+            </div>
+            <div class="form-group">
+                <label for="date">Date</label>
+                <input type="date" id="date" name="date" required>
+            </div>
+            <script>
+                // Set the current date as the default value for the date input
+                document.addEventListener("DOMContentLoaded", function () {
+                    let today = new Date().toISOString().split("T")[0]; // Get current date in YYYY-MM-DD format
+                    document.getElementById("date").value = today;
+                });
+            </script>
+            
+            <button type="submit" class="btn">Submit Application</button>
+        </form>
     </div>
 </body>
 </html>

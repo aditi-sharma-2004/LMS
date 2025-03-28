@@ -1,3 +1,4 @@
+<%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -374,6 +375,197 @@ iframe {
         border: none;
     }
 
+    .custom-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .custom-modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(106, 13, 173, 0.3);
+        width: 300px;
+    }
+
+    .custom-modal-content h2 {
+        color: black;
+    }
+
+    .custom-modal-content input {
+        padding: 8px;
+        width: 90%;
+        margin-top: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .custom-submit-btn {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .custom-cancel-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .custom-submit-btn:hover {
+        opacity: 0.8;
+    }
+
+    .custom-cancel-btn:hover {
+        opacity: 0.8;
+    }
+    .warden-popup-modal {
+        display: none;
+        position: fixed;
+        z-index: 9999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+    }
+
+    .warden-popup-content {
+        background-color: white;
+        padding: 25px;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 0 20px rgba(106, 13, 173, 0.3);
+        width: 300px;
+    }
+
+    .warden-popup-content h2 {
+        color:black;
+    }
+
+    .warden-popup-content input {
+        padding: 8px;
+        width: 90%;
+        margin-top: 15px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .warden-submit-btn {
+        background-color: green;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .warden-cancel-btn {
+        background-color: red;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 5px;
+    }
+
+    .warden-submit-btn:hover, .warden-cancel-btn:hover {
+        opacity: 0.8;
+    }
+
+    .content {
+    margin-top: 100px; /* This ensures content starts below the navbar */
+    padding: 20px;
+    max-width: 1000px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+.content h2 {
+    margin-bottom: 20px;
+}
+.details-container {
+    background-color: rgba(255, 255, 255, 0.7); /* Transparent effect */
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    position: relative;
+    left: 10%; /* Shift towards right */
+    right: 50%; /* Shift towards left */
+    transform: translate(10%, 150px); /* Fine-tune centering */
+    width: 120%; /* Increase width */
+}
+
+.details-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    width: 80%; /* Match container width */
+    text-align: left;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr; /* Two columns: labels and textboxes */
+    gap: 5px 5px;
+    width: 50%; /* Match container width */
+}
+
+.details-grid label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.details-grid input {
+    padding: 5px 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    width: 100%; /* Stretch to column width */
+}
+
+.details-grid input:focus {
+    border-color: #4CAF50;
+    outline: none;
+    background-color: #fff;
+}
+
+.photo-container {
+    flex-shrink: 0;
+}
+
+.photo-container img {
+    max-width: 200px;
+    border-radius: 10px;
+}
 </style>
 
 <script>
@@ -892,9 +1084,170 @@ window.onload = function() {
     window.closePopup = closePopup;
     window.submitSmartcardID = submitSmartcardID;
 };
+
+//for view
+//student
+function openStudentPopup() {
+        document.getElementById('studentIdModal').style.display = 'flex';
+    }
+
+    function closeStudentPopup() {
+        document.getElementById('studentIdModal').style.display = 'none';
+    }
+
+    function submitStudentID() {
+        const studentID = document.getElementById('studentIdInput').value.trim();
+        if (studentID === '') {
+            alert('Please enter a Student ID.');
+            return;
+        }
+        window.location.href = "viewstudent.jsp?student_id=" + encodeURIComponent(studentID);
+    }
+
+//warden
+function openWardenPopup() {
+    document.getElementById('wardenEmailModal').style.display = 'flex';
+}
+
+function closeWardenPopup() {
+    document.getElementById('wardenEmailModal').style.display = 'none';
+}
+
+function submitWardenEmail() {
+    const wardenEmail = document.getElementById('wardenEmailInput').value.trim();
+    if (wardenEmail === '') {
+        alert('Please enter a Warden Email.');
+        return;
+    }
+    window.location.href = "viewwarden.jsp?email=" + encodeURIComponent(wardenEmail);
+}
+//view for hod
+ // Open Email Popup
+ function openEmailPopup() {
+        document.getElementById('emailModal').style.display = 'flex';
+    }
+
+    // Close Email Popup
+    function closeEmailPopup() {
+        document.getElementById('emailModal').style.display = 'none';
+    }
+
+    // Submit HOD Email
+    function submitEmail() {
+        const email = document.getElementById('emailInput').value.trim();
+        if (email === '') {
+            alert('Please enter an email.');
+            return;
+        }
+        window.location.href = "viewhod.jsp?email=" + encodeURIComponent(email);
+    }
+     // Open VO Email Popup
+     function openVoPopup() {
+        document.getElementById('voEmailModal').style.display = 'flex';
+    }
+
+    // Close VO Email Popup
+    function closeVoPopup() {
+        document.getElementById('voEmailModal').style.display = 'none';
+    }
+
+    // Submit VO Email
+    function submitVoEmail() {
+        const email = document.getElementById('voEmailInput').value.trim();
+        if (email === '') {
+            alert('Please enter an email.');
+            return;
+        }
+        window.location.href = "viewvo.jsp?email=" + encodeURIComponent(email);
+    }
+
+    function openModal() {
+            document.getElementById("adminModal").style.display = "flex";
+        }
+
+        function closeModal() {
+            document.getElementById("adminModal").style.display = "none";
+        }
+
+        function submitAdminEmail() {
+            var email = document.getElementById("adminEmail").value.trim();
+            if (email === "") {
+                alert("Please enter an email!");
+                return;
+            }
+            window.location.href = "viewadmin.jsp?email=" + encodeURIComponent(email);
+        }
 </script>
 </head>
 <body>
+
+    <!-- Popup for view  student -->
+<!-- Student ID Popup -->
+<div id="studentIdModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <h2>Enter Student ID</h2>
+        <input type="text" id="studentIdInput" placeholder="Enter Student ID">
+        <div style="margin-top:15px;">
+            <button class="custom-submit-btn" onclick="submitStudentID()">Submit</button>
+            <button class="custom-cancel-btn" onclick="closeStudentPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!--  view Warden Email Popup -->
+<div id="wardenPopup" class="popup-container" style="display: none;">
+    <div class="content">
+        <h2>Enter Warden Email</h2>
+        <input type="text" id="wardenEmail" placeholder="Enter Warden Email">
+        <button class="update-btn" onclick="fetchWardenDetails()">Submit</button>
+        <button class="cancel-btn" onclick="closeWardenPopup()">Cancel</button>
+    </div>
+</div>
+
+<div id="hodEmailModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <span class="close" onclick="closeHodPopup()">&times;</span>
+        <h2>Enter HOD Email</h2>
+        <input type="email" id="hodEmailInput" placeholder="Enter HOD Email">
+        <button onclick="submitHodEmail()" class="custom-submit-btn">Submit</button>
+        <button onclick="closeHodPopup()" class="custom-cancel-btn">Cancel</button>
+    </div>
+</div>
+
+<!-- VO Email Popup -->
+<div id="voEmailModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <h2>Enter VO Email</h2>
+        <input type="email" id="voEmailInput" placeholder="Enter VO Email">
+        <div style="margin-top:15px;">
+            <button class="custom-submit-btn" onclick="submitVoEmail()">Submit</button>
+            <button class="custom-cancel-btn" onclick="closeVoPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- view Admin Email Popup -->
+ <!-- Admin Popup Modal -->
+ <div id="adminModal" class="custom-modal">
+    <div class="custom-modal-content">
+        <h2>Enter Admin Email</h2>
+        <input type="email" id="adminEmail" placeholder="Enter admin email">
+        <br><br>
+        <button class="custom-submit-btn" onclick="submitAdminEmail()">Submit</button>
+        <button class="custom-cancel-btn" onclick="closeModal()">Cancel</button>
+    </div>
+</div>
+<!-- view Warden Email Popup -->
+<div id="wardenEmailModal" class="warden-popup-modal">
+    <div class="warden-popup-content">
+        <h2>Enter Warden Email</h2>
+        <input type="text" id="wardenEmailInput" placeholder="Enter Warden Email">
+        <div style="margin-top:15px;">
+            <button class="warden-submit-btn" onclick="submitWardenEmail()">Submit</button>
+            <button class="warden-cancel-btn" onclick="closeWardenPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
 
      <!-- Overlay Background -->
      <div class="overlay" id="overlay"></div>
@@ -1094,6 +1447,7 @@ border-radius: 10px; text-align: center; width: 300px;">
     </div>
 </div>
 
+
 <!-- Overlay Background -->
 <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
 background: rgba(0,0,0,0.5); z-index: 999;"></div>
@@ -1153,10 +1507,10 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             </a>
             <div id="viewDropdown" class="dropdown">
                 <a href="#" onclick="openStudentPopup()">Student</a>
-                <a href="#" onclick="openEmailPopup('openWardenPopup')">Warden</a>
-                <a href="#" onclick="openEmailPopup('openH')">HOD</a>
-                <a href="#" onclick="openEmailPopup('Verification Officer')">Verification Officer</a>
-                <a href="#" onclick="openEmailPopup('Admin')">Admin</a>
+                <a href="#" onclick="openWardenPopup('openWardenPopup')">Warden</a>
+                <a href="#" onclick="openEmailPopup()">HOD</a>
+                <a href="#" onclick="openVoPopup()">Verification Officer</a>
+                <a href="#" onclick="openModal()">Admin</a>
             </div>
     
             <!-- Update Section -->
@@ -1176,7 +1530,7 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
                 <i class="fas fa-user-plus"></i> Add <i id="addArrow" class="fas fa-chevron-right arrow"></i>
             </a>
             <div id="addDropdown" class="dropdown">
-                <a href="addstudent .jsp" onclick="openPopup('addstudent.jsp')">Student</a>
+                <a href="addstudent.jsp" onclick="openPopup('addstudent.jsp')">Student</a>
                 <a href="addwarden.jsp" onclick="openPopup('addwarden.jsp')">Warden</a>
                 <a href="addhod.jsp" onclick="openPopup('addhod.jsp')">HOD</a>
                 <a href="addvo.jsp" onclick="openPopup('addvo.jsp')">Verification Officer</a>
@@ -1217,6 +1571,103 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
         </a>
     
     </div>
+    <script>
+        function openPopup(page) {
+            console.log("Popup opened:", page);
+            document.getElementById("popupFrame").src = page;
+            document.getElementById("popupModal").style.display = "flex";
+    
+            // Hide admin details when popup opens
+            document.getElementById("adminDetails").style.display = "none";  // Hide admin details
+        }
+    
+        function closePopup() {
+            document.getElementById("popupModal").style.display = "none";
+            document.getElementById("popupFrame").src = "";
+    
+            // Show admin details again when popup closes
+            document.getElementById("adminDetails").style.display = "block";  // Show admin details
+        }
+    
+
+    function toggleDropdown(dropdownId, arrowId) {
+    var dropdown = document.getElementById(dropdownId);
+    var arrow = document.getElementById(arrowId);
+
+    if (dropdown.style.display === "block") {
+        dropdown.style.display = "none";
+        arrow.classList.remove("rotate");
+        document.getElementById("adminDetails").style.display = "none";  // Hide admin details
+    } else {
+        dropdown.style.display = "block";
+        arrow.classList.add("rotate");
+        document.getElementById("adminDetails").style.display = "none";  // Hide admin details
+        
+    }
+}
+</script>
+<div id="popupModal" class="popup-modal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); justify-content: center; align-items: center;">
+    <div class="popup-content" style="background: white; padding: 20px; border-radius: 10px;">
+        <iframe id="popupFrame" style="width: 600px; height: 400px; border: none;"></iframe>
+        <button onclick="closePopup()" style="margin-top: 10px; padding: 10px; background: red; color: white; border: none; cursor: pointer;">Close</button>
+    </div>
+</div>
+<!-- Admin Details Container -->
+<div class="content">
+    <div id="adminDetails" class="details-container">
+        <%
+            String adminId = (String) session.getAttribute("adminId");
+            if (adminId == null) {
+                response.sendRedirect("admin.jsp");
+                return;
+            }
+        %>
+
+        <div class="photo-container">
+            <img src="AdminPhotoServlet?adminId=<%= adminId %>" alt="Admin Photo">
+        </div>
+        <div class="details-grid">
+            <%
+                Connection con = null;
+                PreparedStatement pstmt = null;
+                ResultSet rs = null;
+                try {
+                    Class.forName("com.mysql.cj.jdbc.Driver");
+                    con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
+
+                    String query = "SELECT admin_id, name, phone, email FROM admin WHERE admin_id = ?";
+                    pstmt = con.prepareStatement(query);
+                    pstmt.setString(1, adminId);
+                    rs = pstmt.executeQuery();
+
+                    if (rs.next()) {
+            %>
+            <label>Admin ID:</label>
+            <input type="text" value="<%= rs.getString("admin_id") %>" readonly>
+
+            <label>Name:</label>
+            <input type="text" value="<%= rs.getString("name") %>" readonly>
+
+            <label>Email:</label>
+            <input type="text" value="<%= rs.getString("email") %>" readonly>
+
+            <label>Phone:</label>
+            <input type="text" value="<%= rs.getString("phone") %>" readonly>
+            <%
+                    } else {
+                        out.println("<p style='color: red;'>No admin found with the provided ID.</p>");
+                    }
+                } catch (Exception e) {
+                    out.println("<p style='color: red;'>Error fetching data: " + e.getMessage() + "</p>");
+                } finally {
+                    if (rs != null) try { rs.close(); } catch (Exception e) {}
+                    if (pstmt != null) try { pstmt.close(); } catch (Exception e) {}
+                    if (con != null) try { con.close(); } catch (Exception e) {}
+                }
+            %>
+        </div>
+    </div>
+</div>
 
 </body>
 </html>
