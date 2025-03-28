@@ -533,7 +533,7 @@
                 String prevQuery = "SELECT leave_id, leave_type, start_date, end_date, num_days, " +
                                 "final_status " +
                                 "FROM LeaveRequests " +
-                                "WHERE student_id = ? AND (final_status = 'Accepted' OR final_status = 'Rejected')";
+                                "WHERE student_id = ? AND (final_status = 'Accepted' OR final_status = 'Rejected' or current_stage='Rejected')";
                 
                 prevPstmt = prevCon.prepareStatement(prevQuery);
                 prevPstmt.setString(1, studentId);
