@@ -16,6 +16,8 @@
             response.sendRedirect("hod.jsp");
         } else if ("verificationOfficer".equalsIgnoreCase(employeeType)) {
             response.sendRedirect("vo.jsp");
+        }else if ("gpo".equalsIgnoreCase(employeeType)) {
+            response.sendRedirect("gpo.jsp");
         } else {
             out.println("<h3>Invalid employee type selected!</h3>");
         }

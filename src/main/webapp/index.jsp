@@ -198,6 +198,7 @@
                 <option value="warden">Warden</option>
                 <option value="hod">HOD</option>
                 <option value="verificationOfficer">Verification Officer</option>
+                <option value="gpo">GatePass Officer</option>
             </select>
 
             <button type="submit">Continue</button>

@@ -358,8 +358,7 @@
 
         <div class="options">
             <a href="leave_request.jsp" class="button">Create Application</a>
-            <a href="gLeaveTracking.jsp?guardianId=<%= session.getAttribute("guardianId") %>">Track Application</a>
-
+            <a href="gLeaveTracking.jsp?guardianId=<%= session.getAttribute("guardianId") %>" class="button">Track Application</a>
         </div>
 </div>
 
