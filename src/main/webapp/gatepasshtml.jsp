@@ -8,71 +8,89 @@ PreparedStatement ps = null;
 PreparedStatement ps2 = null;
 ResultSet rs = null;
 
-String studentId = request.getParameter("student_id"); // Assume student_id is passed as a parameter
+String leaveId = request.getParameter("leave_id"); 
+String studentId = request.getParameter("student_id");
 
 try {
     Class.forName("com.mysql.cj.jdbc.Driver");
     conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms","lms");
 
-    // SQL query to join tables and retrieve required data
-    String sql = "SELECT l.leave_id, l.start_date, l.end_date, l.companion_name, l.companion_relation, " +
-                 "s.name AS student_name, g.name AS guardian_name, c.name, h.name " +
-                 "FROM leaverequests l " +
-                 "JOIN students s ON l.student_id = s.student_id " +
-                 "JOIN courses c ON s.course_id = c.course_id " +
-                 "JOIN hostels h ON s.hostel_id = h.hostel_id " +
-                 "JOIN guardians g ON s.student_id = g.student_id " +
-                 "WHERE l.student_id = ?";
+    // First, verify the leave request exists
+    String verifyQuery = "SELECT * FROM leaverequests WHERE leave_id = ? AND student_id = ?";
+    ps = conn.prepareStatement(verifyQuery);
+    ps.setString(1, leaveId);
+    ps.setString(2, studentId);
+    rs = ps.executeQuery();
 
-    stmt = conn.prepareStatement(sql);
-    stmt.setString(1, studentId);
-    rs = stmt.executeQuery();
-
-    // Fetch data if available
     if (rs.next()) {
-        String leaveId = rs.getString("leave_id");
-        String studentName = rs.getString("student_name");
-        String guardianName = rs.getString("guardian_name");
-        String courseName = rs.getString("c.name");
-        String hostelName = rs.getString("h.name");
-        String startDate = rs.getString("start_date");
-        String endDate = rs.getString("end_date");
-        String companionName = rs.getString("companion_name") != null ? rs.getString("companion_name") : "अकेली";
-        String companionRelation = rs.getString("companion_relation") != null ? rs.getString("companion_relation") : "";
+        // SQL query to join tables and retrieve required data
+        String sql = "SELECT l.leave_id, l.start_date, l.end_date, l.companion_name, l.companion_relation, " +
+                     "s.name AS student_name, g.name AS guardian_name, c.name, h.name " +
+                     "FROM leaverequests l " +
+                     "JOIN students s ON l.student_id = s.student_id " +
+                     "JOIN courses c ON s.course_id = c.course_id " +
+                     "JOIN hostels h ON s.hostel_id = h.hostel_id " +
+                     "JOIN guardians g ON s.student_id = g.student_id " +
+                     "WHERE l.leave_id = ? AND l.student_id = ?";
 
-        // Update Leave Request Status
-        String updateQuery = "UPDATE LeaveRequests SET gpo_status = 'Accepted' WHERE leave_id = ?";
-        ps = conn.prepareStatement(updateQuery);
-        ps.setString(1, leaveId);
-        int rowsUpdated = ps.executeUpdate();
+        stmt = conn.prepareStatement(sql);
+        stmt.setString(1, leaveId);
+        stmt.setString(2, studentId);
+        rs = stmt.executeQuery();
 
-        if (rowsUpdated > 0) {
-            String updateStageQuery = "UPDATE LeaveRequests SET current_stage = 'Complete', final_status='Accepted' WHERE leave_id = ?";
-            ps2 = conn.prepareStatement(updateStageQuery);
+        // Fetch data if available
+        if (rs.next()) {
+            String studentName = rs.getString("student_name");
+            String guardianName = rs.getString("guardian_name");
+            String courseName = rs.getString("c.name");
+            String hostelName = rs.getString("h.name");
+            String startDate = rs.getString("start_date");
+            String endDate = rs.getString("end_date");
+            String companionName = rs.getString("companion_name") != null ? rs.getString("companion_name") : "अकेली";
+            String companionRelation = rs.getString("companion_relation") != null ? rs.getString("companion_relation") : "";
+
+            // Update Leave Request Status with explicit checks
+            String updateQuery = "UPDATE LeaveRequests SET gpo_status = 'Accepted', current_stage = 'Complete', final_status = 'Accepted' WHERE leave_id = ? AND student_id = ?";
+            ps2 = conn.prepareStatement(updateQuery);
             ps2.setString(1, leaveId);
-            ps2.executeUpdate();
-        }
+            ps2.setString(2, studentId);
+            int rowsUpdated = ps2.executeUpdate();
 
-        // Setting attributes to be used in HTML
-        request.setAttribute("leaveId", leaveId);
-        request.setAttribute("studentName", studentName);
-        request.setAttribute("guardianName", guardianName);
-        request.setAttribute("courseName", courseName);
-        request.setAttribute("hostelName", hostelName);
-        request.setAttribute("startDate", startDate);
-        request.setAttribute("endDate", endDate);
-        request.setAttribute("companionName", companionName);
-        request.setAttribute("companionRelation", companionRelation);
+            // Only set attributes if update was successful
+            if (rowsUpdated > 0) {
+                request.setAttribute("leaveId", leaveId);
+                request.setAttribute("studentName", studentName);
+                request.setAttribute("guardianName", guardianName);
+                request.setAttribute("courseName", courseName);
+                request.setAttribute("hostelName", hostelName);
+                request.setAttribute("startDate", startDate);
+                request.setAttribute("endDate", endDate);
+                request.setAttribute("companionName", companionName);
+                request.setAttribute("companionRelation", companionRelation);
+            } else {
+                // Log or handle the case where no rows were updated
+                System.out.println("No rows updated for leave ID: " + leaveId);
+            }
+        }
+    } else {
+        // Handle case where no matching leave request is found
+        System.out.println("No leave request found for leave ID: " + leaveId + " and student ID: " + studentId);
     }
 } catch (Exception e) {
     e.printStackTrace();
+    // Optional: Log error or set an error attribute
+    request.setAttribute("errorMessage", "An error occurred while processing the gatepass.");
 } finally {
     // Close all database resources
-    if (rs != null) rs.close();
-    if (stmt != null) stmt.close();
-    if (ps != null) ps.close();
-    if (ps2 != null) ps2.close();
-    if (conn != null) conn.close();
+    try {
+        if (rs != null) rs.close();
+        if (stmt != null) stmt.close();
+        if (ps != null) ps.close();
+        if (ps2 != null) ps2.close();
+        if (conn != null) conn.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
 }
 %>
 <!DOCTYPE html>
