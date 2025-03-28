@@ -554,32 +554,38 @@ if (guardianId == null) {
             z-index: 1000;
             box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
         }
+        
         .navbar .logo {
             display: flex;
             align-items: center;
         }
+        
         .navbar .logo img {
             width: 150px;
             height: auto;
             margin-right: 10px;
             margin-left: 0px;
         }
+        
         .navbar .logo h1 {
             font-size: 30px;
             margin: 0;
             font-weight: 500;
         }
+        
         .navbar .nav-links {
             display: flex;
             align-items: center;
             gap: 20px;
         }
+        
         .navbar .nav-links a {
             color: white;
             text-decoration: none;
             font-size: 14px;
             transition: color 0.3s;
         }
+        
         .navbar .nav-links a:hover {
             color: #4CAF50;
         }
@@ -603,13 +609,14 @@ if (guardianId == null) {
            background: #6386a6;
            position: absolute;
            left: 0;
-           bottom: -10px;
+           bottom: -10px; 
            transition: 0.5s;
         }
         .navbar ul li:hover::after{
             width: 100%;
         }
         .navbar .nav-button {
+            background-color: #4CAF50;
             color: white;
             text-decoration: none;
             padding: 10px 15px;
@@ -617,9 +624,14 @@ if (guardianId == null) {
             font-size: 14px;
             transition: background-color 0.3s;
         }
+        
+        .navbar .nav-button:hover {
+            background-color: #45a049;
+        }
         .quick-links {
             position: relative;
         }
+        
         .quick-links .dropdown {
             display: none;
             position: absolute;
@@ -630,15 +642,18 @@ if (guardianId == null) {
             border-radius: 5px;
             overflow: hidden;
         }
+        
         .quick-links .dropdown a {
             color: black;
             padding: 10px;
             display: block;
             text-decoration: none;
         }
+        
         .quick-links:hover .dropdown {
            display: block;
         }
+        
         .logout {
             color: white;
             background-color: #f44336;
@@ -648,6 +663,7 @@ if (guardianId == null) {
             font-size: 14px;
             transition: background-color 0.3s;
         }
+        
         .logout:hover {
             background-color: #d32f2f;
         }

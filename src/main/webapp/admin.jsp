@@ -147,7 +147,7 @@
     <div class="container">
     <div class="login-container">
         <h1>Admin Login</h1>
-        <form action="AdminLoginServlet.jsp" method="POST">
+        <form action="AdminLoginServlet" method="POST">
             <input type="text" name="adminId" placeholder="Admin ID" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
