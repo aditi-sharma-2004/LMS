@@ -1,3 +1,4 @@
+
 <%@ page import="java.sql.*" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,94 +27,143 @@
     display: block !important; /* Ensure visibility */
 }
 
-        /* Navbar */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 2px 20px;
-            position: fixed;
-            top: 0;
-            
-            width: 100%;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        }
-
-        .navbar, .sidebar {
-    background-color: #264653 !important; /* Charcoal Blue */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 3px 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 99%;
+    z-index: 1000;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
 
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-        }
+.navbar .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 0px;
+}
 
-        .navbar .logo img {
-            width: 150px;
-            height: auto;
-            margin-right: 10px;
-        }
+.navbar .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 500;
+}
 
-        .navbar .logo h1 {
-            font-size: 30px;
-            margin: 0;
-            font-weight: 500;
-        }
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
 
-        .navbar .nav-links {
-            display: flex;
-            gap: 20px;
-        }
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
 
-        .navbar .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
+.navbar .nav-links a:hover {
+    color: #4CAF50;
+}
+.contact{
+    margin-top: 10px;
+}
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+}
+.navbar ul li::after{
+    content: '';
+   height: 3px;
+   width: 0;
+   background: #6386a6;
+   position: absolute;
+   left: 0;
+   bottom: -10px; 
+   transition: 0.5s;
+}
+.navbar ul li:hover::after{
+    width: 100%;
+}
+.navbar .nav-button {
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
 
-        .navbar .nav-links a:hover {
-            color: #4CAF50;
-        }
-        .contact{
-            margin-top: 10px;
-        }
-        .navbar ul li {
-            list-style: none;
-            display: inline-block;
-            margin: 0 20px;
-            position: relative;
-        }
-        .navbar ul li a{
-            text-decoration: none;
-            color: #fff;
-        }
-        .navbar ul li::after{
-            content: '';
-           height: 3px;
-           width: 0;
-           background: #6386a6;
-           position: absolute;
-           left: 0;
-           bottom: -10px; 
-           transition: 0.5s;
-        }
-        .navbar ul li:hover::after{
-            width: 100%;
-        }
+.navbar .nav-button:hover {
+    background-color: #45a049;
+}
+.quick-links {
+    position: relative;
+}
+
+.quick-links .dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quick-links .dropdown a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.quick-links:hover .dropdown {
+   display: block;
+}
+
+.logout {
+    color: white;
+    background-color: #f44336;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: #d32f2f;
+}
+
         /* Sidebar */
         .sidebar {
             width: 250px;
             height: calc(100vh - 60px);
-            background: #2c3e50;
+            background: #333;
             color: white;
             padding: 10px;
             position: fixed;
-            top: 50px;
+            top: 70px;
             left: 0;
             overflow-y: auto;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
@@ -137,7 +187,7 @@
         }
 
         .sidebar a:hover, .sidebar .active {
-            background: #34495e;
+            background:  #333;
         }
 
         .dropdown {
@@ -610,7 +660,7 @@ iframe {
         }
 
         function closeStudentPopup() {
-            document.getElementById("studentPopup").style.display = "none";
+            document.getElementById('studentPopup').style.display = 'none';
             document.getElementById("overlay").style.display = "none";
         }
 
@@ -637,7 +687,7 @@ function openWardenPopup() {
 
 // ✅ Close Warden Popup
 function closeWardenPopup() {
-    document.getElementById("wardenPopup").style.display = "none";
+    document.getElementById('wardenPopup').style.display = 'none';
     document.getElementById("overlay").style.display = "none";
 }
 
@@ -723,7 +773,7 @@ function openHodPopup() {
     }
 
     function closevoPopup() {
-        document.getElementById("voPopup").style.display = "none";
+        document.getElementById('voPopup').style.display = 'none';
         document.getElementById("overlay").style.display = "none";
     }
 
@@ -752,53 +802,58 @@ function openHodPopup() {
     }
     
 //Admin
-
 function openAdminPopup() {
-        document.getElementById("adminPopup").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
+    console.log("Opening Admin popup...");
+    let popup = document.getElementById("adminPopup");
+    let overlay = document.getElementById("overlay");
+    let emailInput = document.getElementById("adminEmail");
+
+    if (!popup) {
+        console.error("Admin popup not found!");
+        return;
     }
 
-    function closeAdminPopup() {
-        document.getElementById("adminPopup").style.display = "none";
-        document.getElementById("overlay").style.display = "none";
+    popup.style.display = "block";
+    overlay.style.display = "block";
+
+    // ✅ Ensure the email field retains its value
+    if (!emailInput.value) {
+        emailInput.value = "";
     }
-
-    function validateAdminEmail() {
-        var emailInput = document.getElementById("adminEmail");
-        if (!emailInput) {
-            alert("Email input field not found!");
-            return;
-        }
-        var email = emailInput.value.trim();
-        console.log("Entered email:", email);
-
-        if (email === "") {
-            alert("Email field cannot be empty!");
-            return;
-        }
-
-        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
-        if (emailPattern.test(email)) {  
-            console.log("✅ Valid email. Redirecting...");
-            window.location.href = "update_admin.jsp?email=" + encodeURIComponent(email);
-        } else {
-            console.log("❌ Invalid email format detected.");
-            alert("Please enter a valid email address.");
-        }
-    }
-
-//REMOVE
-   // ✅ Open Student Modal
-function openStudentRemovePopup() {
-    document.getElementById("studentremovePopup").style.display = "block";
-    document.getElementById("student-message").innerHTML = ""; // Clear old messages
 }
 
-// ✅ Close Student Modal
-function closeStudentPopup() {
-    document.getElementById("studentremovePopup").style.display = "none";
+        // Close admin Popup
+        function closeAdminPopup() {
+    document.getElementById("adminPopup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
 }
 
+function validateAdminEmail() {
+    var emailInput = document.getElementById("adminEmail");
+
+    if (!emailInput) {
+        alert("Email input field not found!");
+        return;
+    }
+
+    var email = emailInput.value.trim();
+    console.log("Entered email:", email);
+
+    if (email === "") {
+        alert("Email field cannot be empty!");
+        return;
+    }
+
+    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
+
+    if (emailPattern.test(email)) {  
+        console.log("✅ Valid email. Redirecting...");
+        window.location.href = "update_admin.jsp?email=" + encodeURIComponent(email);
+    } else {
+        console.log("❌ Invalid email format detected.");
+        alert("Please enter a valid email address.");
+    }
+}
 // ✅ Remove Student
 function removeStudent() {
     var studentId = document.getElementById("studentId").value.trim();
@@ -1087,7 +1142,7 @@ window.onload = function() {
 
 //for view
 //student
-function openStudentPopup() {
+function open_StudentPopup() {
         document.getElementById('studentIdModal').style.display = 'flex';
     }
 
@@ -1095,7 +1150,7 @@ function openStudentPopup() {
         document.getElementById('studentIdModal').style.display = 'none';
     }
 
-    function submitStudentID() {
+    function submit_StudentID() {
         const studentID = document.getElementById('studentIdInput').value.trim();
         if (studentID === '') {
             alert('Please enter a Student ID.');
@@ -1105,7 +1160,7 @@ function openStudentPopup() {
     }
 
 //warden
-function openWardenPopup() {
+function open_WardenPopup() {
     document.getElementById('wardenEmailModal').style.display = 'flex';
 }
 
@@ -1113,7 +1168,7 @@ function closeWardenPopup() {
     document.getElementById('wardenEmailModal').style.display = 'none';
 }
 
-function submitWardenEmail() {
+function submit_WardenEmail() {
     const wardenEmail = document.getElementById('wardenEmailInput').value.trim();
     if (wardenEmail === '') {
         alert('Please enter a Warden Email.');
@@ -1133,7 +1188,7 @@ function submitWardenEmail() {
     }
 
     // Submit HOD Email
-    function submitEmail() {
+    function submit_Email() {
         const email = document.getElementById('emailInput').value.trim();
         if (email === '') {
             alert('Please enter an email.');
@@ -1142,7 +1197,7 @@ function submitWardenEmail() {
         window.location.href = "viewhod.jsp?email=" + encodeURIComponent(email);
     }
      // Open VO Email Popup
-     function openVoPopup() {
+     function open_VoPopup() {
         document.getElementById('voEmailModal').style.display = 'flex';
     }
 
@@ -1152,7 +1207,7 @@ function submitWardenEmail() {
     }
 
     // Submit VO Email
-    function submitVoEmail() {
+    function submit_VoEmail() {
         const email = document.getElementById('voEmailInput').value.trim();
         if (email === '') {
             alert('Please enter an email.');
@@ -1161,7 +1216,7 @@ function submitWardenEmail() {
         window.location.href = "viewvo.jsp?email=" + encodeURIComponent(email);
     }
 
-    function openModal() {
+    function open_Modal() {
             document.getElementById("adminModal").style.display = "flex";
         }
 
@@ -1169,7 +1224,7 @@ function submitWardenEmail() {
             document.getElementById("adminModal").style.display = "none";
         }
 
-        function submitAdminEmail() {
+        function submit_AdminEmail() {
             var email = document.getElementById("adminEmail").value.trim();
             if (email === "") {
                 alert("Please enter an email!");
@@ -1188,19 +1243,9 @@ function submitWardenEmail() {
         <h2>Enter Student ID</h2>
         <input type="text" id="studentIdInput" placeholder="Enter Student ID">
         <div style="margin-top:15px;">
-            <button class="custom-submit-btn" onclick="submitStudentID()">Submit</button>
+            <button class="custom-submit-btn" onclick="submit_StudentID()">Submit</button>
             <button class="custom-cancel-btn" onclick="closeStudentPopup()">Cancel</button>
         </div>
-    </div>
-</div>
-
-<!--  view Warden Email Popup -->
-<div id="wardenPopup" class="popup-container" style="display: none;">
-    <div class="content">
-        <h2>Enter Warden Email</h2>
-        <input type="text" id="wardenEmail" placeholder="Enter Warden Email">
-        <button class="update-btn" onclick="fetchWardenDetails()">Submit</button>
-        <button class="cancel-btn" onclick="closeWardenPopup()">Cancel</button>
     </div>
 </div>
 
@@ -1209,7 +1254,7 @@ function submitWardenEmail() {
         <span class="close" onclick="closeHodPopup()">&times;</span>
         <h2>Enter HOD Email</h2>
         <input type="email" id="hodEmailInput" placeholder="Enter HOD Email">
-        <button onclick="submitHodEmail()" class="custom-submit-btn">Submit</button>
+        <button onclick="submit_HodEmail()" class="custom-submit-btn">Submit</button>
         <button onclick="closeHodPopup()" class="custom-cancel-btn">Cancel</button>
     </div>
 </div>
@@ -1220,7 +1265,7 @@ function submitWardenEmail() {
         <h2>Enter VO Email</h2>
         <input type="email" id="voEmailInput" placeholder="Enter VO Email">
         <div style="margin-top:15px;">
-            <button class="custom-submit-btn" onclick="submitVoEmail()">Submit</button>
+            <button class="custom-submit-btn" onclick="submit_VoEmail()">Submit</button>
             <button class="custom-cancel-btn" onclick="closeVoPopup()">Cancel</button>
         </div>
     </div>
@@ -1233,7 +1278,7 @@ function submitWardenEmail() {
         <h2>Enter Admin Email</h2>
         <input type="email" id="adminEmail" placeholder="Enter admin email">
         <br><br>
-        <button class="custom-submit-btn" onclick="submitAdminEmail()">Submit</button>
+        <button class="custom-submit-btn" onclick="submit_AdminEmail()">Submit</button>
         <button class="custom-cancel-btn" onclick="closeModal()">Cancel</button>
     </div>
 </div>
@@ -1243,7 +1288,7 @@ function submitWardenEmail() {
         <h2>Enter Warden Email</h2>
         <input type="text" id="wardenEmailInput" placeholder="Enter Warden Email">
         <div style="margin-top:15px;">
-            <button class="warden-submit-btn" onclick="submitWardenEmail()">Submit</button>
+            <button class="warden-submit-btn" onclick="submit_WardenEmail()">Submit</button>
             <button class="warden-cancel-btn" onclick="closeWardenPopup()">Cancel</button>
         </div>
     </div>
@@ -1271,22 +1316,24 @@ border-radius: 10px; text-align: center; width: 300px;">
     </button>
 </div>
 </div>
-<!-- Popup Modal warden -->
-<div id="wardenPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
+
+     <!-- Overlay Background -->
+     <div class="overlay" id="overlay"></div>
+     <div id="wardenPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
 border-radius: 10px; text-align: center; width: 300px;">
 
-<h2 style="margin-bottom: 10px;">Enter warden Email</h2>
+<h2 style="margin-bottom: 10px;">Enter Warden Email</h2>
 <input type="email" id="wardenEmail" placeholder="" required 
     style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
 
 <div>
-    <button onclick="validateEmail()" style="background-color: green; color: white; border: none; 
+    <button onclick="validateWardenEmail()" style="background-color: green; color: white; border: none; 
         padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
         Submit
     </button>
     
-    <button onclick="closeWardenPopup()" style="background-color: red; color: white; border: none; 
+    <button onclick="closeWardenPopup()"style="background-color: red; color: white; border: none; 
         padding: 10px 15px; border-radius: 5px; cursor: pointer;">
         Cancel
     </button>
@@ -1327,21 +1374,29 @@ border-radius: 10px; text-align: center; width: 300px;">
     <button onclick="closevoPopup()" style="background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
 </div>
 
-<!-- Overlay -->
-<div id="overlay" onclick="closeAdminPopup()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999;"></div>
-
-<!-- Admin Popup -->
+<!-- ✅ Admin Popup (Ensure it's structured properly) -->
 <div id="adminPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
 border-radius: 10px; text-align: center; width: 300px;">
     <h2 style="margin-bottom: 10px;">Enter Admin Email</h2>
-    <input type="email" id="adminEmail" placeholder="" required 
+    
+    <!-- ✅ Ensure this input is NOT hidden or missing -->
+    <input type="email" id="adminEmail" placeholder="Enter email" required 
         style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
-    <button onclick="validateAdminEmail()" style="background: green; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
-    <button onclick="closeAdminPopup()" style="background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
+    
+    <div>
+        <button onclick="validateAdminEmail()" style="background: green; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">
+            Submit
+        </button>
+        <button onclick="closeAdminPopup()" style="background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">
+            Cancel
+        </button>
+    </div>
 </div>
 
-
+<!-- ✅ Overlay (if missing, add it) -->
+<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+background: rgba(0,0,0,0.5); z-index: 999;"></div>
 
 <!-- ✅ Student Removal Modal -->
 <div id="studentremovePopup" class="popup" style="display: none;">
@@ -1447,23 +1502,28 @@ border-radius: 10px; text-align: center; width: 300px;">
     </div>
 </div>
 
-
-<!-- Overlay Background -->
-<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-background: rgba(0,0,0,0.5); z-index: 999;"></div>
-
     <!-- Navbar -->
     <div class="navbar">
         <div class="logo">
             <img src="Logoos.jpg" alt="Logo">
         </div>
-        <ul>
-            <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">HOME</a></li>
-            <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">PROGRAMS</a></li>
-            <li><a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">CAMPUS</a></li>
-            <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">ABOUT US</a></li>
-        </ul>
+        <div class="nav-links">
+            
+            <a href="change_password.jsp" >Change Password</a>
+            <div class="quick-links">
+                <button class="dropdown-button">Quick Links</button>
+                <div class="dropdown">
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">Home</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">Programs</a>
+                    <a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">Campus</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">About Us</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/lower-menu/contact_us/index.html" target="_blank">Contact Us</a>
+                </div>
+            </div>
+            <a href="logout.jsp" class="logout">Logout</a>
+        </div>
     </div>
+
 
     <% 
         String message = request.getParameter("message");
@@ -1506,11 +1566,11 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
                 <i class="fas fa-eye"></i> View <i id="viewArrow" class="fas fa-chevron-right arrow"></i>
             </a>
             <div id="viewDropdown" class="dropdown">
-                <a href="#" onclick="openStudentPopup()">Student</a>
-                <a href="#" onclick="openWardenPopup('openWardenPopup')">Warden</a>
+                <a href="#" onclick="open_StudentPopup()">Student</a>
+                <a href="#" onclick="open_WardenPopup()">Warden</a>
                 <a href="#" onclick="openEmailPopup()">HOD</a>
-                <a href="#" onclick="openVoPopup()">Verification Officer</a>
-                <a href="#" onclick="openModal()">Admin</a>
+                <a href="#" onclick="open_VoPopup()">Verification Officer</a>
+                <a href="#" onclick="open_Modal()">Admin</a>
             </div>
     
             <!-- Update Section -->
@@ -1559,8 +1619,6 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
         <div id="leaveDropdown" class="dropdown">
             <a href="#" onclick="openLeavePopup()"><i class="fas fa-list"></i> View Leaves</a>
             <a href="pendingLeaves.jsp"><i class="fas fa-list"></i> Pending Leaves</a>
-            <a href="acceptLeave.jsp"><i class="fas fa-check-circle"></i> Accept Leave</a>
-            <a href="rejectLeave.jsp"><i class="fas fa-times-circle"></i> Reject Leave</a>
             <a href="#" onclick="openStudent_Popup()"><i class="fas fa-edit"></i> Update Leave</a>
 
         </div>
@@ -1671,4 +1729,3 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
 
 </body>
 </html>
-

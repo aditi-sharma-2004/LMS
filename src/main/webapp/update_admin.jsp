@@ -108,7 +108,7 @@
                     try {
                         // Database Connection
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "priyanshi", "2004@seth");
+                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
 
                         // Fetch Admin Data
                         String query = "SELECT name, phone, image FROM admin WHERE email=?";

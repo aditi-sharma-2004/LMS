@@ -158,5 +158,4 @@
         <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
-
 </html>

@@ -100,7 +100,7 @@
                     try {
                         // Database Connection
                         Class.forName("com.mysql.cj.jdbc.Driver");
-                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "priyanshi", "2004@seth");
+                        con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
 
                         // ✅ FIXED: Use correct column name `d.name AS department_name`
                         String query = "SELECT h.*, d.name AS department_name FROM hod h " +
