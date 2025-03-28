@@ -147,7 +147,7 @@
     <div class="container">
     <div class="login-container">
         <h1>Admin Login</h1>
-        <form action="alogin.jsp" method="POST">
+        <form action="AdminLoginServlet.jsp" method="POST">
             <input type="text" name="adminId" placeholder="Admin ID" required>
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
@@ -158,4 +158,5 @@
         <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
     </div>
 </body>
+
 </html>
