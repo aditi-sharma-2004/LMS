@@ -226,7 +226,7 @@
                         stmt = con.createStatement();
                         
                         // Fetch applications where all approvals are done
-                        String query = "SELECT * FROM LeaveRequests WHERE warden_status = 'Accepted' AND verification_status = 'Accepted' AND hod_status = 'Accepted'";
+                        String query = "SELECT * FROM LeaveRequests WHERE warden_status = 'Accepted' AND verification_status = 'Accepted' AND hod_status = 'Accepted' AND gpo_status='Pending'";
                         rs = stmt.executeQuery(query);
                         
                         while (rs.next()) {

@@ -59,6 +59,7 @@ try {
             // Only set attributes if update was successful
             if (rowsUpdated > 0) {
                 request.setAttribute("leaveId", leaveId);
+                request.setAttribute("studentId", studentId);
                 request.setAttribute("studentName", studentName);
                 request.setAttribute("guardianName", guardianName);
                 request.setAttribute("courseName", courseName);
@@ -110,6 +111,7 @@ try {
             background-color: #f4f4f4;
         }
         .container {
+            margin-top: 150px;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -117,7 +119,8 @@ try {
         .gatepass {
             width: 600px;
             background: white;
-            padding: 20px;
+            padding: 10px;
+            margin-top: 10px;
             border: 2px solid black;
             text-align: center;
             box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
@@ -128,7 +131,7 @@ try {
             justify-content: space-between;
             font-weight: bold;
             font-size: 18px;
-            margin-bottom: 10px;
+            margin-bottom: 2px;
         }
         .divider {
             border-top: 2px solid black;
@@ -161,7 +164,7 @@ try {
         .signatures {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            margin-top: 10px;
         }
         .signature {
             font-style: italic;
@@ -189,6 +192,7 @@ try {
 </head>
 <body>
     <div class="container">
+        <!-- First Gate Pass -->
         <div class="gatepass">
             <div class="header-container">
                 <div>वनस्थली विद्यापीठ</div>
@@ -199,16 +203,46 @@ try {
             <div class="info">
                 <div><span>दिनांक:</span> <%= new java.util.Date() %></div>                             
                 <div><span>क्रमांक:</span> <%= request.getAttribute("leaveId") %></div>
-                    <span class="gate-pass-box">मुख्य द्वार प्रति</span>
-
-               
+                <span class="gate-pass-box">मुख्य द्वार प्रति</span>
+                <div><span>छात्रा आईडी:</span> <%= request.getAttribute("studentId") %></div> 
                 <div><span>छात्रा का नाम:</span> <%= request.getAttribute("studentName") %></div>
                 <div><span>पिता का नाम:</span> <%= request.getAttribute("guardianName") %></div>
                 <div><span>कोर्स:</span> <%= request.getAttribute("courseName") %></div>
                 <div><span>अवकाश अवधि:</span> <%= request.getAttribute("startDate") %> से <%= request.getAttribute("endDate") %> तक</div>
                 <div><span>छात्रावास:</span> <%= request.getAttribute("hostelName") %></div>
                 <div><span>साथी:</span> <%= request.getAttribute("companionName") %> (<%= request.getAttribute("companionRelation") %>)</div>
-                
+            </div>
+            <div class="signatures">
+                <div class="signature">
+                    <p>हस्ताक्षर: _________</p>
+                    <p>(जाँचकर्ता हस्ताक्षर)</p>
+                </div>
+                <div class="signature">
+                    <p>हस्ताक्षर: _________</p>
+                    <p>(डीन / अधीक्षक)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Second Gate Pass (Duplicate) -->
+        <div class="gatepass">
+            <div class="header-container">
+                <div>वनस्थली विद्यापीठ</div>
+                <div>छात्रा अवकाश स्वीकृति पत्र</div>
+            </div>
+            <div class="divider"></div>
+            <div class="divider"></div>
+            <div class="info">
+                <div><span>दिनांक:</span> <%= new java.util.Date() %></div>                             
+                <div><span>क्रमांक:</span> <%= request.getAttribute("leaveId") %></div>
+                <span class="gate-pass-box">छात्रावास प्रति</span>
+                <div><span>छात्रा आईडी:</span> <%= request.getAttribute("studentId") %></div> 
+                <div><span>छात्रा का नाम:</span> <%= request.getAttribute("studentName") %></div>
+                <div><span>पिता का नाम:</span> <%= request.getAttribute("guardianName") %></div>
+                <div><span>कोर्स:</span> <%= request.getAttribute("courseName") %></div>
+                <div><span>अवकाश अवधि:</span> <%= request.getAttribute("startDate") %> से <%= request.getAttribute("endDate") %> तक</div>
+                <div><span>छात्रावास:</span> <%= request.getAttribute("hostelName") %></div>
+                <div><span>साथी:</span> <%= request.getAttribute("companionName") %> (<%= request.getAttribute("companionRelation") %>)</div>
             </div>
             <div class="signatures">
                 <div class="signature">
@@ -224,6 +258,7 @@ try {
 
         <button class="print-button" onclick="window.print()">Print Gatepass</button>
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             let companion = "";  // Fetch from database if available
