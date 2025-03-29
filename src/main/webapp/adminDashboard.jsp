@@ -8,7 +8,7 @@
     <title>Leave Management System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
@@ -37,7 +37,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 99%;
+    width: 100%;
     z-index: 1000;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
@@ -103,7 +103,7 @@
     width: 100%;
 }
 .navbar .nav-button {
-    background-color: #4CAF50;
+    background-color:  #8E54E9;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -155,19 +155,22 @@
     background-color: #d32f2f;
 }
 
+
+
         /* Sidebar */
-        .sidebar {
-            width: 250px;
-            height: calc(100vh - 60px);
-            background: #333;
-            color: white;
-            padding: 10px;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            overflow-y: auto;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        }
+        .sidebar {             
+    width: 250px;             
+    height: calc(100vh - 60px); /* Adjusted for navbar height */
+    background: #333;             
+    color: white;             
+    padding: 10px;             
+    position: fixed;             
+    top: 60px; /* Adjusted to align with the navbar */
+    left: 0;             
+    overflow-y: auto;             
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);         
+}
+
 
         .sidebar a {
             display: flex;
@@ -219,23 +222,6 @@
             transform: rotate(90deg);
         }
 
-        .logout {
-    background: #e74c3c;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 90%;
-    display: block;
-    margin: 20px auto;
-    text-decoration: none;
-}
-
-.logout:hover {
-    background: #c0392b;
-}
-
 
         .modal input {
             width: 80%;
@@ -251,7 +237,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .modal .update-btn { background-color: green; color: white; }
+        .modal .update-btn { background-color:  #8E54E9;; color: white; }
         .modal .cancel-btn { background-color: red; color: white; }
     .close {
         position: absolute;
@@ -269,7 +255,7 @@
     }
 
     .update-btn {
-        background-color: green;
+        background-color:  #8E54E9;;
         color: white;
         padding: 8px 15px;
         border: none;
@@ -313,7 +299,7 @@
         }
 
         .btn-submit {
-            background-color: green;
+            background-color:  #8E54E9;;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -460,7 +446,7 @@ iframe {
     }
 
     .custom-submit-btn {
-        background-color: green;
+        background-color:  #8E54E9;;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -521,7 +507,7 @@ iframe {
     }
 
     .warden-submit-btn {
-        background-color: green;
+        background-color:  #8E54E9;;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -603,7 +589,7 @@ iframe {
 }
 
 .details-grid input:focus {
-    border-color: #4CAF50;
+    border-color:  #8E54E9;;
     outline: none;
     background-color: #fff;
 }
@@ -1617,7 +1603,7 @@ border-radius: 10px; text-align: center; width: 300px;">
             <i id="leaveArrow" class="fas fa-chevron-right arrow"></i>
         </a>
         <div id="leaveDropdown" class="dropdown">
-            <a href="#" onclick="openLeavePopup()"><i class="fas fa-list"></i> View Leaves</a>
+            <a href="viewallLeaves.jsp" onclick="openLeavePopup()"><i class="fas fa-list"></i> View Leaves</a>
             <a href="pendingLeaves.jsp"><i class="fas fa-list"></i> Pending Leaves</a>
             <a href="#" onclick="openStudent_Popup()"><i class="fas fa-edit"></i> Update Leave</a>
 

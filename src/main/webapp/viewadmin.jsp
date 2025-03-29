@@ -11,26 +11,168 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f7f2ff;
+            background-image: url('img.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
             margin: 0;
             padding: 0;
-            color: #333;
-        }
-
-        .navbar {
-            background-color: #6a0dad;
-            color: white;
-            padding: 15px 20px;
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
-            height: 70px;
+            overflow: hidden;
+        }
+        .container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 9px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 1000px;
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 80px; /* Moves the container below the navbar */
+}
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 3px 8px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 99%;
+    z-index: 1000;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+.navbar .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #4CAF50;
+}
+.contact{
+    margin-top: 10px;
+}
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+}
+.navbar ul li::after{
+    content: '';
+   height: 3px;
+   width: 0;
+   background: #6386a6;
+   position: absolute;
+   left: 0;
+   bottom: -10px; 
+   transition: 0.5s;
+}
+.navbar ul li:hover::after{
+    width: 100%;
+}
+.navbar .nav-button {
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+
+.quick-links {
+    position: relative;
+}
+
+.quick-links .dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quick-links .dropdown a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.quick-links:hover .dropdown {
+   display: block;
+}
+
+.logout {
+    color: white;
+    background-color: #f44336;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: #d32f2f;
+}
+button {
+            background-color:  #8E54E9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
         }
 
-        .logo img {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
+        button:hover {
+            background-color:  #8E54E9;
         }
 
         .content {
@@ -42,24 +184,62 @@
             box-shadow: 0 0 15px rgba(106, 13, 173, 0.3);
         }
 
-        .profile-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+        .photo-container {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 50px;
+}
 
-        .photo-container img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid #6a0dad;
-            margin-bottom: 20px;
-        }
+.photo-container img {
+    max-width: 200px;
+    border-radius: 10px;
+}
 
-        .details-container {
-            width: 100%;
-        }
+.details-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.details-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
 
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+}
+
+.details-grid label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.details-grid .full-width {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.details-grid input {
+    padding: 5px 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+.details-grid input:focus {
+    border-color: #6a5acd;
+    outline: none;
+    background-color: #fff;
+}
         .row {
             margin-bottom: 15px;
             padding: 10px;
@@ -94,13 +274,22 @@
         <div class="logo">
             <img src="Logoos.jpg" alt="Logo">
         </div>
-        <div>
-            <a href="logout.jsp" style="color:white; text-decoration:none;">Logout</a>
+        <div class="nav-links">
+            
+            <a href="resetPassword.jsp" >Change Password</a>
+            <div class="quick-links">
+                <button class="dropdown-button">Quick Links</button>
+                <div class="dropdown">
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">Home</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">Programs</a>
+                    <a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">Campus</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">About Us</a>
+                    <a href="http://www.banasthali.org/banasthali/wcms/en/home/lower-menu/contact_us/index.html" target="_blank">Contact Us</a>
+                </div>
+            </div>
+            <a href="logout.jsp" class="logout">Logout</a>
         </div>
     </div>
-
-    <div class="content">
-        <div class="profile-container">
 
             <%
                 Connection con = null;
@@ -126,10 +315,10 @@
                                 base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imgData);
                             }
             %>
-
-            <div class="photo-container">
-                <img src="<%= base64Image %>" alt="Admin Photo">
-            </div>
+            <div class="container">
+                <div class="photo-container">
+                    <img src="StudentPhotoServlet?studentId=<%= rs.getString("student_id") %>" alt="Student Photo">
+                </div>
 
             <div class="details-container">
 

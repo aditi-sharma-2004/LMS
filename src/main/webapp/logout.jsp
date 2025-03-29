@@ -1,20 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Logout</title>
-</head>
-<body>
-    <p>You have been logged out. Redirecting to the login page...</p>
-</body>
-</html>
 <%
+    // Prevent caching so user can't go back after logout
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setHeader("Expires", "0");
+
     // Invalidate the session
     session.invalidate();
-
-    // Redirect to the login page
-    response.sendRedirect("index.jsp");
 %>
+
+<script>
+    // Clear history and redirect to login page
+    window.history.go(-3);
+</script>

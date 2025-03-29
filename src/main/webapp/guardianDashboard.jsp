@@ -8,13 +8,16 @@
     <style>
         /* General Styling */
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            box-sizing: border-box;
-            overflow: hidden;
-        }
+    font-family: Arial, sans-serif;
+    background-image: url('img.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the background fixed */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
     
         /* Top Navigation Bar */
         .navbar {
@@ -27,7 +30,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 99%;
+    width: 100%;
     z-index: 1000;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
@@ -93,7 +96,7 @@
     width: 100%;
 }
 .navbar .nav-button {
-    background-color: #4CAF50;
+    background-color:  #8E54E9;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -144,6 +147,20 @@
 .logout:hover {
     background-color: #d32f2f;
 }
+button {
+            background-color:  #8E54E9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color:  #8E54E9;
+        }
         /* Main Content */
         .content {
             margin-top: 60px; /* This ensures content starts below the navbar */
@@ -185,7 +202,7 @@
         }
 
         .options .button {
-            background-color: #4CAF50;
+            background-color:  #8E54E9;
             color: white;
             text-decoration: none;
             padding: 15px 30px;
@@ -197,7 +214,7 @@
         }
 
         .options .button:hover {
-            background-color: #45a049;
+            background-color: #8E54E9;
             transform: scale(1.05);
         }
         
@@ -244,7 +261,7 @@
         }
 
         .details-grid input:focus {
-            border-color: #4CAF50;
+            border-color:  #8E54E9;
             outline: none;
             background-color: #fff;
         }
@@ -257,19 +274,7 @@
       border-radius: 10px;
     }
 
-        /* Footer */
-        .footer {
-    text-align: center;
-    padding: 15px 0;
-    background-color: #333;
-    color: white;
-    font-size: 14px;
-    position: fixed; /* Fixed at the bottom */
-    bottom: 0;       /* Aligns to the bottom of the screen */
-    width: 100%;     /* Spans the full width of the screen */
-    z-index: 1000;   /* Ensures it stays on top of other elements */
-}
-        
+       
     </style>
 </head>
 <body>
@@ -359,12 +364,8 @@
         <div class="options">
             <a href="leave_request.jsp" class="button">Create Application</a>
             <a href="gLeaveTracking.jsp?guardianId=<%= session.getAttribute("guardianId") %>" class="button">Track Application</a>
-        </div>
-</div>
 
-<!-- Footer -->
-<div class="footer">
-    <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
+        </div>
 </div>
 
 </body>

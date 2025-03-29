@@ -7,16 +7,18 @@
     <title>VO Dashboard - Leave Management System</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f9f9f9;
-            box-sizing: border-box;
-            overflow: hidden;
-            overflow: hidden;
-        }
+    font-family: Arial, sans-serif;
+    background-image: url('img.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the background fixed */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
         
-        .navbar {
+.navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -92,7 +94,7 @@
     width: 100%;
 }
 .navbar .nav-button {
-    background-color: #4CAF50;
+    background-color:  #8E54E9;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -102,7 +104,7 @@
 }
 
 .navbar .nav-button:hover {
-    background-color: #45a049;
+    background-color:  #8E54E9;
 }
 .quick-links {
     position: relative;
@@ -160,7 +162,7 @@
         }
 
         .options .button {
-            background-color: #4CAF50;
+            background-color:  #8E54E9;
             color: white;
             text-decoration: none;
             padding: 15px 30px;
@@ -172,7 +174,7 @@
         }
 
         .options .button:hover {
-            background-color: #45a049;
+            background-color:  #8E54E9;
             transform: scale(1.05);
         }
         
@@ -219,7 +221,7 @@
         }
 
         .details-grid input:focus {
-            border-color: #4CAF50;
+            border-color:  #8E54E9;
             outline: none;
             background-color: #fff;
         }
@@ -254,7 +256,7 @@
         </div>
         <div class="nav-links">
             
-            <a href="resetPassword.jsp" >Change Password</a>
+            <a href="vo_change_password.jsp" >Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -334,10 +336,5 @@
         <a href="pendingLeavesVo.jsp" class="button">View Pending Applications</a>
         <a href="viewLeavesVo.jsp" class="button">View Approved Applications</a>
     </div>
-
-    <div class="footer">
-        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
-    </div>
-
 </body>
 </html>

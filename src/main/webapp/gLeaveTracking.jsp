@@ -39,11 +39,16 @@ if (guardianId == null) {
         }
         
         body {
-            background: #f5f7fa;
-            color: #333;
-            padding: 15px;
-            min-height: 100vh;
-        }
+    font-family: Arial, sans-serif;
+    background-image: url('img.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Keeps the background fixed */
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
         
         .container {
             max-width: 1000px;
@@ -54,27 +59,169 @@ if (guardianId == null) {
             box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
             border: 1px solid rgba(0, 0, 0, 0.05);
         }
+        .navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    position: fixed; /* Fixes navbar at the top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.navbar .logo {
+    display: flex;
+    align-items: center;
+}
+
+.navbar .logo img {
+    width: 150px;
+    height: auto;
+    margin-right: 10px;
+    margin-left: 0px;
+}
+
+.navbar .logo h1 {
+    font-size: 30px;
+    margin: 0;
+    font-weight: 500;
+}
+
+.navbar .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.navbar .nav-links a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.3s;
+}
+
+.navbar .nav-links a:hover {
+    color: #4CAF50;
+}
+.contact{
+    margin-top: 10px;
+}
+.navbar ul li {
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    position: relative;
+}
+.navbar ul li a{
+    text-decoration: none;
+    color: #fff;
+}
+.navbar ul li::after{
+    content: '';
+   height: 3px;
+   width: 0;
+   background: #6386a6;
+   position: absolute;
+   left: 0;
+   bottom: -10px; 
+   transition: 0.5s;
+}
+.navbar ul li:hover::after{
+    width: 100%;
+}
+.navbar .nav-button {
+    background-color:  #8E54E9;
+    color: white;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.navbar .nav-button:hover {
+    background-color: #45a049;
+}
+.quick-links {
+    position: relative;
+}
+
+.quick-links .dropdown {
+    display: none;
+    position: absolute;
+    background-color: white;
+    min-width: 150px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    z-index: 1;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quick-links .dropdown a {
+    color: black;
+    padding: 10px;
+    display: block;
+    text-decoration: none;
+}
+
+.quick-links:hover .dropdown {
+   display: block;
+}
+
+.logout {
+    color: white;
+    background-color: #f44336;
+    text-decoration: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.logout:hover {
+    background-color: #d32f2f;
+}
+button {
+            background-color:  #8E54E9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color:  #8E54E9;
+        }
         
         .header {
-            background: linear-gradient(135deg, #4776E6, #8E54E9);
-            color: white;
-            padding: 30px;
-            position: relative;
-        }
-        
-        .header h2 {
-            font-weight: 600;
-            font-size: 24px;
-            margin-bottom: 8px;
-            letter-spacing: -0.5px;
-        }
-        
-        .header p {
-            opacity: 0.85;
-            font-size: 15px;
-            font-weight: 300;
-            letter-spacing: 0.2px;
-        }
+    background: linear-gradient(135deg, #4776E6, #8E54E9);
+    color: white;
+    padding: 30px;
+    position: relative;
+    margin-top: 60px; /* Adjusted to ensure it appears below the navbar */
+}
+
+.header h2 {
+    font-weight: 600;
+    font-size: 24px;
+    margin-bottom: 8px;
+    letter-spacing: -0.5px;
+}
+
+.header p {
+    opacity: 0.85;
+    font-size: 15px;
+    font-weight: 300;
+    letter-spacing: 0.2px;
+}
         
         .content {
             padding: 30px;
@@ -539,139 +686,6 @@ if (guardianId == null) {
                 font-size: 9px;
             }
         }
-        /* Navbar styles */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background-color: #333;
-            color: white;
-            padding: 3px 8px;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 99%;
-            z-index: 1000;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
-        }
-        
-        .navbar .logo {
-            display: flex;
-            align-items: center;
-        }
-        
-        .navbar .logo img {
-            width: 150px;
-            height: auto;
-            margin-right: 10px;
-            margin-left: 0px;
-        }
-        
-        .navbar .logo h1 {
-            font-size: 30px;
-            margin: 0;
-            font-weight: 500;
-        }
-        
-        .navbar .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .navbar .nav-links a {
-            color: white;
-            text-decoration: none;
-            font-size: 14px;
-            transition: color 0.3s;
-        }
-        
-        .navbar .nav-links a:hover {
-            color: #4CAF50;
-        }
-        .contact{
-            margin-top: 10px;
-        }
-        .navbar ul li {
-            list-style: none;
-            display: inline-block;
-            margin: 0 20px;
-            position: relative;
-        }
-        .navbar ul li a{
-            text-decoration: none;
-            color: #fff;
-        }
-        .navbar ul li::after{
-            content: '';
-           height: 3px;
-           width: 0;
-           background: #6386a6;
-           position: absolute;
-           left: 0;
-           bottom: -10px; 
-           transition: 0.5s;
-        }
-        .navbar ul li:hover::after{
-            width: 100%;
-        }
-        .navbar .nav-button {
-            background-color: #4CAF50;
-            color: white;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        
-        .navbar .nav-button:hover {
-            background-color: #45a049;
-        }
-        .quick-links {
-            position: relative;
-        }
-        
-        .quick-links .dropdown {
-            display: none;
-            position: absolute;
-            background-color: white;
-            min-width: 150px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-            z-index: 1;
-            border-radius: 5px;
-            overflow: hidden;
-        }
-        
-        .quick-links .dropdown a {
-            color: black;
-            padding: 10px;
-            display: block;
-            text-decoration: none;
-        }
-        
-        .quick-links:hover .dropdown {
-           display: block;
-        }
-        
-        .logout {
-            color: white;
-            background-color: #f44336;
-            text-decoration: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: background-color 0.3s;
-        }
-        
-        .logout:hover {
-            background-color: #d32f2f;
-        }
-        
-        /* Adjust container to accommodate navbar */
-        .container {
-            margin-top: 60px; /* Adjust based on navbar height */
-        }
     </style>
 </head>
 <body>
@@ -680,7 +694,7 @@ if (guardianId == null) {
             <img src="Logoos.jpg" alt="Logo">
         </div>
         <div class="nav-links">
-            <a href="change_password.jsp">Change Password</a>
+            <a href="resetPassword.jsp">Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">

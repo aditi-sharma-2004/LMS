@@ -7,15 +7,13 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-image: url('back.jpg'); /* Ensure correct path */
+            background-image: url('img.jpg'); /* Ensure correct path */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            width: 100vw;  /* Ensures full viewport width */
-            height: 100vh; /* Ensures full viewport height */
+            height: 100vh;
             margin: 0;
             padding: 0;
-            overflow: hidden; /* Removes scrollbars */
             display: flex;
             justify-content: center;
             align-items: center;
@@ -56,14 +54,14 @@
         }
 
         button {
-            background-color: #4CAF50;
+            background-color:  #8E54E9;
             color: white;
             border: none;
             cursor: pointer;
         }
 
         button:hover {
-            background-color: #45a049;
+            background-color: #8E54E9;
         }
         .navbar {
             display: flex;
@@ -71,13 +69,12 @@
             align-items: center;
             background-color: #333;
             color: white;
-            padding: 3px 8px;
-            position: absolute;
-            left: 0;
+            padding: 2px 20px;
+            position: fixed;
             top: 0;
-            width: 99%;
+            width: 98%;
             z-index: 1000;
-            box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         .navbar .logo {
@@ -89,7 +86,6 @@
             width: 150px;
             height: auto;
             margin-right: 10px;
-            margin-left: 0px;
         }
 
         .navbar .logo h1 {
@@ -139,19 +135,17 @@
         .navbar ul li:hover::after{
             width: 100%;
         }
+        .logout:hover {
+            background-color: #d32f2f;
+        }
         .hidden {
             display: none;
         }
-        .footer {
-            text-align: center;
-            padding: 15px 0;
-            background-color: #333;
-            color: white;
-            font-size: 14px;
-            position: fixed; /* Fixed at the bottom */
-            bottom: 0;       /* Aligns to the bottom of the screen */
-            width: 100%;     /* Spans the full width of the screen */
-            z-index: 1000;   /* Ensures it stays on top of other elements */
+
+        .logo img {
+            display: block;
+            margin: 0 auto 5px;
+            width: 120px;
         }
     </style>
     <script>
@@ -178,7 +172,7 @@
                 <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/" target="_blank">HOME</a></li>
                 <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/hgher-education/index.html" target="_blank">PROGRAMS</a></li>
                 <li><a href="http://banasthali.org/banasthali/wcms/en/home/lower-menu/campus-tour/index.html" target="_blank">CAMPUS</a></li>
-                <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">ABOUT</a></li>
+                <li><a href="http://www.banasthali.org/banasthali/wcms/en/home/about-us/index.html" target="_blank">ABOUT US</a></li>
             </ul>
         </div>
     </div>
@@ -204,8 +198,6 @@
             <button type="submit">Continue</button>
         </form>
     </div>
-    <div class="footer">
-        <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>
-    </div>
 </body>
 </html>
+
