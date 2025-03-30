@@ -212,7 +212,7 @@ transition: 0.5s;
            border: none;
            border-radius: 5px;
            text-decoration: none;
-           color: white;
+           color: rgb(133, 33, 33);
            font-size: 14px;
            cursor: pointer;
        }

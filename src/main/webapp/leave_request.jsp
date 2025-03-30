@@ -133,7 +133,7 @@ try {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 30px;
     position: relative;
-    top: 180px; /* Adjust this value to move it down */
+    top: 350px; /* Adjust this value to move it down */
     border-radius: 10px;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
     max-width: 800px;

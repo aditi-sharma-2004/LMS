@@ -15,9 +15,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
-@WebServlet("/UpdateWardenServlet")
-@MultipartConfig(maxFileSize = 16177215) // Handle large file uploads
-public class UpdateWardenServlet extends HttpServlet {
+@WebServlet("/UpdateAdminServlet")
+@MultipartConfig(maxFileSize = 16177215) // Allows large file uploads (16MB max)
+public class UpdateAdminServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     @Override
@@ -26,55 +26,60 @@ public class UpdateWardenServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         // Retrieve form data
-        String email = request.getParameter("email"); // Email used as identifier
+        String email = request.getParameter("email"); // Email used as identifier (CANNOT BE EDITED)
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
 
         Part filePart = request.getPart("image");
         InputStream inputStream = null;
+
+        // Check if an image was uploaded
         if (filePart != null && filePart.getSize() > 0) {
             inputStream = filePart.getInputStream();
         }
 
         Connection con = null;
         PreparedStatement pstmt = null;
-        String updateSQL;
 
         try {
+            // Load MySQL driver and establish database connection
             Class.forName("com.mysql.cj.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "lms", "lms");
+            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/lms", "priyanshi", "2004@seth");
 
+            String updateSQL;
+
+            // If a new image is uploaded, update all fields including the image
             if (inputStream != null) {
-                updateSQL = "UPDATE Wardens SET name=?, phone=?, image=? WHERE email=?";
+                updateSQL = "UPDATE admin SET name=?, phone=?, image=? WHERE email=?";
                 pstmt = con.prepareStatement(updateSQL);
+                pstmt.setString(1, name);
+                pstmt.setString(2, phone);
                 pstmt.setBlob(3, inputStream);
                 pstmt.setString(4, email);
-            } else {
-                updateSQL = "UPDATE Wardens SET name=?, phone=? WHERE email=?";
+            } else { 
+                // If no new image is uploaded, update only text fields
+                updateSQL = "UPDATE admin SET name=?, phone=? WHERE email=?";
                 pstmt = con.prepareStatement(updateSQL);
+                pstmt.setString(1, name);
+                pstmt.setString(2, phone);
                 pstmt.setString(3, email);
             }
 
-            pstmt.setString(1, name);
-            pstmt.setString(2, phone);
-
+            // Execute update query
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated > 0) {
-                response.sendRedirect("dashboard.jsp?message=Warden updated successfully!");
+                response.sendRedirect("dashboard.jsp?message=Admin profile updated successfully!");
             } else {
-                response.sendRedirect("error.jsp?error=Warden not found or no changes made!");
+                response.sendRedirect("error.jsp?error=Admin not found or no changes made!");
             }
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
-            response.getWriter().println("<h3>Error: " + e.getMessage() + "</h3>");
+            response.getWriter().println("<h3 style='color: red;'>Error: " + e.getMessage() + "</h3>");
         } finally {
             try {
-                if (pstmt != null)
-                    pstmt.close();
-                if (con != null)
-                    con.close();
-                if (inputStream != null)
-                    inputStream.close();
+                if (pstmt != null) pstmt.close();
+                if (con != null) con.close();
+                if (inputStream != null) inputStream.close();
             } catch (IOException | SQLException e) {
                 e.printStackTrace();
             }

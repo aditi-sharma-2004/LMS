@@ -74,9 +74,12 @@ public class AdminLoginServlet extends HttpServlet {
                                 session.setAttribute("email", rs2.getString("email"));
                                 session.setAttribute("phone", rs2.getString("phone"));
                                 session.setAttribute("image", rs2.getBlob("image"));
-                                
+                                // Replace the complex authentication logic temporarily with this simple test
+
                                 // Redirect to admin dashboard
-                                response.sendRedirect("adminDashboard.jsp");
+                                System.out.println("About to redirect to adminDashboard.jsp");
+response.sendRedirect("adminDashboard.jsp");
+System.out.println("Redirect sent");
                             } else {
                                 out.println("<script>alert('Admin details not found'); window.location.href='admin.jsp';</script>");
                             }
@@ -97,7 +100,7 @@ public class AdminLoginServlet extends HttpServlet {
                 if (pst != null) pst.close();
                 if (conn != null) conn.close();
             } catch (SQLException ex) {
-                ex.getMessage();
+                ex.printStackTrace();
             }
         }
     }

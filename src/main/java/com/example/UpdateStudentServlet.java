@@ -71,7 +71,11 @@ public class UpdateStudentServlet extends HttpServlet {
 
             int rowsUpdated = pstmt.executeUpdate();
             if (rowsUpdated > 0) {
-                response.sendRedirect("adminDashboard.jsp?message=Student updated successfully!");
+                response.getWriter().println("<script>"
+    + "alert('Student updated successfully!');"
+    + "window.history.back(-2);"
+    + "</script>");
+
             } else {
                 response.sendRedirect("error.jsp?error=Student not found or no changes made!");
             }

@@ -439,7 +439,12 @@
                     <a href="acceptLeaveHod.jsp?leave_id=<%= leaveId %>" class="btn btn-accept">Accept</a>
                     <a href="rejectLeaveHod.jsp?leave_id=<%= leaveId %>" class="btn btn-reject">Reject</a>
                 </div>
-            <% } %>
+            <% } else if ("Admin".equalsIgnoreCase(role)) { %>
+                    <div class="button-container">
+                        <a href="acceptLeaveAdmin.jsp?leave_id=<%= leaveId %>" class="btn btn-accept">Accept</a>
+                        <a href="rejectLeaveAdmin.jsp?leave_id=<%= leaveId %>" class="btn btn-reject">Reject</a>
+                </div>
+            <% }  %>
         </div>
     </div>
 </body>

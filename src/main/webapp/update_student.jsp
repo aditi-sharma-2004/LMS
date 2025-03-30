@@ -313,7 +313,7 @@ button {
     </div>
     <div class="nav-links">
         
-        <a href="resetPassword.jsp" >Change Password</a>
+        <a href="change_password.jsp" >Change Password</a>
         <div class="quick-links">
             <button class="dropdown-button">Quick Links</button>
             <div class="dropdown">

@@ -303,7 +303,6 @@
             <th>Reason</th>
             <th>Start Date</th>
             <th>End Date</th>
-            <th>Current Stage</th>
             <th>Status</th>
         </tr>
 
@@ -327,8 +326,7 @@
             <td><%= rs.getString("reason") %></td>
             <td><%= rs.getDate("start_date") %></td>
             <td><%= rs.getDate("end_date") %></td>
-            <td><%= rs.getDate("current_stage") %></td>
-            <td><%= rs.getString("status") %></td>
+            <td><%= rs.getString("final_status") %></td>
         <%
                 }
             } catch (Exception e) {

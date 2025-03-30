@@ -157,6 +157,7 @@ button {
             <input type="password" name="password" placeholder="Enter your Password" required>
             <button type="submit">Login</button>
         </form>
+        <p>Forgot your password? <a href="resetPassword.jsp">Reset Password</a></p>
     </div>
 </body>
 </html>
