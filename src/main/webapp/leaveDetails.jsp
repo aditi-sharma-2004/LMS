@@ -19,7 +19,7 @@
         Class.forName("com.mysql.cj.jdbc.Driver");
         conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
 
-        String query = "SELECT lr.*,s.student_id,s.name AS student_name,s.rno AS roll_number,c.name AS course_name,h.name AS hostel_name,g.name AS guardian_name  " +
+        String query = "SELECT lr.*,s.student_id,s.name AS student_name,s.rno AS roll_number,c.name AS course_name,h.name AS hostel_name,g.name AS guardian_name,g.phone AS guardian_phone  " +
                        "FROM LeaveRequests lr " +
                        "JOIN Students s ON lr.student_id = s.student_id " +
                        "JOIN Courses c ON s.course_id = c.course_id " +
@@ -326,6 +326,27 @@
         .btn-accept:hover { background-color: #6a5acd; }
         .btn-reject { background-color: #dc3545; }
         .btn-reject:hover { background-color: #c82333; }
+        .btn-update {
+    background-color: #6a0dad; /* Deep Purple */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-update:hover {
+    background-color: #6a5acd; /* Slightly lighter purple on hover */
+    transform: scale(1.05); /* Slight zoom effect */
+}
+
+.btn-update:active {
+    background-color: #6a5acd; /* Even darker when clicked */
+    transform: scale(0.95); /* Slight shrink effect */
+}
         .signature-container {
     display: flex;
     justify-content: space-around;  /* Keeps them spaced properly */
@@ -382,6 +403,11 @@
                 <input type="text" id="guardian_name" name="guardian_name" value="<%= rs.getString("guardian_name") != null ? rs.getString("guardian_name") : "N/A" %>" readonly>
             </div>
 
+            <div class="full-width">
+                <label for="guardian_phone">Guardian Contact:</label>
+                <input type="text" id="guardian_phone" name="guardian_phone" value="<%= rs.getString("guardian_phone") != null ? rs.getString("guardian_phone") : "N/A" %>" readonly>
+            </div>
+
                 <div class="full-width">
                 <label for="leave_type">Leave Type:</label>
                 <input type="text" id="leave_type" name="leave_type" value="<%= rs.getString("leave_type") %>" readonly>
@@ -392,20 +418,54 @@
                 <input type="text" id="reason" name="reason" value="<%= rs.getString("reason") %>" readonly>
             </div>
             
+            <form action="updateLeaveDates.jsp" method="post">
                 <div class="full-width">
-                <label for="start_date">Start Date:</label>
-                <input type="text" id="start_date" name="start_date" value="<%= rs.getDate("start_date") %>" readonly>
-            </div>
-
+                    <label for="start_date">Start Date:</label>
+                    <input type="date" id="start_date" name="start_date" value="<%= rs.getDate("start_date") %>">
+                </div>
+            
                 <div class="full-width">
-                <label for="end_date">End Date:</label>
-                <input type="text" id="end_date" name="end_date" value="<%= rs.getDate("end_date") %>" readonly>
-            </div>
+                    <label for="end_date">End Date:</label>
+                    <input type="date" id="end_date" name="end_date" value="<%= rs.getDate("end_date") %>">
+                </div>
+            
+                <input type="hidden" name="leave_id" value="<%= leaveId %>">
+                
+                <button type="submit" class="btn btn-update">Update Dates</button>
+            </form>
 
                 <div class="full-width">
                 <label for="leaving_alone">Leaving Alone?</label>
                 <input type="text" id="leaving_alone" name="leaving_alone" value="<%= rs.getString("leaving_alone") %>" readonly>
             </div>
+
+            <%
+            String leavingAlone = rs.getString("leaving_alone");
+            if (leavingAlone != null && leavingAlone.equalsIgnoreCase("No")) {
+        %>
+            <!-- Display Companion Details only if Leaving Alone is "No" -->
+            <div class="full-width">
+            <label for="companion_name">Companion Name:</label>
+            <input type="text" id="companion_name" name="companion_name" value="<%= rs.getString("companion_name") != null ? rs.getString("companion_name") : "N/A" %>" readonly>
+        </div>
+
+            <div class="full-width">
+            <label for="companion_relation">Companion Relation:</label>
+            <input type="text" id="companion_relation" name="companion_relation" value="<%= rs.getString("companion_relation") != null ? rs.getString("companion_relation") : "N/A" %>" readonly>
+        </div>
+
+            <div class="full-width">
+            <label for="companion_address">Companion Address:</label>
+            <input type="text" id="companion_address" name="companion_address" value="<%= rs.getString("companion_address") != null ? rs.getString("companion_address") : "N/A" %>" readonly>
+        </div>
+
+            <div class="full-width">
+            <label for="companion_phone">Companion Phone:</label>
+            <input type="text" id="companion_phone" name="companion_phone" value="<%= rs.getString("companion_phone") != null ? rs.getString("companion_phone") : "N/A" %>" readonly>
+        </div>
+            <%
+            }
+        %>
 
                 <div class="full-width">
                 <label for="verification_status">Status:</label>
@@ -439,12 +499,7 @@
                     <a href="acceptLeaveHod.jsp?leave_id=<%= leaveId %>" class="btn btn-accept">Accept</a>
                     <a href="rejectLeaveHod.jsp?leave_id=<%= leaveId %>" class="btn btn-reject">Reject</a>
                 </div>
-            <% } else if ("Admin".equalsIgnoreCase(role)) { %>
-                    <div class="button-container">
-                        <a href="acceptLeaveAdmin.jsp?leave_id=<%= leaveId %>" class="btn btn-accept">Accept</a>
-                        <a href="rejectLeaveAdmin.jsp?leave_id=<%= leaveId %>" class="btn btn-reject">Reject</a>
-                </div>
-            <% }  %>
+            <% } %>
         </div>
     </div>
 </body>

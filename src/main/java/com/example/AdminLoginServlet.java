@@ -3,7 +3,6 @@ package com.example;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -19,11 +18,6 @@ import jakarta.servlet.http.HttpSession;
 public class AdminLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
     
-    // Database connection settings
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/lms";
-    private static final String DB_USER = "lms";
-    private static final String DB_PASSWORD = "lms";
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -49,7 +43,7 @@ public class AdminLoginServlet extends HttpServlet {
         try {
             // Load MySQL JDBC Driver and establish connection
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            conn = DBConnection.getConnection();
 
             // Check credentials from the alogin table
             String sql = "SELECT password FROM alogin WHERE admin_id = ?";

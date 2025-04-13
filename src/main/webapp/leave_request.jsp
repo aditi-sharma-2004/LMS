@@ -11,7 +11,7 @@ Connection con = null;
 PreparedStatement pstmt = null;
 ResultSet rs = null;
 
-String studentId = "", rollNumber = "", studentName = "", course = "", hostel = "", guardianName = "";
+String studentId = "", rollNumber = "", studentName = "", course = "", hostel = "", guardianName = "", guardianPhone = "";
 String courseId = "", hostelId = "";
 
 try {
@@ -77,13 +77,14 @@ try {
 
     //  Fetch Guardian Name from Guardians table
     if (!studentId.isEmpty()) {
-        query = "SELECT name FROM Guardians WHERE student_id = ?";
+        query = "SELECT name,phone FROM Guardians WHERE student_id = ?";
         pstmt = con.prepareStatement(query);
         pstmt.setString(1, studentId);
         rs = pstmt.executeQuery();
         
         if (rs.next()) {
             guardianName = rs.getString("name");
+            guardianPhone = rs.getString("phone");
         }
         rs.close();
         pstmt.close();
@@ -324,8 +325,26 @@ button {
 
     function toggleCompanionFields() {
         let leavingAlone = document.getElementById("leaving_alone").value;
-        document.getElementById("companionFields").style.display = (leavingAlone === "No") ? "block" : "none";
+        let companionFields = document.getElementById("companionFields");
+        let companionInputs = companionFields.querySelectorAll("input");
+
+        if (leavingAlone === "No") {
+            companionFields.style.display = "block";
+            companionInputs.forEach(input => {
+                input.setAttribute("required", "required");
+            });
+        } else {
+            companionFields.style.display = "none";
+            companionInputs.forEach(input => {
+                input.removeAttribute("required");
+                input.value = ""; // Clear input fields when not required
+            });
+        }
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        toggleCompanionFields(); // Ensure the fields are set correctly on page load
+    });
 
     function calculateDays() {
         let fromDate = document.getElementById('start_date').value;
@@ -349,8 +368,54 @@ button {
         }
     }
 
+    function validateForm(event) {
+        let name = document.getElementById("name").value;
+        let companionName = document.querySelector('input[name="companion_name"]').value;
+        let companionRelation = document.querySelector('input[name="companion_relation"]').value;
+        let reason = document.querySelector('textarea[name="reason"]').value;
+        let sendersAddress = document.querySelector('textarea[name="senders_address"]').value;
+        let leaveAddress = document.querySelector('textarea[name="leaving_address"]').value;
+        let phone = document.querySelector('input[name="companion_phone"]').value.trim();
+
+        let nameRegex = /^[A-Za-z\s]+$/;
+        let textRegex = /^[A-Za-z\s.,'-]+$/;  // Allows letters, spaces, commas, dots, hyphens, and apostrophes.
+
+        let phoneRegex = /^\d{10}$/;
+            if (phone !== "" && !phoneRegex.test(phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return false;
+            }
+
+        if (!nameRegex.test(name)) {
+            alert("Name should only contain alphabets and spaces.");
+            return false;
+        }
+
+        if (companionName !== "" && !textRegex.test(companionName)) {
+            alert("Companion Name should only contain letters and spaces.");
+            return false;
+        }
+
+        if (companionRelation !== "" && !textRegex.test(companionRelation)) {
+            alert("Companion Relation should only contain letters and spaces.");
+            return false;
+        }
+
+        if (!textRegex.test(reason)) {
+            alert("Reason should not contain numbers.");
+            return false;
+        }
+
+        return true;
+    }
+
     window.onload = function () {
         setMinDate();
+        document.querySelector("form").addEventListener("submit", function (event) {
+            if (!validateForm()) {
+                event.preventDefault();
+            }
+        });
     };
 </script>
 </head>
@@ -396,6 +461,8 @@ button {
             <label for="guardianName">Guardian's Name</label>
             <input type="text" id="guardianName" name="guardianName" value="<%= guardianName %>" readonly required>
 
+            <label for="guardianPhone">Guardian's Contact</label>
+            <input type="text" id="guardianPhone" name="guardianPhone" value="<%= guardianPhone %>" readonly required>
 
             <label>Reason:</label>
             <textarea name="reason" required></textarea>
@@ -425,7 +492,7 @@ button {
 
             <div id="companionFields">
                 <label>Companion Name:</label>
-                <input type="text" name="companion_name">
+                <input type="text" name="companion_name" required>
 
                 <label>Companion Relation:</label>
                 <input type="text" name="companion_relation">
@@ -451,7 +518,7 @@ button {
             </div>
             <div class="form-group">
                 <label for="date">Date</label>
-                <input type="date" id="date" name="date" required>
+                <input type="date" id="date" name="date" readonly>
             </div>
             <script>
                 // Set the current date as the default value for the date input
