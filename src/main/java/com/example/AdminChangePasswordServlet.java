@@ -47,8 +47,8 @@ public class AdminChangePasswordServlet extends HttpServlet {
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("message", "New password and confirm password do not match!");
-            request.getRequestDispatcher("admin_change_password.jsp").forward(request, response);
+            response.setContentType("text/html");
+            response.getWriter().println("<script>alert('New password and confirm password do not match!'); window.history.go(-2);</script>");
             return;
         }
 
@@ -60,35 +60,28 @@ public class AdminChangePasswordServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            // Step 1: Verify the old password
             String checkPasswordSQL = "SELECT password FROM alogin WHERE admin_id = ?";
             pst = conn.prepareStatement(checkPasswordSQL);
             pst.setString(1, adminId);
             rs = pst.executeQuery();
 
             if (rs.next() && rs.getString("password").equals(oldPassword)) {
-                rs.close();
-                pst.close();
-
-                // Step 2: Update the password
                 String updateSQL = "UPDATE alogin SET password = ? WHERE admin_id = ?";
                 pst = conn.prepareStatement(updateSQL);
                 pst.setString(1, newPassword);
                 pst.setString(2, adminId);
 
-                int updatedRows = pst.executeUpdate();
-                pst.close();
-
-                if (updatedRows > 0) {
-                    request.setAttribute("message", "Password changed successfully!");
+                if (pst.executeUpdate() > 0) {
+                    response.setContentType("text/html");
+                    response.getWriter().println("<script>alert('Password Changed Successfully'); window.history.go(-2);</script>");
                 } else {
-                    request.setAttribute("message", "Failed to update password!");
+                    response.setContentType("text/html");
+                    response.getWriter().println("<script>alert('Failed to update Password!'); window.history.go(-2);</script>");
                 }
             } else {
-                request.setAttribute("message", "Old password is incorrect!");
+                response.setContentType("text/html");
+                response.getWriter().println("<script>alert('Old Password is incorrect!'); window.history.go(-2);</script>");
             }
-            
-            request.getRequestDispatcher("admin_change_password.jsp").forward(request, response);
         } catch (ClassNotFoundException | SQLException e) {
             request.setAttribute("message", "Something went wrong: " + e.getMessage());
             request.getRequestDispatcher("admin_change_password.jsp").forward(request, response);

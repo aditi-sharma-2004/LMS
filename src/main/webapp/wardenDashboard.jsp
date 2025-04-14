@@ -162,6 +162,7 @@
             display: flex;
             justify-content: center;
             gap: 30px;
+            margin-top: 30px;
         }
 
         .options .button {
@@ -174,6 +175,7 @@
             text-align: center;
             transition: background-color 0.3s, transform 0.2s;
             display: inline-block;
+            position: relative;
         }
 
         .options .button:hover {
@@ -236,7 +238,24 @@
       max-width: 200px;
       border-radius: 10px;
     }
-
+        
+        /* Badge styles for leave counts */
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
         /* Footer */
         .footer {
     text-align: center;
@@ -282,6 +301,10 @@
                     response.sendRedirect("wardenLogin.jsp");
                     return;
                 }
+                
+                // Variables to store leave counts
+                int pendingLeaves = 0;
+                int approvedLeaves = 0;
             %>
 
             <div class="photo-container">
@@ -305,7 +328,8 @@
                 rs = pstmt.executeQuery();
 
                 if(rs.next()){
-        %>
+                    String hostelId = rs.getString("hostel_id");
+                %>
         <label>Warden ID:</label>
         <input type="text" value="<%= rs.getString("warden_id") %>" readonly>
 
@@ -321,6 +345,40 @@
         <label>Hostel Name:</label>
         <input type="text" value="<%= rs.getString("h.name") != null ? rs.getString("h.name") : "Not Assigned" %>" readonly>
         <%
+                            // Query to count pending leaves for the department
+                            if(hostelId != null) {
+                                // Close previous resources
+                                rs.close();
+                                pstmt.close();
+                                
+                                // Count pending leaves
+                                String pendingQuery = "SELECT COUNT(*) AS pending_count FROM leaverequests lr " +
+                                                     "JOIN students s ON lr.student_id = s.student_id " +
+                                                     "WHERE s.hostel_id = ? AND lr.warden_status = 'Pending'";
+                                pstmt = con.prepareStatement(pendingQuery);
+                                pstmt.setString(1, hostelId);
+                                rs = pstmt.executeQuery();
+                                
+                                if(rs.next()) {
+                                    pendingLeaves = rs.getInt("pending_count");
+                                }
+                                
+                                // Close previous resources
+                                rs.close();
+                                pstmt.close();
+                                
+                                // Count approved leaves
+                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM leaverequests lr " +
+                                                      "JOIN students s ON lr.student_id = s.student_id " +
+                                                      "WHERE s.hostel_id = ? AND lr.warden_status = 'Accepted'";
+                                pstmt = con.prepareStatement(approvedQuery);
+                                pstmt.setString(1, hostelId);
+                                rs = pstmt.executeQuery();
+                                
+                                if(rs.next()) {
+                                    approvedLeaves = rs.getInt("approved_count");
+                                }
+                            }
                 } else {
                     out.println("<p style='color: red;'>No warden found with the provided ID.</p>");
                 }
@@ -337,9 +395,18 @@
     </div>
 
     <div class="options">
-        <a href="pendingLeavesWarden.jsp" class="button">View Pending Applications</a>
-        <a href="viewLeavesWarden.jsp" class="button">View Approved Applications</a>
-        
+        <a href="pendingLeavesWarden.jsp" class="button">
+            View Pending Applications
+            <% if(pendingLeaves > 0) { %>
+            <span class="badge"><%= pendingLeaves %></span>
+            <% } %>
+        </a>
+        <a href="viewLeavesWarden.jsp" class="button">
+            View Approved Applications
+            <% if(approvedLeaves > 0) { %>
+            <span class="badge"><%= approvedLeaves %></span>
+            <% } %>
+        </a>
     </div>
     <div class="footer">
         <p>&copy; 2025 Leave Management System - Banasthali Vidyapith</p>

@@ -47,8 +47,8 @@ public class StudentChangePasswordServlet extends HttpServlet {
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            request.setAttribute("message", "New password and confirm password do not match!");
-            request.getRequestDispatcher("student_change_password.jsp").forward(request, response);
+            response.setContentType("text/html");
+            response.getWriter().println("<script>alert('New password and confirm password do not match!'); window.history.go(-2);</script>");
             return;
         }
 
@@ -73,14 +73,14 @@ public class StudentChangePasswordServlet extends HttpServlet {
 
                 if (pst.executeUpdate() > 0) {
                     response.setContentType("text/html");
-                    response.getWriter().println("<script>alert('Password Changed Successfully'); window.location='studentDashboard.jsp';</script>");
+                    response.getWriter().println("<script>alert('Password Changed Successfully'); window.history.go(-2);</script>");
                 } else {
-                    request.setAttribute("message", "Failed to update password!");
-                    request.getRequestDispatcher("student_change_password.jsp").forward(request, response);
+                    response.setContentType("text/html");
+                    response.getWriter().println("<script>alert('Failed to update Password!'); window.history.go(-2);</script>");
                 }
             } else {
-                request.setAttribute("message", "Old password is incorrect!");
-                request.getRequestDispatcher("student_change_password.jsp").forward(request, response);
+                response.setContentType("text/html");
+                response.getWriter().println("<script>alert('Old Password is incorrect!'); window.history.go(-2);</script>");
             }
         } catch (ClassNotFoundException | SQLException e) {
             request.setAttribute("message", "Something went wrong: " + e.getMessage());

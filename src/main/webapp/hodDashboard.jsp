@@ -159,6 +159,7 @@
             display: flex;
             justify-content: center;
             gap: 30px;
+            margin-top: 30px;
         }
 
         .options .button {
@@ -171,6 +172,7 @@
             text-align: center;
             transition: background-color 0.3s, transform 0.2s;
             display: inline-block;
+            position: relative;
         }
 
         .options .button:hover {
@@ -245,6 +247,26 @@
             width: 100%;
             z-index: 1000;
         }
+        
+        /* Badge styles for leave counts */
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background-color: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        
     </style>
 </head>
 <body>
@@ -278,6 +300,10 @@
                     response.sendRedirect("hodLogin.jsp");
                     return;
                 }
+                
+                // Variables to store leave counts
+                int pendingLeaves = 0;
+                int approvedLeaves = 0;
             %>
 
             <div class="photo-container">
@@ -300,6 +326,7 @@
                         rs = pstmt.executeQuery();
 
                         if(rs.next()){
+                            String departmentId = rs.getString("department_id");
                 %>
                 <label>HOD ID:</label>
                 <input type="text" value="<%= rs.getString("hod_id") %>" readonly>
@@ -315,7 +342,42 @@
 
                 <label>Department:</label>
                 <input type="text" value="<%= rs.getString("department_name") != null ? rs.getString("department_name") : "Not Assigned" %>" readonly>
+                
                 <%
+                            // Query to count pending leaves for the department
+                            if(departmentId != null) {
+                                // Close previous resources
+                                rs.close();
+                                pstmt.close();
+                                
+                                // Count pending leaves
+                                String pendingQuery = "SELECT COUNT(*) AS pending_count FROM leaverequests lr " +
+                                                     "JOIN students s ON lr.student_id = s.student_id " +
+                                                     "WHERE s.department_id = ? AND lr.verification_status = 'Accepted' AND lr.hod_status = 'Pending'";
+                                pstmt = con.prepareStatement(pendingQuery);
+                                pstmt.setString(1, departmentId);
+                                rs = pstmt.executeQuery();
+                                
+                                if(rs.next()) {
+                                    pendingLeaves = rs.getInt("pending_count");
+                                }
+                                
+                                // Close previous resources
+                                rs.close();
+                                pstmt.close();
+                                
+                                // Count approved leaves
+                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM leaverequests lr " +
+                                                      "JOIN students s ON lr.student_id = s.student_id " +
+                                                      "WHERE s.department_id = ? AND lr.hod_status = 'Accepted'";
+                                pstmt = con.prepareStatement(approvedQuery);
+                                pstmt.setString(1, departmentId);
+                                rs = pstmt.executeQuery();
+                                
+                                if(rs.next()) {
+                                    approvedLeaves = rs.getInt("approved_count");
+                                }
+                            }
                         } else {
                             out.println("<p style='color: red;'>No HOD found with the provided ID.</p>");
                         }
@@ -329,10 +391,23 @@
                 %>
             </div>
         </div>
+        
+       
     </div>
+    
     <div class="options">
-        <a href="pendingLeavesHod.jsp" class="button">View Pending Applications</a>
-        <a href="viewLeavesHod.jsp" class="button">View Approved Applications</a>
+        <a href="pendingLeavesHod.jsp" class="button">
+            View Pending Applications
+            <% if(pendingLeaves > 0) { %>
+            <span class="badge"><%= pendingLeaves %></span>
+            <% } %>
+        </a>
+        <a href="viewLeavesHod.jsp" class="button">
+            View Approved Applications
+            <% if(approvedLeaves > 0) { %>
+            <span class="badge"><%= approvedLeaves %></span>
+            <% } %>
+        </a>
     </div>
 
 </body>

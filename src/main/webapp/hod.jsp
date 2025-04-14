@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Guardian Login</title>
+    <title>HOD Login</title>
     <style>
         body {
             font-family: Arial, sans-serif;

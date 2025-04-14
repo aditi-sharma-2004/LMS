@@ -33,7 +33,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 99%;
+    width: 100%;
     z-index: 1000;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
@@ -212,7 +212,7 @@
     </div>
     <div class="container">
         <h2>Change Password</h2>
-        <form action="HODChangePasswordServlet" method="post">
+        <form action="GPOChangePasswordServlet" method="post">
             <div class="form-group">
                 <label for="oldPassword">Old Password:</label>
                 <input type="password" id="oldPassword" name="oldPassword" required>

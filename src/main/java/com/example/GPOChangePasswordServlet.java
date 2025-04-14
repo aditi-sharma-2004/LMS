@@ -14,8 +14,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
-@WebServlet("/GuardianChangePasswordServlet")
-public class GuardianChangePasswordServlet extends HttpServlet {
+@WebServlet("/GPOChangePasswordServlet")
+public class GPOChangePasswordServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/lms";
@@ -27,10 +27,11 @@ public class GuardianChangePasswordServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        String guardianId = (String) session.getAttribute("guardianId");
+        String gpoId = (String) session.getAttribute("gpoId");
 
-        if (guardianId == null) {
-            response.sendRedirect("guardian.jsp");
+        if (gpoId == null) {
+            response.setContentType("text/html");
+            response.getWriter().println("<script>alert('Session expired. Please log in again.'); window.location='gpo.jsp';</script>");
             return;
         }
 
@@ -42,7 +43,7 @@ public class GuardianChangePasswordServlet extends HttpServlet {
             newPassword == null || newPassword.trim().isEmpty() ||
             confirmPassword == null || confirmPassword.trim().isEmpty()) {
             request.setAttribute("message", "All fields are required!");
-            request.getRequestDispatcher("guardian_change_password.jsp").forward(request, response);
+            request.getRequestDispatcher("gpo_change_password.jsp").forward(request, response);
             return;
         }
 
@@ -60,16 +61,16 @@ public class GuardianChangePasswordServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
 
-            String checkPasswordSQL = "SELECT password FROM glogin WHERE guardian_id = ?";
+            String checkPasswordSQL = "SELECT password FROM gpologin WHERE gpo_id = ?";
             pst = conn.prepareStatement(checkPasswordSQL);
-            pst.setString(1, guardianId);
+            pst.setString(1, gpoId);
             rs = pst.executeQuery();
 
             if (rs.next() && rs.getString("password").equals(oldPassword)) {
-                String updateSQL = "UPDATE glogin SET password = ? WHERE guardian_id = ?";
+                String updateSQL = "UPDATE gpologin SET password = ? WHERE gpo_id = ?";
                 pst = conn.prepareStatement(updateSQL);
                 pst.setString(1, newPassword);
-                pst.setString(2, guardianId);
+                pst.setString(2, gpoId);
 
                 if (pst.executeUpdate() > 0) {
                     response.setContentType("text/html");
@@ -84,7 +85,7 @@ public class GuardianChangePasswordServlet extends HttpServlet {
             }
         } catch (ClassNotFoundException | SQLException e) {
             request.setAttribute("message", "Something went wrong: " + e.getMessage());
-            request.getRequestDispatcher("guardian_change_password.jsp").forward(request, response);
+            request.getRequestDispatcher("gpo_change_password.jsp").forward(request, response);
         } finally {
             try {
                 if (rs != null) rs.close();

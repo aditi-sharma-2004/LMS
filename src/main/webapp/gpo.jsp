@@ -43,7 +43,7 @@
             padding: 2px 20px;
             position: fixed;
             top: 0;
-            width: 98%;
+            width: 100%;
             z-index: 1000;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
@@ -155,8 +155,8 @@ button {
             </div>
         <h1>GPO Login</h1>
         <form action="GPOLoginServlet" method="POST">
-            <input type="text" name="gpoId" placeholder="Enter your GPO ID" required>
-            <input type="password" name="password" placeholder="Enter your Password" required>
+            <input type="text" id="gpoId" name="gpoId" placeholder="Enter your GPO ID" required>
+            <input type="password" id="password" name="password" placeholder="Enter your Password" required>
             <button type="submit">Login</button>
         </form>
         <p>Forgot your password? <a href="resetPassword.jsp">Reset Password</a></p>

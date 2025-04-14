@@ -1,20 +1,19 @@
 <%@ page import="java.sql.*" %>
-<%@ page import="jakarta.servlet.*, jakarta.servlet.http.*, jakarta.servlet.jsp.*" %>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Change Password</title>
+    <title>Add GPO</title>
     <style>
-         body {
+        body {
             font-family: Arial, sans-serif;
-            background-image: url('img.jpg'); /* Ensure the correct path */
+            background-image: url('img.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed; /* Keeps the background fixed */
+            background-attachment: fixed; 
             height: 100vh;
             margin: 0;
             padding: 0;
@@ -23,6 +22,17 @@
             align-items: center;
             overflow: hidden;
         }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        
         .navbar {
     display: flex;
     justify-content: space-between;
@@ -70,7 +80,7 @@
 }
 
 .navbar .nav-links a:hover {
-    color:  #8E54E9;
+    color: #4CAF50;
 }
 .contact{
     margin-top: 10px;
@@ -99,7 +109,6 @@
     width: 100%;
 }
 .navbar .nav-button {
-    background-color:  #8E54E9;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -108,9 +117,7 @@
     transition: background-color 0.3s;
 }
 
-.navbar .nav-button:hover {
-    background-color: #45a049;
-}
+
 .quick-links {
     position: relative;
 }
@@ -150,45 +157,90 @@
 .logout:hover {
     background-color: #d32f2f;
 }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 370px;
-        }
-        h2 {
+
+        h1 {
             text-align: center;
             color: #333;
         }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
         .form-group {
-            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
         }
+
         label {
-            display: block;
+            width: 40%;
             font-weight: bold;
-            margin-bottom: 5px;
+            text-align: left;
         }
-        input {
-            width: 100%;
+
+        input, select {
+            width: 60%;
             padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            font-size: 14px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
         }
-        .btn {
-            width: 100%;
+
+        button {
             background-color:  #8E54E9;
             color: white;
-            padding: 10px;
+            padding: 10px 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
+            width: 100%;
             font-size: 16px;
         }
-        .btn:hover {
-            background-color: #8E54E9;
+
+        button:hover {
+            background-color:  #8E54E9;
         }
     </style>
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("gpoForm").addEventListener("submit", function (event) {
+            if (!validateForm()) {
+                event.preventDefault(); // Stop form submission if validation fails
+            }
+        });
+    });
+
+    function validateForm() {
+        let name = document.getElementById("name").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let phone = document.getElementById("contact").value.trim();
+        let image = document.getElementById("image");
+
+        let nameRegex = /^[A-Za-z\s]+$/;
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        let phoneRegex = /^\d{10}$/;
+        let imageRegex = /\.(jpg|jpeg|png|gif)$/i;
+
+        if (!nameRegex.test(name)) {
+            alert("Name should only contain alphabets and spaces.");
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        if (phone !== "" && !phoneRegex.test(phone)) {
+            alert("Phone number must be exactly 10 digits.");
+            return false;
+        }
+
+        return true;
+    }
+</script>
 </head>
 <body>
     <div class="navbar">
@@ -197,6 +249,7 @@
         </div>
         <div class="nav-links">
             
+            <a href="admin_change_password.jsp" >Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -210,22 +263,27 @@
             <a href="logout.jsp" class="logout">Logout</a>
         </div>
     </div>
+
     <div class="container">
-        <h2>Change Password</h2>
-        <form action="HODChangePasswordServlet" method="post">
+        <h1>Add GPO</h1>
+        <form id="gpoForm" action="UploadGPOServlet" method="post">
             <div class="form-group">
-                <label for="oldPassword">Old Password:</label>
-                <input type="password" id="oldPassword" name="oldPassword" required>
+                <label for="name">  GPO Name:</label>
+                <input type="text" id="name" name="name" placeholder="Enter GPO's name" required>
             </div>
+
             <div class="form-group">
-                <label for="newPassword">New Password:</label>
-                <input type="password" id="newPassword" name="newPassword" required>
+                <label for="email">Email Address:</label>
+                <input type="email" id="email" name="email" placeholder="Enter GPO's email" required>
             </div>
+
             <div class="form-group">
-                <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <label for="contact">Contact Number:</label>
+                <input type="text" id="contact" name="contact" placeholder="Enter contact number" required>
             </div>
-            <button type="submit" class="btn">Change Password</button>
+
+
+            <button type="submit">Submit</button>
         </form>
     </div>
 </body>
