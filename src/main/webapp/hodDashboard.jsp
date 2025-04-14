@@ -367,9 +367,10 @@
                                 pstmt.close();
                                 
                                 // Count approved leaves
-                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM leaverequests lr " +
-                                                      "JOIN students s ON lr.student_id = s.student_id " +
-                                                      "WHERE s.department_id = ? AND lr.hod_status = 'Accepted'";
+                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM LeaveRequests lr " +
+                       "JOIN students s ON lr.student_id = s.student_id " +
+                       "WHERE s.department_id = ? AND lr.final_status = 'Accepted' " +
+                       "AND lr.actual_return_date IS NULL";
                                 pstmt = con.prepareStatement(approvedQuery);
                                 pstmt.setString(1, departmentId);
                                 rs = pstmt.executeQuery();

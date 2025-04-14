@@ -1495,7 +1495,7 @@ border-radius: 10px; text-align: center; width: 300px;">
         </div>
         <div class="nav-links">
             
-            <a href="change_password.jsp" >Change Password</a>
+            <a href="admin_change_password.jsp" >Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">

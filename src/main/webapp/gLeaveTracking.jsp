@@ -887,7 +887,8 @@ button {
                     </div>
                     
                     <div class="leave-actions">
-                        <a href="leaveDetails.jsp?leave_id=<%= leaveId %>" class="view-btn">View Details</a>
+                        <a href="leaveDetailsGuard.jsp?leave_id=<%= rs.getString("leave_id") %>" class="view-btn">View Details</a>
+
                     </div>
                 </div>
             </div>

@@ -204,6 +204,46 @@
             background-color:  #8E54E9;
         }
     </style>
+     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("adminForm").addEventListener("submit", function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Stop form submission if validation fails
+                }
+            });
+        });
+    
+        function validateForm() {
+            let name = document.getElementById("name").value.trim();
+            let email = document.getElementById("email").value.trim();
+            let phone = document.getElementById("contact").value.trim();
+            let image = document.getElementById("image");
+    
+            let nameRegex = /^[A-Za-z\s]+$/;
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            let phoneRegex = /^\d{10}$/;
+            let imageRegex = /\.(jpg|jpeg|png|gif)$/i;
+    
+            if (!nameRegex.test(name)) {
+                alert("Name should only contain alphabets and spaces.");
+                return false;
+            }
+            if (!emailRegex.test(email)) {
+                alert("Please enter a valid email address.");
+                return false;
+            }
+            if (phone !== "" && !phoneRegex.test(phone)) {
+                alert("Phone number must be exactly 10 digits.");
+                return false;
+            }
+            if (image.files.length > 0 && !imageRegex.test(image.files[0].name)) {
+                alert("Please upload a valid image file (jpg, jpeg, png, gif).");
+                return false;
+            }
+    
+            return true;
+        }
+    </script>
 </head>
 <body>
     <div class="navbar">
@@ -229,7 +269,7 @@
 
     <div class="container">
         <h1>Add Admin</h1>
-        <form action="UploadAdminServlet" method="post" enctype="multipart/form-data">
+        <form id="adminForm" action="UploadAdminServlet" method="post" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="name">Admin Name:</label>
                 <input type="text" id="name" name="name" placeholder="Enter Admin's name" required>
@@ -247,7 +287,7 @@
 
             <div class="form-group">
                 <label for="photo">Upload Photo:</label>
-                <input type="file" name="image" accept="image/*">
+                <input type="file" id="image" name="image" accept="image/*" required>
             </div>
 
             <button type="submit">Submit</button>

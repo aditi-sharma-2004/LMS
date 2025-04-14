@@ -24,66 +24,21 @@
     width: 100vw; /* Ensures it covers the full width of the viewport */
 }
 
+.container {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 9px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    max-width: 1000px;
+    width: 90%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-top: 80px; /* Moves the container below the navbar */
+}  
 
-        .logo img {
-            width: 80px; 
-            height: 50px; 
-            border-radius: 0; 
-            object-fit: cover; 
-        }
-
-        .content {
-            max-width: 700px;
-            margin: 40px auto;
-            background: white;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 0 15px rgba(106, 13, 173, 0.3);
-        }
-
-        .profile-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .photo-container img {
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            border: 3px solid #6a0dad;
-            margin-bottom: 20px;
-        }
-
-        .details-container {
-            width: 100%;
-        }
-
-        .row {
-            margin-bottom: 15px;
-            padding: 10px;
-            background: #f1eaff;
-            border-radius: 5px;
-        }
-
-        .row label {
-            font-weight: bold;
-            color: #6a0dad;
-            display: block;
-        }
-
-        .value {
-            margin-top: 5px;
-            color: #333;
-            font-size: 15px;
-        }
-
-        @media(max-width: 600px) {
-            .content {
-                width: 90%;
-                padding: 20px;
-            }
-        }
+        
         .navbar {
     display: flex;
     justify-content: space-between;
@@ -208,6 +163,112 @@
 .logout:hover {
     background-color: #d32f2f;
 }
+button {
+            background-color:  #8E54E9;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color:  #8E54E9;
+        }
+
+        .content {
+            max-width: 700px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(106, 13, 173, 0.3);
+        }
+
+        .photo-container {
+    flex-shrink: 0;
+    align-self: flex-start;
+    margin-top: 50px;
+}
+
+.photo-container img {
+    max-width: 200px;
+    border-radius: 10px;
+}
+
+.details-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+.details-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 10px;
+}
+
+.details-grid label {
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.details-grid .full-width {
+    grid-column: span 2;
+    display: flex;
+    flex-direction: column;
+}
+
+.details-grid input {
+    padding: 5px 8px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+    width: 100%;
+}
+
+.details-grid input:focus {
+    border-color: #6a5acd;
+    outline: none;
+    background-color: #fff;
+}
+
+        .row {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #f1eaff;
+            border-radius: 5px;
+        }
+
+        .row label {
+            font-weight: bold;
+            color: #6a0dad;
+            display: block;
+        }
+
+        .value {
+            margin-top: 5px;
+            color: #333;
+            font-size: 15px;
+        }
+
+        @media(max-width: 600px) {
+            .content {
+                width: 90%;
+                padding: 20px;
+            }
+        }
     </style>
 </head>
 
@@ -233,13 +294,8 @@
             <a href="logout.jsp" class="logout">Logout</a>
         </div>
     </div>
-    <div class="container">
-        <div class="logo">
-            <img src="logoo.png" alt="Banasthali Vidyapeeth Logo">
-        </div>
-
-    <div class="content">
-        <div class="profile-container">
+   
+       
 
             <%
                 Connection con = null;
@@ -268,7 +324,7 @@
                                 base64Image = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(imgData);
                             }
             %>
-
+            <div class="container">
             <div class="photo-container">
                 <img src="<%= base64Image %>" alt="Warden Photo">
             </div>

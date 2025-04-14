@@ -364,12 +364,12 @@
                                 pstmt.close();
                                 
                                 // Count approved leaves
-                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM leaverequests lr " +
-                                                      "JOIN students s ON lr.student_id = s.student_id " +
-                                                      "WHERE s.department_id = ? AND lr.verification_status = 'Accepted'";
-                                pstmt = con.prepareStatement(approvedQuery);
-                                pstmt.setString(1, departmentId);
-                                rs = pstmt.executeQuery();
+                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM LeaveRequests " +
+                                "WHERE final_status = 'Accepted' " +
+                                "AND actual_return_date IS NULL";
+         pstmt = con.prepareStatement(approvedQuery);
+         // Remove the line: pstmt.setString(1, departmentId);
+         rs = pstmt.executeQuery();
                                 
                                 if(rs.next()) {
                                     approvedLeaves = rs.getInt("approved_count");

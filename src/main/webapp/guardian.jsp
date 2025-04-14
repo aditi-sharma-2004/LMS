@@ -132,7 +132,41 @@ button {
         button:hover {
             background-color:  #8E54E9;
         }
+        .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding-right: 35px; /* give space for eye icon */
+}
+
+.eye-icon {
+    background-color: #fff; /* just for testing */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    z-index: 2; /* ensures it's above input field */
+}
     </style>
+     <script>
+        function togglePassword(fieldId, eyeIcon) {
+           const input = document.getElementById(fieldId);
+           if (input.type === "password") {
+               input.type = "text";
+               eyeIcon.src = "eye_slash_icon.jpg"; // closed eye
+           } else {
+               input.type = "password";
+               eyeIcon.src = "eye_icon.jpg"; // open eye
+           }
+       }
+    </script>
 </head>
 <body>
     <div class="navbar">
@@ -157,7 +191,10 @@ button {
         <h1>Guardian Login</h1>
         <form action="GuardianLoginServlet" method="POST">
             <input type="text" name="guardianId" placeholder="Enter your Guardian ID" required>
-            <input type="password" name="password" placeholder="Enter your Password" required>
+            <div class="input-wrapper">
+                <input type="password" id="password" name="password" placeholder="Enter your Password" required>
+                <img src="eye_icon.jpg" class="eye-icon" onclick="togglePassword('password', this)">
+             </div>
             <button type="submit">Login</button>
         </form>
         <p>Forgot your password? <a href="resetPassword.jsp">Reset Password</a></p>

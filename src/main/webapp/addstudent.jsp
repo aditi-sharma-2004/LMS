@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.Connection,java.sql.DriverManager,java.sql.Statement,java.sql.ResultSet" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Add Student</title>
     <style>
@@ -10,7 +11,7 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
+    background-attachment: fixed; 
     height: 100vh;
     margin: 0;
     padding: 0;
@@ -36,11 +37,11 @@
     background-color: #333;
     color: white;
     padding: 3px 8px;
-    position: absolute;
+    position: fixed;  /* 🔹 Keeps navbar fixed at top */
+    top: 0;           /* 🔹 Sticks it to the top */
     left: 0;
-    top: 0;
-    width: 99%;
-    z-index: 1000;
+    width: 100%;      /* 🔹 Makes it span full width */
+    z-index: 1000;    /* 🔹 Ensures it stays above other elements */
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -189,6 +190,60 @@ button {
             background-color:  #8E54E9;
         }
     </style>
+   <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("studentForm").addEventListener("submit", function (event) {
+            if (!validateForm()) {
+                event.preventDefault(); // Prevent form submission if validation fails
+            }
+        });
+    });
+
+    function validateForm() {
+        let studentId = document.getElementById("student_id").value.trim();
+        let name = document.getElementById("name").value.trim();
+        let rollNo = document.getElementById("rno").value.trim();
+        let email = document.getElementById("email").value.trim();
+        let phone = document.getElementById("phone").value.trim();
+        let address = document.getElementById("address").value.trim();
+        let image = document.getElementById("image").value;
+
+        let alphanumericRegex = /^[A-Za-z0-9]+$/;
+        let nameRegex = /^[A-Za-z\s]+$/;
+        let textRegex = /^[A-Za-z\s.,'-]+$/;
+        let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+        let phoneRegex = /^\d{10}$/;
+        let imageRegex = /(.jpg|.jpeg|.png|.gif)$/i;
+
+        if (!alphanumericRegex.test(studentId)) {
+            alert("Student ID should be alphanumeric.");
+            return false;
+        }
+        if (!nameRegex.test(name)) {
+            alert("Name should only contain alphabets and spaces.");
+            return false;
+        }
+        if (!/^\d+$/.test(rollNo) || parseInt(rollNo) <= 0) {
+            alert("Roll number should be a valid positive number.");
+            return false;
+        }
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return false;
+        }
+        if (phone !== "" && !phoneRegex.test(phone)) {
+            alert("Phone number must be exactly 10 digits.");
+            return false;
+        }
+
+        if (image && !imageRegex.test(image)) {
+            alert("Please upload a valid image file (jpg, jpeg, png, gif). ");
+            return false;
+        }
+        return true;
+    }
+</script>
+    
 </head>
 <body>
     
@@ -198,7 +253,7 @@ button {
         </div>
         <div class="nav-links">
             
-            <a href="change_password.jsp" >Change Password</a>
+            <a href="admin_change_password.jsp" >Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -214,17 +269,32 @@ button {
     </div>
     <div class="container">
         <h2>Add New Student</h2>
-        <form action="UploadStudentServlet" method="post" enctype="multipart/form-data">
-            Student ID: <input type="text" name="student_id" required><br>
-            Name: <input type="text" name="name" required><br>
-            Roll No: <input type="number" name="rno" required><br>
-            Email: <input type="email" name="email" required><br>
-            DOB: <input type="date" name="dob" required><br>
-            Phone: <input type="text" name="phone" required><br>
-            Address: <textarea name="address" required></textarea><br>
-            Profile Image: <input type="file" name="image" accept="image/*"><br>
+        <form id="studentForm" action="UploadStudentServlet" method="post" enctype="multipart/form-data">
+            <label>Student ID:</label>
+            <input type="text" id="student_id" name="student_id" required>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="rno">Roll Number:</label>
+            <input type="text" id="rno" name="rno" required>
             
-            Department:
+            <label for="email">Email:</label> 
+            <input type="email" id="email" name="email" required>
+
+            <label for="dob">DOB:</label>  
+            <input type="date" name="dob" required>
+
+            <label for="phone">Phone:</label> 
+            <input type="text" id="phone" name="phone" required>
+
+            <label for="address">Address:</label> 
+            <textarea id="address" name="address" required></textarea>
+
+            <label for="image">Profile Image:</label> 
+            <input type="file" id="image" name="image" accept="image/*"><br>
+            
+            <label for="department">Department:</label>
             <select name="department_id" required>
                 <option value="">Select Department</option>
                 <% 
@@ -245,7 +315,7 @@ button {
                 %>
             </select><br>
             
-            Course:
+            <label for="courses">Course</label>
             <select name="course_id" required>
                 <option value="">Select Course</option>
                 <% 
@@ -265,7 +335,7 @@ button {
                 %>
             </select><br>
             
-            Hostel:
+            <label for="hostels">Hostel:</label>
             <select name="hostel_id">
                 <option value="">No Hostel</option>
                 <% 
@@ -285,7 +355,7 @@ button {
                 %>
             </select><br>
             
-            Year:
+            <label for="year">Year:</label>
             <select name="year" required>
                 <option value="1st">1st</option>
                 <option value="2nd">2nd</option>
@@ -296,5 +366,6 @@ button {
             <input type="submit" value="Add Student">
         </form>
     </div>
+    
 </body>
 </html>

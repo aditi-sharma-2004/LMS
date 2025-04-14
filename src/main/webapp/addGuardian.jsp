@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ page import="java.sql.*" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>Add Guardian</title>
     <style>
@@ -10,7 +11,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            background-attachment: fixed;
+            background-attachment: fixed; 
             height: 100vh;
             margin: 0;
             padding: 0;
@@ -59,11 +60,11 @@
     background-color: #333;
     color: white;
     padding: 3px 8px;
-    position: absolute;
+    position: fixed;  /* 🔹 Keeps navbar fixed at top */
+    top: 0;           /* 🔹 Sticks it to the top */
     left: 0;
-    top: 0;
-    width: 99%;
-    z-index: 1000;
+    width: 99%;      /* 🔹 Makes it span full width */
+    z-index: 1000;    /* 🔹 Ensures it stays above other elements */
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -191,6 +192,61 @@ button {
             background-color:  #8E54E9;
         }
     </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("guardianForm").addEventListener("submit", function (event) {
+                if (!validateForm()) {
+                    event.preventDefault(); // Prevent form submission if validation fails
+                }
+            });
+        });
+    
+        function validateForm() {
+    let name = document.getElementById("name").value.trim();
+    let email = document.getElementById("email").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let address = document.getElementById("address").value.trim();
+    let image = document.getElementById("image");
+    let signature = document.getElementById("signature");
+
+    let nameRegex = /^[A-Za-z\s]+$/;
+    let emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    let phoneRegex = /^\d{10}$/;
+    let imageRegex = /\.(jpg|jpeg|png|gif)$/i;
+    let signatureRegex = /\.(jpg|jpeg|png|gif)$/i;
+
+    if (!nameRegex.test(name)) {
+        alert("Name should only contain alphabets and spaces.");
+        return false;
+    }
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return false;
+    }
+    if (phone !== "" && !phoneRegex.test(phone)) {
+        alert("Phone number must be exactly 10 digits.");
+        return false;
+    }
+    if (address === "") {
+        alert("Address cannot be empty.");
+        return false;
+    }
+    if (image.files.length > 0 && !imageRegex.test(image.files[0].name)) {
+        alert("Please upload a valid image file (jpg, jpeg, png, gif).");
+        return false;
+    }
+    if (signature.files.length === 0) {
+        alert("Please upload the guardian's signature.");
+        return false;
+    }
+    if (!signatureRegex.test(signature.files[0].name)) {
+        alert("Signature must be a valid image file (jpg, jpeg, png, gif).");
+        return false;
+    }
+
+    return true;
+}
+    </script>  
 </head>
 <body>
 
@@ -200,7 +256,7 @@ button {
         </div>
         <div class="nav-links">
             
-            <a href="change_password.jsp" >Change Password</a>
+            <a href="admin_change_password.jsp" >Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -229,24 +285,24 @@ button {
                 return;
             }
         %>
-        <form action="UploadGuardianServlet" method="post" enctype="multipart/form-data">
+        <form id="guardianForm" action="UploadGuardianServlet" method="post" enctype="multipart/form-data">
             <label>Guardian Name:</label>
-            <input type="text" name="name" required>
+            <input type="text" id="name" name="name" required>
             
             <label>Email:</label>
-            <input type="email" name="email" required>
+            <input type="email" id="email" name="email" required>
             
             <label>Phone:</label>
-            <input type="text" name="phone" required>
+            <input type="text" id="phone" name="phone" required>
             
             <label>Address:</label>
-            <textarea name="address" required></textarea>
+            <textarea id="address" name="address" required></textarea>
             
             <label>Profile Image:</label>
-            <input type="file" name="image" accept="image/*">
+            <input type="file" id="image" name="image" accept="image/*">
 
             <label>Guardian Signature:</label>
-            <input type="file" name="signature" accept="image/*" required>
+            <input type="file" id="signature" name="signature" accept="image/*" required>
             
             <!-- Hidden field to store student_id -->
             <input type="hidden" name="student_id" value="<%= studentId %>">
@@ -254,5 +310,6 @@ button {
             <input type="submit" value="Add Guardian">
         </form>
     </div>
+ 
 </body>
 </html>

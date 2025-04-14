@@ -186,7 +186,84 @@
         .btn:hover {
             background-color: #8E54E9;
         }
+        .input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-wrapper input {
+    width: 100%;
+    padding-right: 35px; /* give space for eye icon */
+}
+
+.eye-icon {
+    background-color: #fff; /* just for testing */
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    z-index: 2; /* ensures it's above input field */
+}
     </style>
+    <script>
+        function togglePassword(fieldId, eyeIcon) {
+           const input = document.getElementById(fieldId);
+           if (input.type === "password") {
+               input.type = "text";
+               eyeIcon.src = "eye_slash_icon.jpg"; // closed eye
+           } else {
+               input.type = "password";
+               eyeIcon.src = "eye_icon.jpg"; // open eye
+           }
+       }
+
+       function validateForm() {
+       const newPassword = document.getElementById("newPassword").value;
+       const confirmPassword = document.getElementById("confirmPassword").value;
+
+       // Check minimum length
+       if (newPassword.length < 8) {
+           alert("Password must be at least 8 characters long.");
+           return false;
+       }
+
+       // Check for at least one uppercase letter
+       if (!/[A-Z]/.test(newPassword)) {
+           alert("Password must contain at least one uppercase letter.");
+           return false;
+       }
+
+       // Check for at least one lowercase letter
+       if (!/[a-z]/.test(newPassword)) {
+           alert("Password must contain at least one lowercase letter.");
+           return false;
+       }
+
+       // Check for at least one digit
+       if (!/\d/.test(newPassword)) {
+           alert("Password must contain at least one number.");
+           return false;
+       }
+
+       // Check for at least one special character
+       if (!/[#@$!%*?&]/.test(newPassword)) {
+           alert("Password must contain at least one special character (#@$!%*?&).");
+           return false;
+       }
+
+       // Check confirm password
+       if (newPassword !== confirmPassword) {
+           alert("New Password and Confirm Password do not match.");
+           return false;
+       }
+
+       return true;
+   }
+   </script>
 </head>
 <body>
     <div class="navbar">
@@ -210,18 +287,30 @@
     </div>
     <div class="container">
         <h2>Change Password</h2>
-        <form action="WardenChangePasswordServlet" method="post">
+        <form action="WardenChangePasswordServlet" method="post" onsubmit="return validateForm();">
             <div class="form-group">
                 <label for="oldPassword">Old Password:</label>
-                <input type="password" id="oldPassword" name="oldPassword" required>
+                <div class="input-wrapper">
+                    <input type="password" id="oldPassword" name="oldPassword" required>
+                    <img src="eye_icon.jpg" class="eye-icon" onclick="togglePassword('oldPassword', this)">
+                </div>
             </div>
             <div class="form-group">
                 <label for="newPassword">New Password:</label>
-                <input type="password" id="newPassword" name="newPassword" required>
+                <div class="input-wrapper">
+                    <input type="password" id="newPassword" name="newPassword" required>
+                    <img src="eye_icon.jpg" class="eye-icon" onclick="togglePassword('newPassword', this)">
+                </div>
+               
+               
             </div>
             <div class="form-group">
                 <label for="confirmPassword">Confirm Password:</label>
-                <input type="password" id="confirmPassword" name="confirmPassword" required>
+                <div class="input-wrapper">
+                    <input type="password" id="confirmPassword" name="confirmPassword" required>
+                    <img src="eye_icon.jpg" class="eye-icon" onclick="togglePassword('confirmPassword', this)">
+                </div>
+                
             </div>
             <button type="submit" class="btn">Change Password</button>
         </form>

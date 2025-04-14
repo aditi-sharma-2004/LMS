@@ -15,6 +15,7 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
+            background-attachment: fixed; /* Keeps the background fixed while scrolling */
             height: 100vh;
             margin: 0;
             padding: 0;
