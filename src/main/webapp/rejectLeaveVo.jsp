@@ -11,7 +11,7 @@
     try {
         Class.forName("com.mysql.cj.jdbc.Driver");
         con = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms");
-        String updateQuery = "UPDATE LeaveRequests SET verification_status = 'Rejected', final_status = 'Rejected' WHERE leave_id = ?";
+        String updateQuery = "UPDATE LeaveRequests SET verification_status = 'Rejected',hod_status = 'Rejected',gpo_status = 'Rejected', final_status='Rejected' WHERE leave_id = ?";
         ps = con.prepareStatement(updateQuery);
         ps.setInt(1, leaveId);
         int rowsUpdated = ps.executeUpdate();

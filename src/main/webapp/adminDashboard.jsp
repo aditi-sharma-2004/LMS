@@ -651,7 +651,7 @@ iframe {
         }
 
         function submitStudentId() {
-            var studentId = document.getElementById("studentIdInput").value.trim();
+            var studentId = document.getElementById("studentIdInputu").value.trim();
             if (studentId === "") {
                 alert("Please enter a valid Student ID!");
                 return;
@@ -1164,24 +1164,22 @@ function submit_WardenEmail() {
 }
 //view for hod
  // Open Email Popup
- function openEmailPopup() {
-        document.getElementById('emailModal').style.display = 'flex';
-    }
+ function open_HODPopup() {
+    document.getElementById('hodEmailModal').style.display = 'flex';
+}
 
-    // Close Email Popup
-    function closeEmailPopup() {
-        document.getElementById('emailModal').style.display = 'none';
-    }
+function closeHODPopup() {
+    document.getElementById('hodEmailModal').style.display = 'none';
+}
 
-    // Submit HOD Email
-    function submit_Email() {
-        const email = document.getElementById('emailInput').value.trim();
-        if (email === '') {
-            alert('Please enter an email.');
-            return;
-        }
-        window.location.href = "viewhod.jsp?email=" + encodeURIComponent(email);
+function submit_HODEmail() {
+    const wardenEmail = document.getElementById('hodEmailInput').value.trim();
+    if (wardenEmail === '') {
+        alert('Please enter a Warden Email.');
+        return;
     }
+    window.location.href = "viewhod.jsp?email=" + encodeURIComponent(wardenEmail);
+}
      // Open VO Email Popup
      function open_VoPopup() {
         document.getElementById('voEmailModal').style.display = 'flex';
@@ -1237,14 +1235,15 @@ function submit_WardenEmail() {
 
 <div id="hodEmailModal" class="custom-modal">
     <div class="custom-modal-content">
-        <span class="close" onclick="closeHodPopup()">&times;</span>
         <h2>Enter HOD Email</h2>
         <input type="email" id="hodEmailInput" placeholder="Enter HOD Email">
-        <button onclick="submit_HodEmail()" class="custom-submit-btn">Submit</button>
-        <button onclick="closeHodPopup()" class="custom-cancel-btn">Cancel</button>
+        <div style="margin-top:15px;">
+            <button class="custom-submit-btn" onclick="submit_HODEmail()">Submit</button>
+            <button class="custom-cancel-btn" onclick="closeHODPopup()">Cancel</button>
+        </div>
     </div>
 </div>
-
+¬
 <!-- VO Email Popup -->
 <div id="voEmailModal" class="custom-modal">
     <div class="custom-modal-content">
@@ -1287,7 +1286,7 @@ background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-in
 border-radius: 10px; text-align: center; width: 300px;">
 
 <h2 style="margin-bottom: 10px;">Enter Student Smartcard ID</h2>
-<input type="email" id="studentIdInput" placeholder="" required 
+<input type="text" id="studentIdInputu" placeholder="" required 
     style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
 
 <div>
@@ -1554,7 +1553,7 @@ border-radius: 10px; text-align: center; width: 300px;">
             <div id="viewDropdown" class="dropdown">
                 <a href="#" onclick="open_StudentPopup()">Student</a>
                 <a href="#" onclick="open_WardenPopup()">Warden</a>
-                <a href="#" onclick="openEmailPopup()">HOD</a>
+                <a href="#" onclick="open_HODPopup()">HOD</a>
                 <a href="#" onclick="open_VoPopup()">Verification Officer</a>
                 <a href="#" onclick="open_Modal()">Admin</a>
             </div>

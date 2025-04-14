@@ -732,26 +732,30 @@ button {
                 String hodStatus = rs.getString("hod_status");
                 String finalStatus = rs.getString("final_status");
                 String gpoStatus = rs.getString("gpo_status");
-                
+        
                 String statusClass = "status-pending";
                 if ("Accepted".equals(finalStatus)) {
                     statusClass = "status-approved";
                 } else if ("Rejected".equals(finalStatus)) {
                     statusClass = "status-rejected";
                 }
-                
-                // Determine which stage we're at
-                boolean isRejected = "Rejected".equals(finalStatus);
+        
+                // Rejection & Approval flags
+                boolean wardenRejected = "Rejected".equals(wardenStatus);
+                boolean voRejected = "Rejected".equals(verificationStatus);
+                boolean hodRejected = "Rejected".equals(hodStatus);
+                boolean finalRejected = "Rejected".equals(gpoStatus) || "Rejected".equals(finalStatus);
+        
+                boolean isRejected = wardenRejected || voRejected || hodRejected || finalRejected;
                 boolean isApproved = "Accepted".equals(finalStatus);
-                
+        
+                // Stage-wise completion
                 boolean wardenCompleted = "Accepted".equals(wardenStatus);
                 boolean voCompleted = currentStage.equals("HOD") || currentStage.equals("GPO") || currentStage.equals("Complete");
                 boolean hodCompleted = "Accepted".equals(hodStatus);
                 boolean finalCompleted = "Accepted".equals(finalStatus) || "Accepted".equals(gpoStatus);
-                
+        
                 int progressWidth = 0;
-                
-                // Modified logic to match the workflow: Warden -> VO -> HOD -> GPO
                 switch(currentStage) {
                     case "Warden":
                         progressWidth = 0;
@@ -775,29 +779,28 @@ button {
                         wardenCompleted = true;
                         voCompleted = true;
                         hodCompleted = true;
-                        progressWidth = isRejected ? 100 : (isApproved ? 100 : 90);
-                        if(isApproved) finalCompleted = true;
+                        finalCompleted = isApproved;
+                        progressWidth = 100;
                         break;
                 }
-                
-                if(isRejected) {
-                    // If rejected, determine at which stage it was rejected
-                    if(currentStage.equals("Warden") || "Rejected".equals(wardenStatus)) {
-                        // Rejected at first step
+        
+                // Handle rejection rollback
+                if (isRejected) {
+                    if (wardenRejected || currentStage.equals("Warden")) {
                         wardenCompleted = false;
-                    } else if(currentStage.equals("VO")) {
+                    } else if (voRejected || currentStage.equals("VO")) {
                         voCompleted = false;
-                    } else if(currentStage.equals("HOD") || "Rejected".equals(hodStatus)) {
+                    } else if (hodRejected || currentStage.equals("HOD")) {
                         hodCompleted = false;
-                    } else if(currentStage.equals("GPO") || "Rejected".equals(gpoStatus) || "Rejected".equals(finalStatus)) {
+                    } else if (finalRejected || currentStage.equals("GPO") || currentStage.equals("Complete")) {
                         finalCompleted = false;
                     }
                 }
-                
-                // Check if HOD has approved but final approval is pending
+        
                 boolean hodApprovedPendingFinal = "Accepted".equals(hodStatus) && !finalCompleted && !isRejected;
             %>
-            
+        
+            <!-- Leave Card Starts -->
             <div class="leave-card">
                 <div class="leave-header">
                     <div>
@@ -806,7 +809,7 @@ button {
                             <span class="leave-type-badge"><%= leaveType %></span>
                         </div>
                         <div class="leave-days">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
                                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                                 <line x1="16" y1="2" x2="16" y2="6"></line>
                                 <line x1="8" y1="2" x2="8" y2="6"></line>
@@ -819,7 +822,7 @@ button {
                         <%= verificationStatus %>
                     </div>
                 </div>
-                
+        
                 <div class="leave-details">
                     <div class="leave-dates">
                         <div class="leave-date">
@@ -831,10 +834,10 @@ button {
                             <strong><%= endDate %></strong>
                         </div>
                     </div>
-                    
+        
                     <% if ("GPO".equals(currentStage)) { %>
                     <div class="gatepass-notification">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4CAF50" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" stroke="#4CAF50">
                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
                         </svg>
@@ -844,7 +847,7 @@ button {
                         </div>
                     </div>
                     <% } %>
-                    
+        
                     <div class="timeline-container">
                         <div class="timeline-track"></div>
                         <div class="timeline-progress" id="progressBar<%= leaveId %>"></div>
@@ -852,47 +855,48 @@ button {
                             document.getElementById("progressBar<%= leaveId %>").style.width = "<%= progressWidth %>%";
                         </script>
                         <div class="timeline-steps">
-                            <div class="timeline-step <%= "Rejected".equals(wardenStatus) ? "rejected" : (wardenCompleted ? "completed" : (!wardenCompleted && currentStage.equals("Warden") ? "active" : "")) %>">
+                            <div class="timeline-step <%= wardenRejected ? "rejected" : (wardenCompleted ? "completed" : (currentStage.equals("Warden") ? "active" : "")) %>">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">Warden</div>
                                 <div class="timeline-status">
-                                    <%= "Rejected".equals(wardenStatus) ? "Rejected" : (wardenCompleted ? "Accepted" : (!wardenCompleted && currentStage.equals("Warden") ? "In Progress" : "Pending")) %>
+                                    <%= wardenRejected ? "Rejected" : (wardenCompleted ? "Accepted" : (currentStage.equals("Warden") ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
-                            
-                            <div class="timeline-step <%= isRejected && currentStage.equals("VO") ? "rejected" : (voCompleted ? "completed" : (!voCompleted && currentStage.equals("VO") ? "active" : "")) %>">
+        
+                            <div class="timeline-step <%= voRejected ? "rejected" : (voCompleted ? "completed" : (currentStage.equals("VO") ? "active" : "")) %>">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">Verification</div>
                                 <div class="timeline-status">
-                                    <%= isRejected && currentStage.equals("VO") ? "Rejected" : (voCompleted ? "Accepted" : (!voCompleted && currentStage.equals("VO") ? "In Progress" : "Pending")) %>
+                                    <%= voRejected ? "Rejected" : (voCompleted ? "Accepted" : (currentStage.equals("VO") ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
-                            
-                            <div class="timeline-step <%= "Rejected".equals(hodStatus) ? "rejected" : (hodCompleted ? "completed" : (!hodCompleted && currentStage.equals("HOD") ? "active" : "")) %>">
+        
+                            <div class="timeline-step <%= hodRejected ? "rejected" : (hodCompleted ? "completed" : (currentStage.equals("HOD") ? "active" : "")) %>">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">HOD</div>
                                 <div class="timeline-status">
-                                    <%= "Rejected".equals(hodStatus) ? "Rejected" : (hodCompleted ? "Accepted" : (!hodCompleted && currentStage.equals("HOD") ? "In Progress" : "Pending")) %>
+                                    <%= hodRejected ? "Rejected" : (hodCompleted ? "Accepted" : (currentStage.equals("HOD") ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
-                            
-                            <div class="timeline-step <%= ("Rejected".equals(gpoStatus) || "Rejected".equals(finalStatus)) ? "rejected" : (finalCompleted ? "completed" : (!finalCompleted && (currentStage.equals("GPO") || currentStage.equals("Complete")) ? "active" : "")) %>">
+        
+                            <div class="timeline-step <%= finalRejected ? "rejected" : (finalCompleted ? "completed" : ((currentStage.equals("GPO") || currentStage.equals("Complete")) ? "active" : "")) %>">
                                 <div class="timeline-dot"></div>
                                 <div class="timeline-label">Final</div>
                                 <div class="timeline-status">
-                                    <%= ("Rejected".equals(gpoStatus) || "Rejected".equals(finalStatus)) ? "Rejected" : (finalCompleted ? "Accepted" : (!finalCompleted && (currentStage.equals("GPO") || currentStage.equals("Complete")) ? "In Progress" : "Pending")) %>
+                                    <%= finalRejected ? "Rejected" : (finalCompleted ? "Accepted" : ((currentStage.equals("GPO") || currentStage.equals("Complete")) ? "In Progress" : "Pending")) %>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    
+        
                     <div class="leave-actions">
-                        <a href="leaveDetailsGuard.jsp?leave_id=<%= rs.getString("leave_id") %>" class="view-btn">View Details</a>
-
+                        <a href="leaveDetailsGuard.jsp?leave_id=<%= leaveId %>" class="view-btn">View Details</a>
                     </div>
                 </div>
             </div>
             <% } %>
+        </div>
+        
             
             <% if (!hasRecords) { %>
             <div class="empty-message">
