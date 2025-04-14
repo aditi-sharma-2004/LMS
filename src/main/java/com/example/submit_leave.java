@@ -39,54 +39,55 @@ public class submit_leave extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms")) {
 
-                // Fetch guardian_id from the database based on student_id
+                // Fetch guardian_id and address
                 String guardianId;
-                String fetchGuardianQuery = "SELECT guardian_id FROM guardians WHERE student_id = ?";
+                String guardianAddress;
+                String fetchGuardianQuery = "SELECT guardian_id, address FROM guardians WHERE student_id = ?";
                 try (PreparedStatement fetchGuardianStmt = conn.prepareStatement(fetchGuardianQuery)) {
                     fetchGuardianStmt.setString(1, studentId);
                     ResultSet rs = fetchGuardianStmt.executeQuery();
                     if (rs.next()) {
                         guardianId = rs.getString("guardian_id");
+                        guardianAddress = rs.getString("address");
                     } else {
                         response.getWriter().println("Error: Student ID not found.");
                         return;
                     }
                 }
 
-                // Insert leave request
-                String sql = "INSERT INTO leaverequests (student_id, guardian_id, reason, start_date, end_date, leave_type, " +
+                // Corrected SQL: 15 fields
+                String sql = "INSERT INTO leaverequests (student_id, guardian_id, guardian_address, reason, start_date, end_date, leave_type, " +
                         "leaving_alone, companion_name, companion_relation, companion_address, companion_phone, leaving_address, signature, current_stage) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                        "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 try (PreparedStatement stmt = conn.prepareStatement(sql)) {
                     String currentStage = "Warden";
                     stmt.setString(1, studentId);
                     stmt.setString(2, guardianId);
-                    stmt.setString(3, reason);
-                    stmt.setString(4, startDate);
-                    stmt.setString(5, endDate);
-                    stmt.setString(6, leaveType);
-                    stmt.setString(7, leavingAlone);
-                    stmt.setString(8, companionName);
-                    stmt.setString(9, companionRelation);
-                    stmt.setString(10, companionAddress);
-                    stmt.setString(11, companionPhone);
-                    stmt.setString(12, leavingAddress);
-                    
-                    // Handling file upload
+                    stmt.setString(3, guardianAddress);
+                    stmt.setString(4, reason);
+                    stmt.setString(5, startDate);
+                    stmt.setString(6, endDate);
+                    stmt.setString(7, leaveType);
+                    stmt.setString(8, leavingAlone);
+                    stmt.setString(9, companionName);
+                    stmt.setString(10, companionRelation);
+                    stmt.setString(11, companionAddress);
+                    stmt.setString(12, companionPhone);
+                    stmt.setString(13, leavingAddress);
+
                     if (signaturePart != null && signaturePart.getSize() > 0) {
                         InputStream inputStream = signaturePart.getInputStream();
-                        stmt.setBlob(13, inputStream);
+                        stmt.setBlob(14, inputStream);
                     } else {
-                        stmt.setNull(13, java.sql.Types.BLOB);
+                        stmt.setNull(14, java.sql.Types.BLOB);
                     }
-                    
-                    // Set current_stage parameter
-                    stmt.setString(14, currentStage);
+
+                    stmt.setString(15, currentStage);
 
                     int rowsInserted = stmt.executeUpdate();
                     if (rowsInserted > 0) {
-                        response.sendRedirect("guardianDashboard.jsp");  // Redirect to success page
+                        response.sendRedirect("guardianDashboard.jsp");
                     } else {
                         response.getWriter().println("Error: Leave request submission failed.");
                     }

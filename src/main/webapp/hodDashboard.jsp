@@ -402,7 +402,7 @@
             <span class="badge"><%= pendingLeaves %></span>
             <% } %>
         </a>
-        <a href="viewLeavesHod.jsp" class="button">
+        <a href="viewLeavesHod.jsp?hodId=<%= session.getAttribute("hodId") %>" class="button">
             View Approved Applications
             <% if(approvedLeaves > 0) { %>
             <span class="badge"><%= approvedLeaves %></span>

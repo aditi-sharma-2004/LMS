@@ -368,9 +368,12 @@
                                 pstmt.close();
                                 
                                 // Count approved leaves
-                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM leaverequests lr " +
-                                                      "JOIN students s ON lr.student_id = s.student_id " +
-                                                      "WHERE s.hostel_id = ? AND lr.warden_status = 'Accepted'";
+                                String approvedQuery = "SELECT COUNT(*) AS approved_count FROM LeaveRequests lr " +
+                                "JOIN Students s ON lr.student_id = s.student_id " +
+                                "JOIN Wardens w ON s.hostel_id = w.hostel_id " +
+                                "WHERE lr.final_status = 'Accepted' " +
+                                "AND lr.actual_return_date IS NULL " +
+                                "AND w.warden_id = ?";
                                 pstmt = con.prepareStatement(approvedQuery);
                                 pstmt.setString(1, hostelId);
                                 rs = pstmt.executeQuery();
@@ -401,7 +404,7 @@
             <span class="badge"><%= pendingLeaves %></span>
             <% } %>
         </a>
-        <a href="viewLeavesWarden.jsp" class="button">
+        <a href="viewLeavesWarden.jsp?wardenId=<%= session.getAttribute("wardenId") %>" class="button">
             View Approved Applications
             <% if(approvedLeaves > 0) { %>
             <span class="badge"><%= approvedLeaves %></span>
