@@ -16,6 +16,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
+// (No changes in the package and import section)
+
 @WebServlet("/submit_leave")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 5)  // 5MB max file size
 public class submit_leave extends HttpServlet {
@@ -39,6 +41,28 @@ public class submit_leave extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             try (Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/LMS", "lms", "lms")) {
 
+                // Check total leave days already taken
+                String totalDaysQuery = "SELECT SUM(DATEDIFF(end_date, start_date) + 1) AS total_days FROM leaverequests WHERE student_id = ?";
+                int totalTaken = 0;
+                try (PreparedStatement totalDaysStmt = conn.prepareStatement(totalDaysQuery)) {
+                    totalDaysStmt.setString(1, studentId);
+                    ResultSet rs = totalDaysStmt.executeQuery();
+                    if (rs.next()) {
+                        totalTaken = rs.getInt("total_days"); // returns 0 if NULL
+                    }
+                }
+
+                // Calculate new leave duration
+                java.sql.Date sDate = java.sql.Date.valueOf(startDate);
+                java.sql.Date eDate = java.sql.Date.valueOf(endDate);
+                long millisDiff = eDate.getTime() - sDate.getTime();
+                int numDaysRequested = (int)(millisDiff / (1000 * 60 * 60 * 24)) + 1;
+
+                if (totalTaken + numDaysRequested > 10) {
+                    response.getWriter().println("Error: Leave limit exceeded. Only " + (10 - totalTaken) + " day(s) remaining.");
+                    return;
+                }
+
                 // Fetch guardian_id and address
                 String guardianId;
                 String guardianAddress;
@@ -55,7 +79,6 @@ public class submit_leave extends HttpServlet {
                     }
                 }
 
-                // Corrected SQL: 15 fields
                 String sql = "INSERT INTO leaverequests (student_id, guardian_id, guardian_address, reason, start_date, end_date, leave_type, " +
                         "leaving_alone, companion_name, companion_relation, companion_address, companion_phone, leaving_address, signature, current_stage) " +
                         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";

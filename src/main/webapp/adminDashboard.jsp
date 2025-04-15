@@ -1216,6 +1216,22 @@ function submit_HODEmail() {
             }
             window.location.href = "viewadmin.jsp?email=" + encodeURIComponent(email);
         }
+        function open_GPO() {
+            document.getElementById('GPOEmailModal').style.display = 'flex';
+        }
+        
+        function closeGPOPopup() {
+            document.getElementById('GPOEmailModal').style.display = 'none';
+        }
+        
+        function submit_GPOEmail() {
+            const GPOEmail = document.getElementById('GPOEmailInput').value.trim();
+            if (GPOEmail === '') {
+                alert('Please enter a GPO Email.');
+                return;
+            }
+            window.location.href = "viewGPO.jsp?email=" + encodeURIComponent(GPOEmail);
+        }
 </script>
 </head>
 <body>
@@ -1275,6 +1291,18 @@ function submit_HODEmail() {
         <div style="margin-top:15px;">
             <button class="warden-submit-btn" onclick="submit_WardenEmail()">Submit</button>
             <button class="warden-cancel-btn" onclick="closeWardenPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
+<div id="GPOEmailModal" class="GPO-popup-modal" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
+background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
+border-radius: 10px; text-align: center; width: 300px;">
+    <div class="GPO-popup-content">
+        <h2>Enter GPO Email</h2>
+        <input type="text" id="GPOEmailInput" placeholder="Enter GPO Email">
+        <div style="margin-top:15px;">
+            <button class="GPO-submit-btn" onclick="submit_GPOEmail()">Submit</button>
+            <button class="GPO-cancel-btn" onclick="closeGPOPopup()">Cancel</button>
         </div>
     </div>
 </div>
@@ -1556,6 +1584,7 @@ border-radius: 10px; text-align: center; width: 300px;">
                 <a href="#" onclick="open_HODPopup()">HOD</a>
                 <a href="#" onclick="open_VoPopup()">Verification Officer</a>
                 <a href="#" onclick="open_Modal()">Admin</a>
+                <a href="#" onclick="open_GPO()">GPO</a>
             </div>
     
             <!-- Update Section -->
