@@ -1421,11 +1421,11 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             <input type="text" id="studentId" name="student_id" required>
             <button type="button" onclick="removeStudent()" class="remove-btn">Remove</button>
         </form>
-        <p id="student-message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="student-message"></p> <!--  Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ Warden Removal Modal -->
+<!--  Warden Removal Modal -->
 <div id="wardenremovePopup" class="popup" style="display: none;">
     <div class="popup-content">
         <span class="close-btn" onclick="closeWardenPopup()">&times;</span> <!-- Close Button -->
@@ -1435,30 +1435,30 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             <input type="text" id="wardenMail" name="wardenMail" required>
             <button type="button" onclick="removeWarden()" class="remove-btn">Remove</button>
         </form>
-        <p id="warden-message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="warden-message"></p> <!--  Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ HOD Removal Modal -->
+<!--  HOD Removal Modal -->
 <div id="hodremovePopup" class="popup">
     <div class="popup-content">
-        <!-- ✅ Close button (×) positioned at the top-right -->
+        <!-- Close button (×) positioned at the top-right -->
         <span class="close-btn" onclick="closeHODPopup()">&times;</span> 
         
         <h2>Remove HOD</h2>
         <form id="removehodForm">
             <label>Enter Mail:</label>
             <input type="text" id="hodMail" name="hodMail" required>
-            <button type="button" class="remove-btn">Remove</button> <!-- ✅ Red Remove Button -->
+            <button type="button" class="remove-btn">Remove</button> <!--Red Remove Button -->
         </form>
-        <p id="hod-message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="hod-message"></p> <!-- Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ VO Removal Modal -->
+<!--  VO Removal Modal -->
 <div id="voRemovePopup" class="popup">
     <div class="popup-content">
-        <!-- ✅ Close button (×) positioned at the top-right -->
+        <!-- Close button (×) positioned at the top-right -->
         <span class="close-btn" onclick="closeVOPopup()">&times;</span> 
         
         <h2>Remove VO</h2>
@@ -1609,6 +1609,7 @@ border-radius: 10px; text-align: center; width: 300px;">
                 <a href="addhod.jsp" onclick="openPopup('addhod.jsp')">HOD</a>
                 <a href="addvo.jsp" onclick="openPopup('addvo.jsp')">Verification Officer</a>
                 <a href="addadmin.jsp" onclick="openPopup('addadmin.jsp')">Admin</a>
+                <a href="addgpo.jsp" onclick="openPopup('addgpo.jsp')">Admin</a>
             </div>
     
             <!-- Remove Section -->

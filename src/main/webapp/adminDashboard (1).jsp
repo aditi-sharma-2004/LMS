@@ -8,7 +8,7 @@
     <title>Leave Management System</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/js/all.min.js" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-    <style>
+     <style>
         * {
             margin: 0;
             padding: 0;
@@ -37,7 +37,7 @@
     position: absolute;
     left: 0;
     top: 0;
-    width: 99%;
+    width: 100%;
     z-index: 1000;
     box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
 }
@@ -103,6 +103,7 @@
     width: 100%;
 }
 .navbar .nav-button {
+    background-color:  #8E54E9;
     color: white;
     text-decoration: none;
     padding: 10px 15px;
@@ -111,7 +112,9 @@
     transition: background-color 0.3s;
 }
 
-
+.navbar .nav-button:hover {
+    background-color: #45a049;
+}
 .quick-links {
     position: relative;
 }
@@ -152,19 +155,22 @@
     background-color: #d32f2f;
 }
 
+
+
         /* Sidebar */
-        .sidebar {
-            width: 250px;
-            height: calc(100vh - 60px);
-            background: #333;
-            color: white;
-            padding: 10px;
-            position: fixed;
-            top: 70px;
-            left: 0;
-            overflow-y: auto;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
-        }
+        .sidebar {             
+    width: 250px;             
+    height: calc(100vh - 60px); /* Adjusted for navbar height */
+    background: #333;             
+    color: white;             
+    padding: 10px;             
+    position: fixed;             
+    top: 60px; /* Adjusted to align with the navbar */
+    left: 0;             
+    overflow-y: auto;             
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);         
+}
+
 
         .sidebar a {
             display: flex;
@@ -216,23 +222,6 @@
             transform: rotate(90deg);
         }
 
-        .logout {
-    background: #e74c3c;
-    color: white;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    width: 90%;
-    display: block;
-    margin: 20px auto;
-    text-decoration: none;
-}
-
-.logout:hover {
-    background: #c0392b;
-}
-
 
         .modal input {
             width: 80%;
@@ -248,7 +237,7 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        .modal .update-btn { background-color: green; color: white; }
+        .modal .update-btn { background-color:  #8E54E9;; color: white; }
         .modal .cancel-btn { background-color: red; color: white; }
     .close {
         position: absolute;
@@ -266,7 +255,7 @@
     }
 
     .update-btn {
-        background-color: green;
+        background-color:  #8E54E9;;
         color: white;
         padding: 8px 15px;
         border: none;
@@ -310,7 +299,7 @@
         }
 
         .btn-submit {
-            background-color: green;
+            background-color:  #8E54E9;;
             color: white;
             padding: 10px 15px;
             border: none;
@@ -457,7 +446,7 @@ iframe {
     }
 
     .custom-submit-btn {
-        background-color: green;
+        background-color:  #8E54E9;;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -518,7 +507,7 @@ iframe {
     }
 
     .warden-submit-btn {
-        background-color: green;
+        background-color:  #8E54E9;;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -600,7 +589,7 @@ iframe {
 }
 
 .details-grid input:focus {
-    border-color: #4CAF50;
+    border-color:  #8E54E9;;
     outline: none;
     background-color: #fff;
 }
@@ -651,20 +640,18 @@ iframe {
     function closeLeavePopup() {
         document.getElementById("leavePopupModal").style.display = "none";
     }
+    function openStudentPopup() {
+            document.getElementById("studentPopup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+        }
 
-// update student 
-function openStudentPopup() {
-        document.getElementById("studentPopup").style.display = "block";
-        document.getElementById("overlay").style.display = "block";
-    }
+        function closeStudentPopup() {
+            document.getElementById('studentPopup').style.display = 'none';
+            document.getElementById("overlay").style.display = "none";
+        }
 
-    function closeStudentPopup() {
-        document.getElementById('studentPopup').style.display = 'none';
-        document.getElementById("overlay").style.display = "none";
-    }
-
-    function submitStudentId() {
-            var studentId = document.getElementById("studentIdInput").value.trim();
+        function submitStudentId() {
+            var studentId = document.getElementById("studentIdInputu").value.trim();
             if (studentId === "") {
                 alert("Please enter a valid Student ID!");
                 return;
@@ -672,7 +659,7 @@ function openStudentPopup() {
             window.location.href = "update_student.jsp?student_id=" + studentId;
         }
 
-// ✅ Open Warden Popup
+        // ✅ Open Warden Popup
 function openWardenPopup() {
     console.log("Opening Warden popup...");
     let popup = document.getElementById("wardenPopup");
@@ -720,108 +707,111 @@ function validateWardenEmail() {
 //hod
 // Open HOD Popup
 function openHodPopup() {
-    console.log("Opening HOD popup...");
-    let popup = document.getElementById("hodPopup");
-    if (!popup) {
-        console.error("hod popup not found!");
-        return;
-    }
-    popup.style.display = "block";
-    document.getElementById("overlay").style.display = "block";
+            console.log("Opening HOD popup...");
+            let popup = document.getElementById("hodPopup");
+            document.getElementById("hodPopup").style.display = "block";
+            document.getElementById("overlay").style.display = "block";
+            if (!popup) {
+                console.error("HOD popup not found!");
+                return;
+            }
+
+            popup.style.display = "block";
 }
 
         // Close HOD Popup
- function closeHodPopup() {
-document.getElementById('hodPopup').style.display = 'none';
-document.getElementById("overlay").style.display = "none";
-}
-// Validate Email
+        function closeHodPopup() {
+            document.getElementById("hodPopup").style.display = "none";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        // Validate Email
         function validateHodEmail() {
-    var emailInput = document.getElementById("hodEmail");
+            var emailInput = document.getElementById("hodEmail");
 
-    if (!emailInput) {
-        alert("Email input field not found!");
-        return;
-    }
+            if (!emailInput) {
+                alert("Email input field not found!");
+                return;
+            }
 
-    var email = emailInput.value.trim();
-    console.log("Entered email:", email);
+            var email = emailInput.value.trim();
+            console.log("Entered email:", email);
 
-    if (email === "") {
-        alert("Email field cannot be empty!");
-        return;
-    }
+            if (email === "") {
+                alert("Email field cannot be empty!");
+                return;
+            }
 
-    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
+            var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
 
-    if (emailPattern.test(email)) {  
-        console.log("✅ Valid email. Redirecting...");
-        window.location.href = "update_hod.jsp?email=" + encodeURIComponent(email);
-    } else {
-        console.log("❌ Invalid email format detected.");
-        alert("Please enter a valid email address.");
-    }
-}
-
+            if (emailPattern.test(email)) {  
+                console.log("✅ Valid email. Redirecting...");
+                window.location.href = "update_hod.jsp?email=" + encodeURIComponent(email);
+            } else {
+                console.log("❌ Invalid email format detected.");
+                alert("Please enter a valid email address.");
+            }
+        }
 //vo
         function openvoPopup() {
-            console.log("Opening vo popup...");
-    let popup = document.getElementById("voPopup");
-    if (!popup) {
-        console.error("vo popup not found!");
-        return;
-    }
-    popup.style.display = "block";
-    document.getElementById("overlay").style.display = "block";
+        document.getElementById("voPopup").style.display = "block";
+        document.getElementById("overlay").style.display = "block";
     }
 
     function closevoPopup() {
         document.getElementById('voPopup').style.display = 'none';
-document.getElementById("overlay").style.display = "none";
+        document.getElementById("overlay").style.display = "none";
     }
 
-    function validatevoEmail() {
-    var emailInput = document.getElementById("voEmail");
+    function validateEmail() {
+        var emailInput = document.getElementById("voEmail");
+        if (!emailInput) {
+            alert("Email input field not found!");
+            return;
+        }
+        var email = emailInput.value.trim();
+        console.log("Entered email:", email); // Debugging
 
-    if (!emailInput) {
-        alert("Email input field not found!");
-        return;
+        if (email === "") {
+            alert("Email field cannot be empty!");
+            return;
+        }
+
+        var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
+        if (emailPattern.test(email)) {  
+            console.log("✅ Valid email. Redirecting...");
+            window.location.href = "update_vo.jsp?email=" + encodeURIComponent(email);
+        } else {
+            console.log("❌ Invalid email format detected.");
+            alert("Please enter a valid email address.");
+        }
     }
-
-    var email = emailInput.value.trim();
-    console.log("Entered email:", email);
-
-    if (email === "") {
-        alert("Email field cannot be empty!");
-        return;
-    }
-
-    var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
-
-    if (emailPattern.test(email)) {  
-        console.log("✅ Valid email. Redirecting...");
-        window.location.href = "update_vo.jsp?email=" + encodeURIComponent(email);
-    } else {
-        console.log("❌ Invalid email format detected.");
-        alert("Please enter a valid email address.");
-    }
-}
+    
 //Admin
 function openAdminPopup() {
-    console.log("Opening admin popup...");
+    console.log("Opening Admin popup...");
     let popup = document.getElementById("adminPopup");
+    let overlay = document.getElementById("overlay");
+    let emailInput = document.getElementById("adminEmail");
+
     if (!popup) {
-        console.error("admin popup not found!");
+        console.error("Admin popup not found!");
         return;
     }
+
     popup.style.display = "block";
-    document.getElementById("overlay").style.display = "block";
+    overlay.style.display = "block";
+
+    // ✅ Ensure the email field retains its value
+    if (!emailInput.value) {
+        emailInput.value = "";
+    }
 }
 
         // Close admin Popup
         function closeAdminPopup() {
-            document.getElementById('adminPopup').style.display = 'none';
-            document.getElementById("overlay").style.display = "none";
+    document.getElementById("adminPopup").style.display = "none";
+    document.getElementById("overlay").style.display = "none";
 }
 
 function validateAdminEmail() {
@@ -835,16 +825,16 @@ function validateAdminEmail() {
     var email = emailInput.value.trim();
     console.log("Entered email:", email);
 
-        if (email === "") {
+    if (email === "") {
         alert("Email field cannot be empty!");
         return;
-        }
+    }
 
     var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,7}$/;
 
     if (emailPattern.test(email)) {  
         console.log("✅ Valid email. Redirecting...");
-        window.location.href = "update_warden.jsp?email=" + encodeURIComponent(email);
+        window.location.href = "update_admin.jsp?email=" + encodeURIComponent(email);
     } else {
         console.log("❌ Invalid email format detected.");
         alert("Please enter a valid email address.");
@@ -1174,24 +1164,22 @@ function submit_WardenEmail() {
 }
 //view for hod
  // Open Email Popup
- function openEmailPopup() {
-        document.getElementById('emailModal').style.display = 'flex';
-    }
+ function open_HODPopup() {
+    document.getElementById('hodEmailModal').style.display = 'flex';
+}
 
-    // Close Email Popup
-    function closeEmailPopup() {
-        document.getElementById('emailModal').style.display = 'none';
-    }
+function closeHODPopup() {
+    document.getElementById('hodEmailModal').style.display = 'none';
+}
 
-    // Submit HOD Email
-    function submit_Email() {
-        const email = document.getElementById('emailInput').value.trim();
-        if (email === '') {
-            alert('Please enter an email.');
-            return;
-        }
-        window.location.href = "viewhod.jsp?email=" + encodeURIComponent(email);
+function submit_HODEmail() {
+    const wardenEmail = document.getElementById('hodEmailInput').value.trim();
+    if (wardenEmail === '') {
+        alert('Please enter a Warden Email.');
+        return;
     }
+    window.location.href = "viewhod.jsp?email=" + encodeURIComponent(wardenEmail);
+}
      // Open VO Email Popup
      function open_VoPopup() {
         document.getElementById('voEmailModal').style.display = 'flex';
@@ -1228,6 +1216,22 @@ function submit_WardenEmail() {
             }
             window.location.href = "viewadmin.jsp?email=" + encodeURIComponent(email);
         }
+        function open_GPO() {
+            document.getElementById('GPOEmailModal').style.display = 'flex';
+        }
+        
+        function closeGPOPopup() {
+            document.getElementById('GPOEmailModal').style.display = 'none';
+        }
+        
+        function submit_GPOEmail() {
+            const GPOEmail = document.getElementById('GPOEmailInput').value.trim();
+            if (GPOEmail === '') {
+                alert('Please enter a GPO Email.');
+                return;
+            }
+            window.location.href = "viewGPO.jsp?email=" + encodeURIComponent(GPOEmail);
+        }
 </script>
 </head>
 <body>
@@ -1247,14 +1251,15 @@ function submit_WardenEmail() {
 
 <div id="hodEmailModal" class="custom-modal">
     <div class="custom-modal-content">
-        <span class="close" onclick="closeHodPopup()">&times;</span>
         <h2>Enter HOD Email</h2>
         <input type="email" id="hodEmailInput" placeholder="Enter HOD Email">
-        <button onclick="submit_HodEmail()" class="custom-submit-btn">Submit</button>
-        <button onclick="closeHodPopup()" class="custom-cancel-btn">Cancel</button>
+        <div style="margin-top:15px;">
+            <button class="custom-submit-btn" onclick="submit_HODEmail()">Submit</button>
+            <button class="custom-cancel-btn" onclick="closeHODPopup()">Cancel</button>
+        </div>
     </div>
 </div>
-
+¬
 <!-- VO Email Popup -->
 <div id="voEmailModal" class="custom-modal">
     <div class="custom-modal-content">
@@ -1289,15 +1294,27 @@ function submit_WardenEmail() {
         </div>
     </div>
 </div>
+<div id="GPOEmailModal" class="GPO-popup-modal" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
+background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
+border-radius: 10px; text-align: center; width: 300px;">
+    <div class="GPO-popup-content">
+        <h2>Enter GPO Email</h2>
+        <input type="text" id="GPOEmailInput" placeholder="Enter GPO Email">
+        <div style="margin-top:15px;">
+            <button class="GPO-submit-btn" onclick="submit_GPOEmail()">Submit</button>
+            <button class="GPO-cancel-btn" onclick="closeGPOPopup()">Cancel</button>
+        </div>
+    </div>
+</div>
 
-
-<div class="overlay" id="overlay"></div>
+     <!-- Overlay Background -->
+     <div class="overlay" id="overlay"></div>
      <div id="studentPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
 border-radius: 10px; text-align: center; width: 300px;">
 
 <h2 style="margin-bottom: 10px;">Enter Student Smartcard ID</h2>
-<input type="email" id="studentIdInput" placeholder="" required 
+<input type="text" id="studentIdInputu" placeholder="" required 
     style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
 
 <div>
@@ -1313,9 +1330,9 @@ border-radius: 10px; text-align: center; width: 300px;">
 </div>
 </div>
 
-<!-- Overlay Background -->
-<div class="overlay" id="overlay"></div>
-<div id="wardenPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
+     <!-- Overlay Background -->
+     <div class="overlay" id="overlay"></div>
+     <div id="wardenPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
 border-radius: 10px; text-align: center; width: 300px;">
 
@@ -1328,49 +1345,46 @@ border-radius: 10px; text-align: center; width: 300px;">
         padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
         Submit
     </button>
-    <button class="warden-cancel-btn" onclick="closeWardenPopup()">Cancel</button>
+    
+    <button onclick="closeWardenPopup()"style="background-color: red; color: white; border: none; 
+        padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+        Cancel
     </button>
 </div>
 </div>
 
-     <!-- Overlay Background -->
-     <div class="overlay" id="overlay"></div>
-     <div id="hodPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
-background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
-border-radius: 10px; text-align: center; width: 300px;">
+    <!-- HOD Email Popup Modal -->
+    <div id="hodPopup">
+        <h2 style="margin-bottom: 10px;">Enter HOD Email</h2>
+        <input type="email" id="hodEmail" placeholder="" required 
+            style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
+        <div>
+            <button onclick="validateHodEmail()" style="background-color: green; color: white; border: none;
+                padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
+                Submit
+            </button>
+            <button onclick="closeHodPopup()" style="background-color: red; color: white; border: none;
+                padding: 10px 15px; border-radius: 5px; cursor: pointer;">
+                Cancel
+            </button>
+        </div>
+    </div>
 
-<h2 style="margin-bottom: 10px;">Enter Hod Email</h2>
-<input type="email" id="hodEmail" placeholder="" required 
-    style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
-
-<div>
-    <button onclick="validateHodEmail()" style="background-color: green; color: white; border: none; 
-        padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
-        Submit
-    </button>
-    <button class="custom-cancel-btn" onclick="closeHodPopup()">Cancel</button>
-    </button>
 </div>
-</div>
 
-<!-- Overlay Background -->
-<div class="overlay" id="overlay"></div>
+<!-- Overlay for Popup -->
+<div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+background: rgba(0, 0, 0, 0.5); z-index: 999;"></div>
+
+<!-- Popup Modal for Verification Officer -->
 <div id="voPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
 background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
 border-radius: 10px; text-align: center; width: 300px;">
-
-<h2 style="margin-bottom: 10px;">Enter Verification Officer Email</h2>
-<input type="email" id="voEmail" placeholder="" required 
-   style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
-
-<div>
-   <button onclick="validatevoEmail()" style="background-color: green; color: white; border: none; 
-       padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
-       Submit
-   </button>
-   <button class="custom-cancel-btn" onclick="closevoPopup()">Cancel</button>
-   </button>
-</div>
+    <h2 style="margin-bottom: 10px;">Enter VO Email</h2>
+    <input type="email" id="voEmail" placeholder="" required 
+        style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
+    <button onclick="validateEmail()" style="background: green; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Submit</button>
+    <button onclick="closevoPopup()" style="background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer;">Cancel</button>
 </div>
 
 <!-- ✅ Admin Popup (Ensure it's structured properly) -->
@@ -1393,25 +1407,6 @@ border-radius: 10px; text-align: center; width: 300px;">
     </div>
 </div>
 
-<!-- Overlay Background -->
-<div class="overlay" id="overlay"></div>
-<div id="adminPopup" style="display: none; position: fixed; top: 30%; left: 50%; transform: translate(-50%, -50%); 
-background: white; padding: 20px; box-shadow: 0px 0px 10px rgba(0,0,0,0.5); z-index: 1000; 
-border-radius: 10px; text-align: center; width: 300px;">
-
-<h2 style="margin-bottom: 10px;">Enter Admin Email</h2>
-<input type="email" id="adminEmail" placeholder="" required 
-    style="width: 90%; padding: 8px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 5px;" />
-
-<div>
-    <button onclick="validateAdminEmail()" style="background-color: green; color: white; border: none; 
-        padding: 10px 15px; margin-right: 10px; border-radius: 5px; cursor: pointer;">
-        Submit
-    </button>
-    <button class="custom-cancel-btn" onclick="closeAdminPopup()">Cancel</button>
-    </button>
-</div>
-</div>
 <!-- ✅ Overlay (if missing, add it) -->
 <div id="overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
 background: rgba(0,0,0,0.5); z-index: 999;"></div>
@@ -1426,11 +1421,11 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             <input type="text" id="studentId" name="student_id" required>
             <button type="button" onclick="removeStudent()" class="remove-btn">Remove</button>
         </form>
-        <p id="student-message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="student-message"></p> <!--  Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ Warden Removal Modal -->
+<!--  Warden Removal Modal -->
 <div id="wardenremovePopup" class="popup" style="display: none;">
     <div class="popup-content">
         <span class="close-btn" onclick="closeWardenPopup()">&times;</span> <!-- Close Button -->
@@ -1440,30 +1435,30 @@ background: rgba(0,0,0,0.5); z-index: 999;"></div>
             <input type="text" id="wardenMail" name="wardenMail" required>
             <button type="button" onclick="removeWarden()" class="remove-btn">Remove</button>
         </form>
-        <p id="warden-message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="warden-message"></p> <!--  Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ HOD Removal Modal -->
+<!--  HOD Removal Modal -->
 <div id="hodremovePopup" class="popup">
     <div class="popup-content">
-        <!-- ✅ Close button (×) positioned at the top-right -->
+        <!-- Close button (×) positioned at the top-right -->
         <span class="close-btn" onclick="closeHODPopup()">&times;</span> 
         
         <h2>Remove HOD</h2>
         <form id="removehodForm">
             <label>Enter Mail:</label>
             <input type="text" id="hodMail" name="hodMail" required>
-            <button type="button" class="remove-btn">Remove</button> <!-- ✅ Red Remove Button -->
+            <button type="button" class="remove-btn">Remove</button> <!--Red Remove Button -->
         </form>
-        <p id="hod-message"></p> <!-- ✅ Success/Error message appears here -->
+        <p id="hod-message"></p> <!-- Success/Error message appears here -->
     </div>
 </div>
 
-<!-- ✅ VO Removal Modal -->
+<!--  VO Removal Modal -->
 <div id="voRemovePopup" class="popup">
     <div class="popup-content">
-        <!-- ✅ Close button (×) positioned at the top-right -->
+        <!-- Close button (×) positioned at the top-right -->
         <span class="close-btn" onclick="closeVOPopup()">&times;</span> 
         
         <h2>Remove VO</h2>
@@ -1527,7 +1522,7 @@ border-radius: 10px; text-align: center; width: 300px;">
         </div>
         <div class="nav-links">
             
-            <a href="change_password.jsp" >Change Password</a>
+            <a href="admin_change_password.jsp" >Change Password</a>
             <div class="quick-links">
                 <button class="dropdown-button">Quick Links</button>
                 <div class="dropdown">
@@ -1586,9 +1581,10 @@ border-radius: 10px; text-align: center; width: 300px;">
             <div id="viewDropdown" class="dropdown">
                 <a href="#" onclick="open_StudentPopup()">Student</a>
                 <a href="#" onclick="open_WardenPopup()">Warden</a>
-                <a href="#" onclick="openEmailPopup()">HOD</a>
+                <a href="#" onclick="open_HODPopup()">HOD</a>
                 <a href="#" onclick="open_VoPopup()">Verification Officer</a>
                 <a href="#" onclick="open_Modal()">Admin</a>
+                <a href="#" onclick="open_GPO()">GPO</a>
             </div>
     
             <!-- Update Section -->
@@ -1613,6 +1609,7 @@ border-radius: 10px; text-align: center; width: 300px;">
                 <a href="addhod.jsp" onclick="openPopup('addhod.jsp')">HOD</a>
                 <a href="addvo.jsp" onclick="openPopup('addvo.jsp')">Verification Officer</a>
                 <a href="addadmin.jsp" onclick="openPopup('addadmin.jsp')">Admin</a>
+                <a href="addgpo.jsp" onclick="openPopup('addgpo.jsp')">Admin</a>
             </div>
     
             <!-- Remove Section -->
