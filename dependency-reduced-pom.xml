@@ -3,6 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.example</groupId>
   <artifactId>LMS</artifactId>
+  <packaging>war</packaging>
   <name>Leave Management System</name>
   <version>1</version>
   <build>
@@ -16,7 +17,7 @@
             <contextPath>/</contextPath>
           </webApp>
           <httpConnector>
-            <port>8080</port>
+            <port>8081</port>
           </httpConnector>
         </configuration>
       </plugin>
