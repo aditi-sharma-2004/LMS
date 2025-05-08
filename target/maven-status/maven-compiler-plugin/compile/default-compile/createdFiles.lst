@@ -1,5 +1,6 @@
 com\example\VOChangePasswordServlet.class
 com\example\UpdateStudentServlet.class
+com\example\Main.class
 com\example\RemoveHODServlet.class
 com\example\StudentPhotoServlet.class
 com\example\UploadStudentServlet.class

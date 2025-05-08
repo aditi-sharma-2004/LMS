@@ -6,7 +6,8 @@
     <groupId>com.example</groupId>
     <artifactId>LMS</artifactId>
     <version>1</version>
-    <packaging>war</packaging>
+    <packaging>jar</packaging>
+
 
     <name>Leave Management System</name>
 
@@ -18,7 +19,28 @@
         <artifactId>mysql-connector-j</artifactId>
         <version>8.0.33</version>
     </dependency>
-
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-server</artifactId>
+        <version>11.0.14</version>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-jspc-maven-plugin</artifactId>
+        <version>11.0.14</version>
+        <type>maven-plugin</type>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-webapp</artifactId>
+        <version>11.0.14</version>
+    </dependency>
+    <dependency>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-servlet</artifactId>
+        <version>11.0.14</version>
+    </dependency>
+    
 
 
         <dependency>
