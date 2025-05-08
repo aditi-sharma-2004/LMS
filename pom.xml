@@ -70,11 +70,32 @@
             <version>5.0.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>2.14.1</version>
+        </dependency>
+        
     </dependencies>
 
     <build>
         <plugins>
             <!-- Compiler Plugin -->
+                  <!-- Jetty Plugin -->
+                  <plugin>
+                    <groupId>org.eclipse.jetty</groupId>
+                    <artifactId>jetty-maven-plugin</artifactId>
+                    <version>11.0.14</version> <!-- Make sure the version matches your Jetty setup -->
+                    <configuration>
+                      <webApp>
+                        <contextPath>/</contextPath>
+                      </webApp>
+                      <httpConnector>
+                        <port>8080</port>
+                      </httpConnector>
+                    </configuration>
+                  </plugin>
+              
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
